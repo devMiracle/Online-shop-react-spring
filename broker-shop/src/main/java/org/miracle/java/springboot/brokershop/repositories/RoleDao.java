@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 // Унаследует набор универсальных методов под любую бд
 public interface RoleDao extends JpaRepository<Role, Long> {
-
+    Role findRoleByName(String name);
 
 }

@@ -2,6 +2,7 @@ package org.miracle.java.springboot.brokershop.controllers;
 
 
 import org.miracle.java.springboot.brokershop.models.ResponseModel;
+import org.miracle.java.springboot.brokershop.models.UserModel;
 import org.miracle.java.springboot.brokershop.services.AuthService;
 import org.miracle.java.springboot.brokershop.models.RoleModel;
 import org.miracle.java.springboot.brokershop.services.interfaces.IAuthService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 // Все данные десериализуются из JSON в Java и при return из Java в JSON
 @RestController
@@ -22,6 +24,7 @@ public class AuthController {
         this.authService = authService;
     }
 
+    // Анотация GET-метод запроса
     @GetMapping("/roles")
     public ResponseEntity<ResponseModel> getRoles () {
         ResponseModel responseModel = authService.getRoles();
@@ -35,7 +38,7 @@ public class AuthController {
     }
 
 
-
+    // Анотация POST-метод запроса
     @PostMapping("/roles")
     // анотация @RequestBody парсит из JSON в объект rolemodel
     public ResponseEntity<ResponseModel> createRoles (@RequestBody RoleModel rolemodel) {
@@ -49,6 +52,48 @@ public class AuthController {
             httpStatus = HttpStatus.BAD_GATEWAY;
         }
         return new ResponseEntity<>(responseModel, httpStatus);
+    }
+
+    // /admin - для работы SpringSecurity
+    @GetMapping("/admin/roles/{id}/users")
+    public ResponseEntity<ResponseModel> getUsersByRole(@PathVariable Long id) {
+        ResponseModel responseModel = authService.getRoleUsers(id);
+        return new ResponseEntity<>(responseModel,
+                (responseModel.getData() != null)
+                    ? HttpStatus.OK
+                    : HttpStatus.NOT_FOUND
+                );
+    }
+
+
+    @PostMapping("/users")
+    public ResponseEntity<ResponseModel> createUser(@RequestBody UserModel userModel) {
+        ResponseModel responseModel = authService.createUser(userModel);
+        return new ResponseEntity<>(responseModel,
+                (responseModel.getMessage().toLowerCase().contains("created"))
+                    ? HttpStatus.CREATED
+                    : responseModel.getMessage().contains("name")
+                    ? HttpStatus.CONFLICT
+                    : HttpStatus.BAD_GATEWAY
+                );
+    }
+
+
+
+
+
+
+
+    // Анотация подсказывает, что в теле запроса должны быть данные, которые нужно добавить в БД к уже существующим. (Изменить часть информации)
+    @PatchMapping(value = "/users/{id}/makeadmin")
+    //@PutMapping - используется, когда нужно добавить новые данные в БД
+    public ResponseEntity<ResponseModel> makeUserAdmin(/*Извлекается часть адресной строки*/@PathVariable Long id) throws Exception {
+        return new ResponseEntity<>(authService.makeUserAdmin(id), HttpStatus.OK); // TODO: makeUserAdmin может вернуть неудачу, доработать все варианты статуса ответа
+    }
+
+    @DeleteMapping(value = "/users/{id}")
+    public ResponseEntity<ResponseModel> deleteUser(@PathVariable Long id) {
+        return new ResponseEntity<>(authService.deleteUser(id), HttpStatus.NO_CONTENT);
     }
 
 
