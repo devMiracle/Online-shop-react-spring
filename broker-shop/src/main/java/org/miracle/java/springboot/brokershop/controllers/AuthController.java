@@ -8,8 +8,10 @@ import org.miracle.java.springboot.brokershop.models.RoleModel;
 import org.miracle.java.springboot.brokershop.services.interfaces.IAuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,7 +38,6 @@ public class AuthController {
         }
         return new ResponseEntity<>(responseModel, httpStatus);
     }
-
 
     // Анотация POST-метод запроса
     @PostMapping("/roles")
@@ -65,7 +66,6 @@ public class AuthController {
                 );
     }
 
-
     @PostMapping("/users")
     public ResponseEntity<ResponseModel> createUser(@RequestBody UserModel userModel) {
         ResponseModel responseModel = authService.createUser(userModel);
@@ -78,11 +78,30 @@ public class AuthController {
                 );
     }
 
+    @GetMapping("/user/signedout")
+    public ResponseEntity<ResponseModel> signedOut(HttpSession httpSession) {
+        return new ResponseEntity<>(authService.onSignOut(), HttpStatus.OK);
+    }
 
+    @GetMapping("/user/onerror")
+    public ResponseEntity<ResponseModel> onError() {
+        return new ResponseEntity<>(authService.onError(), HttpStatus.UNAUTHORIZED);
+    }
 
-
-
-
+    @GetMapping(value = "/user/check")
+    // @ResponseBody
+    /** @param authentication объект стандартного типа с данными учетной записи
+     * пользователя теущего http-сеанса, если ранее произошла успешная аутентификация,
+     * получается внедрением зависимости через аргумент метода */
+    public ResponseEntity<ResponseModel> checkUser(Authentication authentication) {
+        ResponseModel responseModel = authService.check(authentication);
+        return new ResponseEntity<>(
+                responseModel,
+                (responseModel.getData() != null)
+                        ? HttpStatus.OK
+                        : HttpStatus.UNAUTHORIZED
+        );
+    }
 
     // Анотация подсказывает, что в теле запроса должны быть данные, которые нужно добавить в БД к уже существующим. (Изменить часть информации)
     @PatchMapping(value = "/users/{id}/makeadmin")

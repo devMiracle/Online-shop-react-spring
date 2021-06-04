@@ -8,6 +8,8 @@ import org.miracle.java.springboot.brokershop.models.UserModel;
 import org.miracle.java.springboot.brokershop.repositories.RoleDao;
 import org.miracle.java.springboot.brokershop.repositories.UserDao;
 import org.miracle.java.springboot.brokershop.services.interfaces.IAuthService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,11 +24,17 @@ public class AuthService implements IAuthService {
     // @Autowired
     private final RoleDao roleDao;
     private final UserDao userDao;
+    private PasswordEncoder passwordEncoder;
 
     // Нельзя делать много внедрений зависимостей (1-2)
-    public AuthService(RoleDao roleDao, UserDao userDao) {
+    public AuthService(
+            RoleDao roleDao,
+            UserDao userDao,
+            PasswordEncoder passwordEncoder
+    ) {
         this.roleDao = roleDao;
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -87,7 +95,7 @@ public class AuthService implements IAuthService {
         User user =
                 User.builder()
                         .name(userModel.getName().trim())
-                        .password(userModel.getPassword())
+                        .password(passwordEncoder.encode(userModel.getPassword()))
                         .role(roleDao.findRoleByName("ROLE_USER"))
                         .build();
         userDao.save(user);
@@ -134,4 +142,49 @@ public class AuthService implements IAuthService {
                     .build();
         }
     }
+
+    @Override
+    // получение подтверждения, что клиент
+    // сейчас аутентифицирован,
+    // и возврат информации об учетной записи
+    public ResponseModel check(Authentication authentication) {
+        ResponseModel response = new ResponseModel();
+        // если пользователь из текущего http-сеанса аутентифицирован
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserModel userModel = UserModel.builder()
+                    .name(authentication.getName())
+                    .roleName(
+                            authentication.getAuthorities().stream()
+                                    .findFirst()
+                                    .get()
+                                    .getAuthority()
+                    )
+                    .build();
+            response.setStatus(ResponseModel.SUCCESS_STATUS);
+            response.setMessage(String.format("User %s Signed In", userModel.name));
+            response.setData(userModel);
+        } else {
+            response.setStatus(ResponseModel.SUCCESS_STATUS);
+            response.setMessage("User is a Guest");
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseModel onSignOut() {
+        return ResponseModel.builder()
+                .status(ResponseModel.SUCCESS_STATUS)
+                .message("Signed out")
+                .build();
+    }
+
+    @Override
+    public ResponseModel onError() {
+        return ResponseModel.builder()
+                .status(ResponseModel.FAIL_STATUS)
+                .message("Auth error")
+                .build();
+    }
+
+
 }
