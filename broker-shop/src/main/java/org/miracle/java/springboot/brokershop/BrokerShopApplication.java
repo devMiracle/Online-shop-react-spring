@@ -1,7 +1,9 @@
 package org.miracle.java.springboot.brokershop;
 
+import org.miracle.java.springboot.brokershop.entities.Category;
 import org.miracle.java.springboot.brokershop.entities.Role;
 import org.miracle.java.springboot.brokershop.entities.User;
+import org.miracle.java.springboot.brokershop.repositories.CategoryDao;
 import org.miracle.java.springboot.brokershop.repositories.RoleDao;
 import org.miracle.java.springboot.brokershop.repositories.UserDao;
 import org.springframework.boot.CommandLineRunner;
@@ -24,6 +26,7 @@ public class BrokerShopApplication {
 	public CommandLineRunner initData(
 			RoleDao roleDao,
 			UserDao userDao,
+			CategoryDao categoryDao,
 			PasswordEncoder passwordEncoder
 	) {
 		return  args -> {
@@ -61,6 +64,12 @@ public class BrokerShopApplication {
 							.role(userRole)
 							.build()
 			);
+			Category stockCategory = Category.builder().name("stock").build();
+			Category cryptoCategory = Category.builder().name("crypto").build();
+			Category eMoneyCategory = Category.builder().name("e-money").build();
+			categoryDao.save(stockCategory);
+			categoryDao.save(cryptoCategory);
+			categoryDao.save(eMoneyCategory);
 
 		};
 	}
