@@ -2,6 +2,7 @@ package org.miracle.java.springboot.brokershop.controllers;
 
 import org.miracle.java.springboot.brokershop.models.ProductFilterModel;
 import org.miracle.java.springboot.brokershop.models.ProductModel;
+import org.miracle.java.springboot.brokershop.models.ProductSearchModel;
 import org.miracle.java.springboot.brokershop.models.ResponseModel;
 import org.miracle.java.springboot.brokershop.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,26 @@ public class ProductController {
         return new ResponseEntity<>(
                 service.getFiltered(
                         new ProductFilterModel(categoryIds, orderBy, sortingDirection)
+                ),
+                HttpStatus.OK
+        );
+    }
+
+
+    // поиск списка товаров согласно query dsl-запроса из http-параметра search
+    // и сортировка по значению поля orderBy в направлении sortingDirection,
+    // заданным как часть начальной строки с произвольно выбранными разделителями:
+    // "::" - между парами ключ-значение,
+    // ":" - между каждым ключом и его значением
+    @GetMapping("/products/filtered::orderBy:{orderBy}::sortingDirection:{sortingDirection}")
+    public ResponseEntity<ResponseModel> search(
+            @RequestParam(value = "search") String searchString,
+            @PathVariable String orderBy,
+            @PathVariable Sort.Direction sortingDirection
+    ) {
+        return new ResponseEntity<>(
+                service.search(
+                        new ProductSearchModel(searchString, orderBy, sortingDirection)
                 ),
                 HttpStatus.OK
         );
