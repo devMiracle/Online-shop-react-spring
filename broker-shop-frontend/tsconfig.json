@@ -6,20 +6,34 @@
       "dom.iterable",
       "esnext"
     ],
+    // Позволяем писать содержимое файла на js
     "allowJs": true,
+    // Библиотеки на js пропускают проверку компилятора ts
     "skipLibCheck": true,
+    // Поддержка es modules
     "esModuleInterop": true,
+    // Поддержка импортов не только с помощью import
     "allowSyntheticDefaultImports": true,
+    // Строгий режим. Нельзя нарушать требование типизации ts
     "strict": true,
+    //Совместимость паскаль или кемелкейс с наименованием через дефис
     "forceConsistentCasingInFileNames": true,
+    //
     "noFallthroughCasesInSwitch": true,
+    // Модуль по стандарту esnext
     "module": "esnext",
+    // Если node js сможет, пусть он производит импорты модулей, а не webpack
     "moduleResolution": "node",
+    // Для отладки и тестирования в проекте можно разместить JSON файл и его импортировать
     "resolveJsonModule": true,
+    // Закрытие модулей друг для друга, только с помощью экспорта и импорта.
     "isolatedModules": true,
+    //
     "noEmit": true,
+    // Модификация, вариация языка js and xml для react
     "jsx": "react-jsx"
   },
+  // От куда брать исходные файлы. Каталог src
   "include": [
     "src"
   ]
