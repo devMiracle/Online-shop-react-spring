@@ -4,12 +4,13 @@ import './index.css'
 import App from './components/App'
 import reportWebVitals from './reportWebVitals'
 import commonStore from './stores/CommonStore'
+import routerStore from './stores/RouterStore'
 import { Provider } from 'mobx-react'
 
 const stores = {
-    commonStore
+    commonStore,
+    routerStore
 }
-
 
 ReactDOM.render(
   <React.StrictMode>
