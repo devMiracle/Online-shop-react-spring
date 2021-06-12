@@ -1,7 +1,7 @@
 import {action, makeObservable, observable, reaction} from 'mobx'
 import history from "../history"
 import RouteModel from "../models/RouteModel"
-// import userStore from "./UserStore"
+import userStore from "./UserStore"
 import Home from "../components/pages/Home"
 import About from "../components/pages/About"
 import Shopping from "../components/pages/Shopping"
@@ -20,12 +20,12 @@ class RouterStore {
     ]
 
     // список моделей роутов для аунтентифицированного пользователя
-    /*private loggedRoutes: Array<RouteModel> = [
+    private loggedRoutes: Array<RouteModel> = [
         { path: '/', name: 'Home', Component: Home },
         { path: '/shopping', name: 'Shopping', Component: Shopping },
         { path: '/about', name: 'About', Component: About },
         { path: '/auth:out', name: 'Log Out', Component: Home }
-    ]*/
+    ]
 
     // наблюдаемый текущий список роутов
     // (по умолчнию - для гостя)
@@ -49,7 +49,7 @@ class RouterStore {
     // если userStore.user установлен,
     // в текущем списке моделей роутов ищем
     // модель, в свойстве name которой содержится подстрока 'Sign out'
-    /*userReaction = reaction(
+    userReaction = reaction(
         () => userStore.user,
         (user) => {
             if (user) {
@@ -60,24 +60,26 @@ class RouterStore {
                 // в модель роута "Выход" в свойство name
                 // записываем текст: Sign out + ИМЯ_ПОЛЬЗОВАТЕЛЯ,
                 // где ИМЯ_ПОЛЬЗОВАТЕЛЯ узнаем из наблюдаемого свойства userStore.user
-                if (signOutRoute) {
+
+                if (signOutRoute instanceof RouteModel) {
                     signOutRoute['name'] = `Log Out (${user.name})`
                 }
+
                 // ... и меняем текущий список моделей роутов
                 // - на список моделей роутов для вошедшего пользователя
-                this.setLoggedRoutes()
+                //this.setLoggedRoutes()
                 // выполняем переход на раздел 'Главная'
-                history.replace('/')
+                //history.replace('/')
             } else {
                 // если пользователь не установлен -
                 // меняем текущий список моделей роутов
                 // на список моделей роутов для пользователя-гостя
-                this.setAnonymousRoutes()
+                //this.setAnonymousRoutes()
                 // выполняем переход на раздел 'Вход'
-                history.replace('/signin')
+                //history.replace('/signin')
             }
         }
-    )*/
+    )
 }
 
 export {RouterStore}
