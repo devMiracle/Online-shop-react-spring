@@ -20,8 +20,15 @@ import java.math.BigDecimal;
 @SpringBootApplication
 public class BrokerShopApplication {
 
+
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(BrokerShopApplication.class, args);
+
+
+
+
 	}
 
 	@Value("${tests.unit.strings.image-base64-msft}")

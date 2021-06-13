@@ -3,16 +3,15 @@ import {Router, Route} from 'react-router-dom'
 import {CommonStore} from '../stores/CommonStore'
 import {RouterStore} from '../stores/RouterStore'
 import {inject, observer} from "mobx-react"
-import {Container, createStyles, Theme, withStyles, WithStyles} from "@material-ui/core"
+import {AppBar, Container, createStyles, Theme, Toolbar, Typography, withStyles, WithStyles} from "@material-ui/core"
 import history from "../history"
 import {CSSTransition} from "react-transition-group";
-
+import AppBarCollapse from "./common/AppBarCollapse";
 
 interface IProps {
     // Перечисляются все внешние параметры (свойства)
     // переданные явно из оъекта родительского компонента
 }
-
 interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     // Перечисляются все внешние параметры (свойства)
     // переданные не явно (например, внедрением зависимости при помощи декораторов)
@@ -20,11 +19,8 @@ interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     routerStore: RouterStore
 
 }
-
 interface IState {}
-
 const styles = (theme: Theme) => createStyles({
-
     root: {
         flexGrow: 1
     },
@@ -33,41 +29,38 @@ const styles = (theme: Theme) => createStyles({
         '& .page': {
             position: 'static'
         }
+    },
+    navBar: {
+        color: '#fff',
+        backgroundColor: '#ee6e73'
+    },
+    title: {
+        flexGrow: 1
     }
 })
-
 @inject('commonStore', 'routerStore')
 @observer
 class App extends React.Component<IProps, IState> {
-
     // Геттер свойства, который подводит фактически полученные props
     // под интерфейс неявно полученных props
     get injected () {
         return this.props as IInjectedProps
     }
-
-  componentDidMount() {
-      /*this.injected.commonStore.setLoading(true)
-        fetch('http://localhost:8080/shop/api/categories')
-        .then(response => response.json())
-        .then(responseBody => console.log(responseBody))
-        .catch(reason => console.log(reason))
-        .finally(() => this.injected.commonStore.setLoading(false))*/
-  }
-
   render() {
-    // const waitDiv = this.injected.commonStore.loading ? <div>Wait...</div> : ' '
-    /* return (
-        <div>
-            {waitDiv}
-        </div>
-    )*/
-    const {classes} = this.injected
+    const {classes, routerStore} = this.injected
     return (
         <Router history={history}>
             <div className={classes.root}>
                 {/* панель приложения, "приклееная" к верхней части страницы */}
-
+                <AppBar position='sticky' className={classes.navBar}>
+                    <Toolbar>
+                        <Typography variant='h6' className={classes.title}>
+                            WebApp
+                        </Typography>
+                        {/* панель навигации */}
+                        <AppBarCollapse routes={routerStore.routes} />
+                    </Toolbar>
+                </AppBar>
                 {/* область для вывода экземпляра текущего раздела веб-приложения */}
                 <Container maxWidth="sm" className={classes.container}>
                     {this.injected.routerStore.routes.map(({ path, Component }) => (
@@ -91,7 +84,5 @@ class App extends React.Component<IProps, IState> {
         </Router>
     )
   }
-
 }
-
 export default withStyles(styles)(App)

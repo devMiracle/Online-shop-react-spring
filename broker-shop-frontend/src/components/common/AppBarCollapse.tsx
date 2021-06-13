@@ -91,7 +91,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                             </MenuItem>
                         })}
                 </ButtonAppBarCollapse>
-                {/* энастольное меню */}
+                {/* настольное меню */}
                 <div className={classes.buttonBar} id="appbar-collapse">
                     {routes.map(route => {
                         return <NavLink

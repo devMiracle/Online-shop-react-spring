@@ -36,14 +36,14 @@ class RouterStore {
     }
 
     // установить в качестве текущего список роутов для гостя
-    /*@action setAnonymousRoutes() {
+    @action setAnonymousRoutes() {
         this.routes = this.anonymousRoutes
-    }*/
+    }
 
     // установить в качестве текущего список роутов для аунтентифицированного пользователя
-    /*@action setLoggedRoutes() {
+    @action setLoggedRoutes() {
         this.routes = this.loggedRoutes
-    }*/
+    }
 
     // реакция на изменение значения наблюдаемого свойства userStore.user:
     // если userStore.user установлен,
@@ -67,16 +67,16 @@ class RouterStore {
 
                 // ... и меняем текущий список моделей роутов
                 // - на список моделей роутов для вошедшего пользователя
-                //this.setLoggedRoutes()
+                this.setLoggedRoutes()
                 // выполняем переход на раздел 'Главная'
-                //history.replace('/')
+                history.replace('/')
             } else {
                 // если пользователь не установлен -
                 // меняем текущий список моделей роутов
                 // на список моделей роутов для пользователя-гостя
-                //this.setAnonymousRoutes()
+                this.setAnonymousRoutes()
                 // выполняем переход на раздел 'Вход'
-                //history.replace('/signin')
+                history.replace('/signin')
             }
         }
     )

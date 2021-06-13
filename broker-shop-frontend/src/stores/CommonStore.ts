@@ -10,6 +10,8 @@ class CommonStore {
     @observable error: string = ''
     //  URL REST API основной адрес
     @observable basename: string = 'http://localhost:8080/shop/api'
+    //  URL REST API основной адрес
+    @observable authBasename: string = 'http://localhost:8080/shop'
 
     constructor () {
         makeObservable(this)

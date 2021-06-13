@@ -16,8 +16,8 @@ class UserStore {
 
     constructor() {
         makeObservable(this)
+
         history.listen((location) => {
-            // console.log(`You changed the page to: ${location.pathname}`)
             if (location.pathname.includes("/auth:out")) {
                 this.logout()
             }
@@ -88,12 +88,12 @@ class UserStore {
         // запрос на стандартную конечную точку /login
         // Spring Security Web API
         // с передачей имени и пароля пользователя для входа в учетную запись
-        fetch(`${commonStore.basename}/login`, {
+        fetch(`${commonStore.authBasename}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            credentials: 'include',
+            credentials: 'include', // Все что получили с сервера, сохранить в браузере.
             body: `username=${this.userName}&password=${this.password}`
         }).then((response) => {
             // из полученного отклика сервера извлечь код статуса
@@ -119,7 +119,7 @@ class UserStore {
 
     @action logout () {
         commonStore.setLoading(true)
-        fetch(`${commonStore.basename}/logout`).then((response) => {
+        fetch(`${commonStore.authBasename}/logout`).then((response) => {
             return response.json()
         }).then((response) => {
             if (response) {
