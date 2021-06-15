@@ -81,6 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .and()
                 // раздел настройки выхода из учетной записи
                 .logout()
+                // Очищает оперативную память сразу после выхода пользователя(уничтожает объект)
+                .clearAuthentication(true)
                 // установка пользовательского URI, на который должен обратиться клиент
                 // для выхода из учетной записи
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

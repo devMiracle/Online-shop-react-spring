@@ -61,7 +61,7 @@ class RouterStore {
                 // записываем текст: Sign out + ИМЯ_ПОЛЬЗОВАТЕЛЯ,
                 // где ИМЯ_ПОЛЬЗОВАТЕЛЯ узнаем из наблюдаемого свойства userStore.user
 
-                if (signOutRoute instanceof RouteModel) {
+                if (signOutRoute) {
                     signOutRoute['name'] = `Log Out (${user.name})`
                 }
 

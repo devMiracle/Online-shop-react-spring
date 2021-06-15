@@ -119,7 +119,9 @@ class UserStore {
 
     @action logout () {
         commonStore.setLoading(true)
-        fetch(`${commonStore.authBasename}/logout`).then((response) => {
+        fetch(`${commonStore.authBasename}/logout`, {
+            credentials: 'include'
+        }).then((response) => {
             return response.json()
         }).then((response) => {
             if (response) {
