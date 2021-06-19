@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .and()
                 // раздел отображений: адрес запроса -> настройки доступа
                 .authorizeRequests()
+                //.antMatchers("/**").permitAll()
                 // разрешить всем
                 .antMatchers(HttpMethod.GET, "/api/auth/users/**").permitAll()
                 // разрешить всем
@@ -103,12 +104,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Разрешаем обращаться к любым адресам
-        .allowedOrigins("http://localhost:3000") // Клиентам, полученным с указанного адреса
+        .allowedOrigins("http://46.160.84.84:3000", "http://192.168.0.101:3000" ,"http://localhost:3000") // Клиентам, полученным с указанного адреса
+        //.allowedOrigins("*") // Клиентам, полученным с указанного адреса
         .allowedMethods("*") // все методы http-запросов разрешены
         .allowedHeaders("*")
         .allowCredentials(true)
         .maxAge(8600);
-
     }
 
 }
