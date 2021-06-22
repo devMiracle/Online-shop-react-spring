@@ -9,10 +9,12 @@ class CommonStore {
     // Текст ошибки, усли он подключен
     @observable error: string = ''
     //  URL REST API основной адрес
-    @observable basename: string = 'http://localhost:8080/shop/api'
-    //@observable basename: string = 'http://46.160.84.84:8080/shop/api'
+    // @observable basename: string = 'http://localhost:8080/shop/api'
+    // @observable basename: string = 'http://46.160.84.84:8080/shop/api'
+    basename: string = 'http://10.10.208.10:8080/shop/api'
     //  URL REST API основной адрес
-    @observable authBasename: string = 'http://localhost:8080/shop'
+    // @observable authBasename: string = 'http://localhost:8080/shop'
+    authBasename: string = 'http://10.10.208.10:8080/shop'
     //@observable authBasename: string = 'http://46.160.84.84:8080/shop'
 
     constructor () {
