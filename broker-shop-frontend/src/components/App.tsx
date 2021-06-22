@@ -44,7 +44,7 @@ const styles = (theme: Theme) => createStyles({
     },
     navBar: {
         color: '#fff',
-        backgroundColor: '#ee6e73'
+        backgroundColor: '#f4d4d4'
     },
     title: {
         flexGrow: 1
@@ -79,6 +79,9 @@ class App extends React.Component<IProps, IState> {
     return (
         <Router history={history}>
             <div className={classes.root}>
+                <div>number: +3800-000-0000</div>
+                <div>number: +3800-000-0000</div>
+                <div>number: +3800-000-0000</div>
                 {/* панель приложения, "приклееная" к верхней части страницы */}
                 <AppBar position='sticky' className={classes.navBar}>
                     <Toolbar>

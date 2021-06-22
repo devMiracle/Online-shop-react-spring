@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 // раздел отображений: адрес запроса -> настройки доступа
                 .authorizeRequests()
                 //.antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/shop/login*").permitAll() //TODO: Удалить
                 // разрешить всем
                 .antMatchers(HttpMethod.GET, "/api/auth/users/**").permitAll()
                 // разрешить всем

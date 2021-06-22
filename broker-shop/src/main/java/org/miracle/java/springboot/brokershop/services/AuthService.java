@@ -17,48 +17,58 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-// Сервис, логика приложения, обстрагированная от источника данных и клиента.
 @Service
 public class AuthService implements IAuthService {
 
-    // @Autowired
     private final RoleDao roleDao;
     private final UserDao userDao;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    // Нельзя делать много внедрений зависимостей (1-2)
-    public AuthService(
-            RoleDao roleDao,
-            UserDao userDao,
-            PasswordEncoder passwordEncoder
-    ) {
+    public AuthService(RoleDao roleDao, UserDao userDao, PasswordEncoder passwordEncoder) {
         this.roleDao = roleDao;
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     public ResponseModel getRoles() {
         return ResponseModel.builder()
                 .status(ResponseModel.SUCCESS_STATUS)
                 .message("All the roles fetched successfully")
-                .data(roleDao.findAll()
-                        .stream().map(
+                .data(
+                        roleDao.findAll()
+                                .stream().map(
                                 roleEntity -> RoleModel.builder()
                                         .id(roleEntity.getId())
                                         .name(roleEntity.getName())
                                         .build()
-                        ).collect(Collectors.toList()))
-                .build();
 
+                        ).collect(Collectors.toList())
+                )
+                .build();
     }
 
     @Override
     public ResponseModel createRole(RoleModel roleModel) {
         roleDao.save(Role.builder().name(roleModel.name).build());
-        return ResponseModel.builder().status(ResponseModel.SUCCESS_STATUS)
+        return ResponseModel.builder()
+                .status(ResponseModel.SUCCESS_STATUS)
                 .message(String.format("Role %s created", roleModel.name))
+                .build();
+    }
+
+    @Override
+    public ResponseModel createUser(UserModel userModel) {
+        User user =
+                User.builder()
+                        .name(userModel.getName().trim())
+                        .password(passwordEncoder.encode(userModel.getPassword()))
+                        .role(roleDao.findRoleByName("ROLE_USER"))
+                        .build();
+        userDao.save(user);
+        return ResponseModel.builder()
+                .status(ResponseModel.SUCCESS_STATUS)
+                .message(String.format("User %s created", user.getName()))
                 .build();
     }
 
@@ -78,7 +88,7 @@ public class AuthService implements IAuthService {
                             .collect(Collectors.toList());
             return ResponseModel.builder()
                     .status(ResponseModel.SUCCESS_STATUS)
-                    .message(String.format("List of %s Role Users Retrieved", role.getName()))
+                    .message(String.format("List of %s Role Users Retrieved Successfully", role.getName()))
                     .data(userModels)
                     .build();
         } else {
@@ -86,64 +96,37 @@ public class AuthService implements IAuthService {
                     .status(ResponseModel.FAIL_STATUS)
                     .message(String.format("No Users: Role #%d Not Found", roleId))
                     .build();
-
         }
     }
 
-    @Override
-    public ResponseModel createUser(UserModel userModel) {
-        User user =
-                User.builder()
-                        .name(userModel.getName().trim())
-                        .password(passwordEncoder.encode(userModel.getPassword()))
-                        .role(roleDao.findRoleByName("ROLE_USER"))
-                        .build();
-        userDao.save(user);
+    public ResponseModel deleteUser(Long id) {
+        userDao.deleteById(id);
         return ResponseModel.builder()
                 .status(ResponseModel.SUCCESS_STATUS)
-                .message(String.format("User %s Created", user.getName()))
+                .message(String.format("User #%d Deleted", id))
                 .build();
     }
 
-    @Override
-    public ResponseModel deleteUser(Long userId) {
-        // TODO: проверить роль администратора, и спросить, есть ли юзер в базе
-        userDao.deleteById(userId);
-        return ResponseModel.builder()
-                .status(ResponseModel.SUCCESS_STATUS)
-                .message(String.format("User #%d Deleted", userId))
-                .build();
-    }
-
-    @Override
-    public ResponseModel makeUserAdmin(Long userId) {
-        // Находим роль по имени
+    public ResponseModel makeUserAdmin(Long id) {
+        // Получаем из БД объект роли администратора
         Role role = roleDao.findRoleByName("ROLE_ADMIN");
-        // Находим пользователя по ID
-        Optional<User> userOptional = userDao.findById(userId);
-        // Если пользователь найден
-        if (userOptional.isPresent()) {
-            // Извлекаем пользователя
+        Optional<User> userOptional = userDao.findById(id);
+        if (userOptional.isPresent()){
             User user = userOptional.get();
-            // Назначаем роль
             user.setRole(role);
-            // Пушим в базу (save - INSERT ЕСЛИ В БД НЕТ СТРОКИ С ЗАДАННЫМ ID \ UPDATE ЕСЛИ ID УЖЕ ЕСТЬ)
             userDao.save(user);
-            // Возвращаем модель ответа
             return ResponseModel.builder()
                     .status(ResponseModel.SUCCESS_STATUS)
                     .message(String.format("Admin %s created successfully", user.getName()))
                     .build();
-        // Иначе ответ с ошибкой
         } else {
             return ResponseModel.builder()
                     .status(ResponseModel.FAIL_STATUS)
-                    .message(String.format("User #%d Not Found", userId))
+                    .message(String.format("User #%d Not Found", id))
                     .build();
         }
     }
 
-    @Override
     // получение подтверждения, что клиент
     // сейчас аутентифицирован,
     // и возврат информации об учетной записи
@@ -170,7 +153,6 @@ public class AuthService implements IAuthService {
         return response;
     }
 
-    @Override
     public ResponseModel onSignOut() {
         return ResponseModel.builder()
                 .status(ResponseModel.SUCCESS_STATUS)
@@ -178,13 +160,10 @@ public class AuthService implements IAuthService {
                 .build();
     }
 
-    @Override
     public ResponseModel onError() {
         return ResponseModel.builder()
                 .status(ResponseModel.FAIL_STATUS)
                 .message("Auth error")
                 .build();
     }
-
-
 }

@@ -63,6 +63,7 @@ class UserStore {
                 if (response.status === 'success') {
                     if (response.data) {
                         this.user = new User(response.data.name, response.data.roleName)
+                        //cartStore.fetchCartItems()
                     }
                 } else if (response.status === 'fail') {
                     // установка в переменную хранилища сообщения об ошибке

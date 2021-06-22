@@ -7,12 +7,13 @@ import About from "../components/pages/About"
 import Shopping from "../components/pages/Shopping"
 import SignIn from "../components/pages/SignIn"
 import SignUp from "../components/pages/SignUp"
+import DashboardCategories from "../components/pages/admin/DashboardCategories"
+import DashboardProducts from "../components/pages/admin/DashboardProducts"
+import Dashboard from "../components/pages/admin/Dashboard"
 
 class RouterStore {
 
     // список моделей роутов для гостя
-
-
     private anonymousRoutes: Array<RouteModel> = [
         { path: '/', name: 'Home', Component: Home },
         { path: '/shopping', name: 'Shopping', Component: Shopping },
@@ -26,6 +27,18 @@ class RouterStore {
         { path: '/', name: 'Home', Component: Home },
         { path: '/shopping', name: 'Shopping', Component: Shopping },
         { path: '/about', name: 'About', Component: About },
+        { path: '/auth:out', name: 'Log Out', Component: Home }
+    ]
+
+
+    // список моделей роутов для аунтентифицированного пользователя с ролью админ
+    private adminRoutes: Array<RouteModel> = [
+        { path: '/', name: 'Home', Component: Home },
+        { path: '/shopping', name: 'Shopping', Component: Shopping },
+        { path: '/about', name: 'About', Component: About },
+        { path: '/admin', name: 'Dashboard' , Component: Dashboard },
+        { path: '/admin/categories', name: 'DashboardCategories' , Component: DashboardCategories },
+        { path: '/admin/products', name: 'DashboardProducts' , Component: DashboardProducts },
         { path: '/auth:out', name: 'Log Out', Component: Home }
     ]
 
@@ -47,6 +60,11 @@ class RouterStore {
         this.routes = this.loggedRoutes
     }
 
+    // установить в качестве текущего список роутов для аунтентифицированного пользователя администратора
+    @action setAdminRoutes() {
+        this.routes = this.adminRoutes
+    }
+
     // реакция на изменение значения наблюдаемого свойства userStore.user:
     // если userStore.user установлен,
     // в текущем списке моделей роутов ищем
@@ -56,9 +74,14 @@ class RouterStore {
         (user) => {
             if (user) {
                 // поиск модели маршрута выхода из учетной записи
-                const signOutRoute =
-                    this.loggedRoutes
+                let signOutRoute
+                if (user.roleName.includes('ADMIN')) {
+                    signOutRoute = this.adminRoutes
                         .find(route => route['path'].includes('/auth:out'))
+                } else {
+                    signOutRoute = this.loggedRoutes
+                        .find(route => route['path'].includes('/auth:out'))
+                }
                 // в модель роута "Выход" в свойство name
                 // записываем текст: Sign out + ИМЯ_ПОЛЬЗОВАТЕЛЯ,
                 // где ИМЯ_ПОЛЬЗОВАТЕЛЯ узнаем из наблюдаемого свойства userStore.user
@@ -66,10 +89,14 @@ class RouterStore {
                 if (signOutRoute) {
                     signOutRoute['name'] = `Log Out (${user.name})`
                 }
+                if (user.roleName.includes('ADMIN')) {
+                    this.setAdminRoutes()
+                } else  {
+                    // ... и меняем текущий список моделей роутов
+                    // - на список моделей роутов для вошедшего пользователя
+                    this.setLoggedRoutes()
+                }
 
-                // ... и меняем текущий список моделей роутов
-                // - на список моделей роутов для вошедшего пользователя
-                this.setLoggedRoutes()
                 // выполняем переход на раздел 'Главная'
                 history.replace('/')
             } else {
