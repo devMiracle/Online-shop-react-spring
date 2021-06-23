@@ -96,7 +96,7 @@ class App extends React.Component<IProps, IState> {
                 <AppBar position='sticky' className={classes.navBar}>
                     <Toolbar>
                         <Typography variant='h6' className={classes.title}>
-                            WebApp
+                            Mr.Pekar
                         </Typography>
                         {/* панель навигации */}
                         <AppBarCollapse routes={routerStore.routes} />

@@ -1,4 +1,5 @@
 import React/*, { Component }*/ from 'react'
+import Product3D from "../common/Product3D";
 
 /* class Home extends Component {
     render () {
@@ -13,6 +14,7 @@ function Home() {
     return (
         <div>
             <h1>Home Page</h1>
+            <Product3D/>
         </div>
     )
 }
