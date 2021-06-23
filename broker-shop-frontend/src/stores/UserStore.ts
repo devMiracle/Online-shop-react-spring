@@ -51,7 +51,8 @@ class UserStore {
         commonStore.setLoading(true)
 
         fetch(`${commonStore.basename}/auth/users/check`, {
-            credentials: 'include'
+            credentials: 'include',
+
         }).then((response) => {
             // из полученного отклика сервера извлечь тело - json-string,
             // преобразовать в json-object

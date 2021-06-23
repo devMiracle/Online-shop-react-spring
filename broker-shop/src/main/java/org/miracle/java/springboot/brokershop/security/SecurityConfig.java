@@ -1,5 +1,6 @@
 package org.miracle.java.springboot.brokershop.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 // Образует бин из класса
 @Configuration
@@ -102,12 +104,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         // 6. /logout (GET)
     }
 
+
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Разрешаем обращаться к любым адресам
-        .allowedOrigins("http://46.160.84.84:3000", "http://192.168.0.101:3000" ,"http://localhost:3000") // Клиентам, полученным с указанного адреса
+        .allowedOrigins("http://192.168.0.101:3000", "http://46.160.84.84:3000", "http://127.0.0.1:3000") // Клиентам, полученным с указанного адреса
         //.allowedOrigins("*") // Клиентам, полученным с указанного адреса
-        .allowedMethods("*") // все методы http-запросов разрешены
+        //.allowedMethods("*") // все методы http-запросов разрешены
         .allowedHeaders("*")
         .allowCredentials(true)
         .maxAge(8600);
