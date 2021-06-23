@@ -2,6 +2,11 @@ import React from 'react'
 import {Router, Route} from 'react-router-dom'
 import {CommonStore} from '../stores/CommonStore'
 import {RouterStore} from '../stores/RouterStore'
+
+
+import {UserStore} from '../stores/UserStore'
+
+
 import {inject, observer} from "mobx-react"
 
 import {
@@ -28,7 +33,8 @@ interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     // Перечисляются все внешние параметры (свойства)
     // переданные не явно (например, внедрением зависимости при помощи декораторов)
     commonStore: CommonStore,
-    routerStore: RouterStore
+    routerStore: RouterStore,
+    userStore: UserStore
 
 }
 interface IState {}
@@ -61,7 +67,7 @@ const styles = (theme: Theme) => createStyles({
         padding: theme.spacing(2, 4, 3),
     }
 })
-@inject('commonStore', 'routerStore')
+@inject('commonStore', 'routerStore', 'userStore')
 @observer
 class App extends React.Component<IProps, IState> {
     // Геттер свойства, который подводит фактически полученные props
@@ -74,7 +80,11 @@ class App extends React.Component<IProps, IState> {
         this.injected.commonStore.setError('')
     }
 
-  render() {
+    componentDidMount() {
+        this.injected.userStore.check()
+    }
+
+    render() {
     const {classes, routerStore} = this.injected
     return (
         <Router history={history}>
