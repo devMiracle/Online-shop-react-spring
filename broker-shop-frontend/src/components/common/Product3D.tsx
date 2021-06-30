@@ -1,8 +1,7 @@
 import React, {Component} from "react"
 import {createStyles, Theme} from "@material-ui/core/styles"
 import {WithStyles} from "@material-ui/core"
-import Box from '@material-ui/core/Box'
-
+import Box from "@material-ui/core/Box"
 
 interface IProps {
     // стандартный внешний параметр,
@@ -40,8 +39,9 @@ class Product3D extends Component<IProps, IState> {
     }
 
     componentDidMount() {
-
     }
+
+
 
     render() {
         // const { classes } = this.injected
@@ -49,22 +49,59 @@ class Product3D extends Component<IProps, IState> {
 
         const url1:string = process.env.PUBLIC_URL
         return (
+
+            // <Box
+            //     border={1}
+            // >
+            //     <ThreeSixty
+            //         amount={32}
+            //         imagePath={url1}
+            //         fileName="1coub-{index}.jpg"
+            //         spinReverse={true}
+            //         loop={9999}
+            //         autoplay={9999}
+            //     />
+            //
+            //
+            // </Box>
+
             <Box
-                border={1}
-                // className={classes.borderImage}
-                >
+             border={1}
+            >
                 <div
-                    className="cloudimage-360"
-                    //data-folder={imageFolder3d}
-                    data-folder={url1}
-                    data-filename="1coub-{index}.jpg"
-                    data-amount="32"
+                        className="cloudimage-360"
+                        data-folder={url1}
+                        data-filename="1coub-{index}.jpg"
+                        data-amount="32"
+                        data-autoplay={true}
+                        data-autoplay-reverse={true}
+                        data-speed={70}
+                        data-spin-reverse={true}
                 ></div>
-                {/*<img src={image1} alt="1"/>*/}
-                {/*<img src={image} width={3888/6} height={2592/6} alt="2"/>*/}
             </Box>
 
-            
+
+
+            // <Box
+            //     border={1}
+            //     // className={classes.borderImage}
+            //     >
+            //     <div
+            //         className="cloudimage-360"
+            //         //data-folder={imageFolder3d}
+            //         data-folder={url1}
+            //         data-filename="1coub-{index}.jpg"
+            //         data-amount="32"
+            //         data-autoplay={true}
+            //         data-autoplay-reverse={true}
+            //         data-speed={70}
+            //         data-spin-reverse={true}
+            //     ></div>
+            //     {/*<img src={image1} alt="1"/>*/}
+            //     {/*<img src={image} width={3888/6} height={2592/6} alt="2"/>*/}
+            // </Box>
+
+
         )
     }
 }

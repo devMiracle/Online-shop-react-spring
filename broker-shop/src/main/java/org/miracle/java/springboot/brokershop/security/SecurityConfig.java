@@ -111,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         registry.addMapping("/**") // Разрешаем обращаться к любым адресам
         .allowedOrigins("http://192.168.0.101:3000", "http://46.160.84.84:3000", "http://127.0.0.1:3000") // Клиентам, полученным с указанного адреса
         //.allowedOrigins("*") // Клиентам, полученным с указанного адреса
-        //.allowedMethods("*") // все методы http-запросов разрешены
+        .allowedMethods("*") // все методы http-запросов разрешены
         .allowedHeaders("*")
         .allowCredentials(true)
         .maxAge(8600);

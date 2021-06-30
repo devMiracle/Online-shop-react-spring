@@ -66,6 +66,7 @@ public class ProductService implements IProductService {
         if (categoryOptional.isPresent()) {
             Product product =
                 Product.builder()
+                        .id(productModel.getId())
                         .name(productModel.getTitle())
                         .description(productModel.getDescription())
                         .price(productModel.getPrice())
