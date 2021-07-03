@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {
     Accordion, AccordionDetails,
     AccordionSummary,
-    Button, /*Card, CardActionArea, CardActions, CardContent, CardMedia,*/ Checkbox,
+    Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Checkbox,
     createStyles,
     Drawer, FormControlLabel, FormGroup, Grid,
     Snackbar, TextField,
@@ -16,8 +16,7 @@ import {UserStore} from "../../stores/UserStore";
 import {inject, observer} from "mobx-react";
 import {Alert} from "@material-ui/lab";
 import {Filter as FilterIcon, ExpandMore as ExpandMoreIcon, List as ListIcon, Sort as SortIcon} from "@material-ui/icons"
-import CategoryModel from "../../models/CategoryModel"
-// import {CartStore} from '../../stores/CartStore'
+import CategoryModel from "../../models/CategoryModel";
 
 interface IPreviousSearch {
     searchString: string,
@@ -31,8 +30,7 @@ interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     commonStore: CommonStore,
     productStore: ProductStore,
     categoryStore: CategoryStore,
-    userStore: UserStore,
-    //cartStore: CartStore
+    userStore: UserStore
 }
 
 interface IState {
@@ -79,7 +77,7 @@ const styles = (theme: Theme) =>
         }
     })
 
-@inject('commonStore', 'productStore', 'categoryStore', 'userStore', 'cartStore')
+@inject('commonStore', 'productStore', 'categoryStore', 'userStore')
 @observer
 class Shopping extends Component<IProps, IState> {
     constructor(props: IProps) {
@@ -211,12 +209,6 @@ class Shopping extends Component<IProps, IState> {
         }
         this.setState({snackBarVisibility: false})
     }
-    // handleAddToCart = (e: React.MouseEvent, productId: number) => {
-    //     this.injected.cartStore.addToCart(productId, () => {
-    //         this.setState({snackBarText: 'One item added to Your cart'})
-    //         this.setState({snackBarVisibility: true})
-    //     })
-    // }
     render () {
         const { loading } = this.injected.commonStore
         const { products } = this.injected.productStore
@@ -389,37 +381,37 @@ class Shopping extends Component<IProps, IState> {
                                   lg={4}
                                   xl={3}
                             >
-                                {/*<Card className={classes.productCard}>*/}
-                                {/*    <CardActionArea>*/}
-                                {/*        <CardMedia*/}
-                                {/*            className={classes.productCardImage}*/}
-                                {/*            image={product.image}*/}
-                                {/*            title={product.title}*/}
-                                {/*        />*/}
-                                {/*        <CardContent>*/}
-                                {/*            <Typography gutterBottom variant="h5" component="h2">*/}
-                                {/*                {product.title} - <strong>${product.price}</strong>*/}
-                                {/*            </Typography>*/}
-                                {/*            <Typography variant="body2" color="textSecondary" component="p">*/}
-                                {/*                {product.description}*/}
-                                {/*            </Typography>*/}
-                                {/*        </CardContent>*/}
-                                {/*    </CardActionArea>*/}
-                                {/*    <CardActions>*/}
-                                {/*        /!*<Button size="small" color="primary">*/}
-                                {/*        Share*/}
-                                {/*    </Button>*!/*/}
-                                {/*        <Button*/}
-                                {/*            size="small"*/}
-                                {/*            color="primary"*/}
-                                {/*            onClick={(e) => {*/}
-                                {/*                this.handleAddToCart(e, product.id)*/}
-                                {/*            }}*/}
-                                {/*            style={{display: this.injected.userStore.user ? 'inline' : 'none' }}>*/}
-                                {/*            Add to cart*/}
-                                {/*        </Button>*/}
-                                {/*    </CardActions>*/}
-                                {/*</Card>*/}
+                                <Card className={classes.productCard}>
+                                    <CardActionArea>
+                                        <CardMedia
+                                            className={classes.productCardImage}
+                                            image={product.image}
+                                            title={product.title}
+                                        />
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {product.title} - <strong>${product.price}</strong>
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                {product.description}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                    <CardActions>
+                                        {/*<Button size="small" color="primary">
+                                        Share
+                                    </Button>*/}
+                                        <Button
+                                            size="small"
+                                            color="primary"
+                                            onClick={(e) => {
+                                                /* this.handleAddToCart(e, product.id) */
+                                            }}
+                                            style={{display: this.injected.userStore.user ? 'inline' : 'none' }}>
+                                            Add to cart
+                                        </Button>
+                                    </CardActions>
+                                </Card>
                             </Grid>
                         )
 

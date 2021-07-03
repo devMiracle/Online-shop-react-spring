@@ -20,6 +20,7 @@ class ProductStore {
     @observable price: number = 0
     @observable categoryId: number | null = null
     @observable currentProductImage: string = ''
+
     // для фильтра и сортировки
     @observable orderBy: string = 'id'
     @observable sortingDirection: string = 'DESC'
@@ -474,6 +475,7 @@ class ProductStore {
             }, 3000)
         }
     }
+
 }
 export {ProductStore}
 export default new ProductStore()
