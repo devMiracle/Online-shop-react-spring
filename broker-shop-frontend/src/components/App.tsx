@@ -35,7 +35,6 @@ interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     commonStore: CommonStore,
     routerStore: RouterStore,
     userStore: UserStore
-
 }
 interface IState {}
 const styles = (theme: Theme) => createStyles({
