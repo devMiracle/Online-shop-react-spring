@@ -228,6 +228,8 @@ class ProductStore {
                 if (responseModel.status === 'success') {
                     // сохранение минимума и максимума цены
                     // в наблюдаемых свойствах
+
+
                     this.priceFromBound = responseModel.data.min
                     this.priceToBound = responseModel.data.max
                     // если разрешено применение граничных значений цены

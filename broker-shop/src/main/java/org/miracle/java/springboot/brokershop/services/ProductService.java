@@ -13,7 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,6 +60,27 @@ public class ProductService implements IProductService {
                     .build();
         }
     }
+
+    public ResponseModel getProductsPriceBounds() {
+        Map<String, Integer> maxAndMin = new LinkedHashMap<>();
+        maxAndMin.put("min", productDao.findMinimum().intValue());
+        maxAndMin.put("max", productDao.findTop1ByOrderByPriceDesc().getPrice().intValue());
+        return ResponseModel.builder()
+                .status(ResponseModel.SUCCESS_STATUS)
+                .data(maxAndMin)
+                .build();
+    }
+
+    public ResponseModel getProductsQuantityBounds() {
+        Map<String, Integer> maxAndMin = new LinkedHashMap<>();
+        maxAndMin.put("min", productDao.findTop1ByOrderByQuantityAsc().getQuantity());
+        maxAndMin.put("max", productDao.findTop1ByOrderByQuantityDesc().getQuantity());
+        return ResponseModel.builder()
+                .status(ResponseModel.SUCCESS_STATUS)
+                .data(maxAndMin)
+                .build();
+    }
+
 
     @Override
     public ResponseModel update(ProductModel productModel) {

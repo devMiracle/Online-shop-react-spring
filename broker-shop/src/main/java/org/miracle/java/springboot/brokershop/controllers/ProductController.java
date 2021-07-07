@@ -33,6 +33,22 @@ public class ProductController {
         return new ResponseEntity<>(service.create(product), HttpStatus. CREATED);
     }
 
+    @GetMapping("/products/price-bounds")
+    public ResponseEntity<ResponseModel> getProductsPriceBounds() {
+        return new ResponseEntity<>(
+                service.getProductsPriceBounds(),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/products/quantity-bounds")
+    public ResponseEntity<ResponseModel> getProductsQuantityBounds() {
+        return new ResponseEntity<>(
+                service.getProductsQuantityBounds(),
+                HttpStatus.OK
+        );
+    }
+
     @PatchMapping(value = "/products/{id}")
     public ResponseEntity<ResponseModel> update(@PathVariable Long id, @RequestBody ProductModel product) {
         product.setId(id);

@@ -50,8 +50,9 @@ const styles = (theme: Theme) =>
             height: 300
         },
         filterButton: {
-            position: 'fixed',
-            top: 75,
+            position: 'sticky',
+            marginTop: 20,
+            top: '8%',
             left: 10,
             zIndex: 999,
             backgroundColor: '#ee6e73'
@@ -104,6 +105,8 @@ class Shopping extends Component<IProps, IState> {
         // просим у локального хранилища загрузить
         // список моделей категорий и границы цен и количств товаров
         this.injected.categoryStore.fetchCategories()
+        // this.injected.productStore.fetchFilteredProducts()
+
         this.injected.productStore.fetchProductPriceBounds()
         this.injected.productStore.fetchProductQuantityBounds()
     }

@@ -91,6 +91,9 @@ class App extends React.Component<IProps, IState> {
                 <div>number: +3800-000-0000</div>
                 <div>number: +3800-000-0000</div>
                 <div>number: +3800-000-0000</div>
+                <div>number: +3800-000-0000</div>
+                <div>number: +3800-000-0000</div>
+                <div>number: +3800-000-0000</div>
                 {/* панель приложения, "приклееная" к верхней части страницы */}
                 <AppBar position='sticky' className={classes.navBar}>
                     <Toolbar>
