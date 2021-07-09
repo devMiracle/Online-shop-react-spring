@@ -2,18 +2,22 @@ import React from 'react'
 import {Router, Route} from 'react-router-dom'
 import {CommonStore} from '../stores/CommonStore'
 import {RouterStore} from '../stores/RouterStore'
-
-
 import {UserStore} from '../stores/UserStore'
-
+import {CartStore} from '../stores/CartStore'
+import {
+    Close as CloseIcon,
+    ExposurePlus1 as ExposurePlus1Icon,
+    ExposureNeg1 as ExposureNeg1Icon,
+    Clear as ClearIcon
+} from '@material-ui/icons'
 
 import {inject, observer} from "mobx-react"
-
+import {Alert, Color} from "@material-ui/lab"
 import {
-    AppBar,
-    Modal,
+    AppBar, Button, CircularProgress,
     Container,
-    createStyles,
+    createStyles, Grid, IconButton,
+    Modal, Snackbar,
     Theme,
     Toolbar,
     Typography,
@@ -34,25 +38,35 @@ interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     // переданные не явно (например, внедрением зависимости при помощи декораторов)
     commonStore: CommonStore,
     routerStore: RouterStore,
-    userStore: UserStore
+    userStore: UserStore,
+    cartStore: CartStore
 }
-interface IState {}
+interface IState {
+    snackBarVisibility: boolean,
+    snackBarText: string,
+    snackBarSeverity: Color
+}
+
+
 const styles = (theme: Theme) => createStyles({
+    // объявление пользовательского класса стиля
+    // (для корневого компонента разметки текущего компонента)
     root: {
-        flexGrow: 1
+        // атрибут класса стиля
+        flexGrow: 1,
     },
     container: {
         maxWidth: '970px',
-        '& .page': {
+        '& .page' : {
             position: 'static'
         }
     },
     navBar: {
         color: '#fff',
-        backgroundColor: '#f4d4d4'
+        backgroundColor: '#ee6e73',
     },
     title: {
-        flexGrow: 1
+        flexGrow: 1,
     },
     modal: {
         display: 'flex',
@@ -64,9 +78,23 @@ const styles = (theme: Theme) => createStyles({
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+    },
+    cartModalContent: {
+        backgroundColor: theme.palette.background.paper,
+        borderHistory: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+    },
+    closeButton: {
+        cursor:'pointer',
+        float:'right',
+        marginTop: '-80px',
+        marginRight: '-25px',
     }
 })
-@inject('commonStore', 'routerStore', 'userStore')
+
+
+@inject('commonStore', 'routerStore', 'userStore', 'cartStore')
 @observer
 class App extends React.Component<IProps, IState> {
     // Геттер свойства, который подводит фактически полученные props
@@ -75,8 +103,49 @@ class App extends React.Component<IProps, IState> {
         return this.props as IInjectedProps
     }
 
+
+    constructor(props: IProps) {
+        super(props)
+        this.state = {
+            snackBarVisibility: false,
+            snackBarText: '',
+            snackBarSeverity: 'success'
+        }
+    }
+
     handleErrorModalClose = (e: React.KeyboardEvent | React.MouseEvent) => {
         this.injected.commonStore.setError('')
+    }
+
+
+
+    handleCartItemPlus = (e: React.MouseEvent, productId: number) => {
+        this.injected.cartStore.addToCart(productId, () => {
+            this.setState({snackBarText: 'One product added to the cart'})
+            this.setState({snackBarSeverity: 'success'})
+            this.setState({snackBarVisibility: true})
+        })
+    }
+
+    handleCartItemNeg = (e: React.MouseEvent, productId: number) => {
+        this.injected.cartStore.subtractFromCart(productId, () => {
+            this.setState({snackBarText: 'One product was subtracted from the cart'})
+            this.setState({snackBarSeverity: 'success'})
+            this.setState({snackBarVisibility: true})
+        })
+    }
+
+
+    handleCartModalClose = (e: React.MouseEvent) => {
+        this.injected.cartStore.setCartVisibility(false)
+    }
+
+    handleSnackBarClose = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({snackBarVisibility: false})
+        this.setState({snackBarSeverity: 'success'})
     }
 
     componentDidMount() {
@@ -85,6 +154,7 @@ class App extends React.Component<IProps, IState> {
 
     render() {
     const {classes, routerStore} = this.injected
+    const progress = (this.injected.commonStore.loading ? <CircularProgress/> : '')
     return (
         <Router history={history}>
             <div className={classes.root}>
@@ -137,6 +207,92 @@ class App extends React.Component<IProps, IState> {
                         {this.injected.commonStore.error}
                     </div>
                 </Modal>
+                <Modal
+                    open={ this.injected.cartStore.cartShown }
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    className={classes.modal}
+                >
+                    <div className={classes.cartModalContent}>
+                        <div id="simple-modal-title">
+                            <h2>Shopping Cart</h2>
+                            <IconButton
+                                onClick={this.handleCartModalClose}
+                                className={classes.closeButton}>
+                                <CloseIcon/>
+                            </IconButton>
+                        </div>
+                        <div id="simple-modal-description">
+                            {this.injected.cartStore.cartItemsCount > 0 ? (
+                                <table className="table">
+                                    <thead>
+                                    <tr>
+                                        <th>name</th>
+                                        <th>price</th>
+                                        <th>quantity</th>
+                                        <th>total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {this.injected.cartStore.cartItems.map(item => {
+                                        return (
+                                            <tr key={item.productId}>
+                                                <th scope="row">{item.name}</th>
+                                                <td>{item.price}</td>
+                                                <td>{item.quantity}</td>
+                                                <td>{(item.price * item.quantity).toFixed(2)}</td>
+                                                <td>
+                                                    <Grid container spacing={1}>
+                                                        <Grid item xs={3} >
+                                                            <Button
+                                                                onClick={(e) => {
+                                                                    this.handleCartItemPlus(e, item.productId)
+                                                                }}>
+                                                                <ExposurePlus1Icon/>
+                                                            </Button>
+                                                        </Grid>
+                                                        <Grid item xs={3} >
+                                                            <Button
+                                                                onClick={(e) => {
+                                                                    this.handleCartItemNeg(e, item.productId)
+                                                                }}>
+                                                                <ExposureNeg1Icon/>
+                                                            </Button>
+                                                        </Grid>
+                                                        <Grid item xs={3} >
+                                                            <Button
+                                                                onClick={(e) => {
+                                                                    // this.handleCartItemRemove(e, item.productId)
+                                                                }}>
+                                                                <ClearIcon/>
+                                                            </Button>
+                                                        </Grid>
+                                                    </Grid>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <span>Your cart is empty</span>
+                            )}
+                            {/* Обычная html-гиперссылка для того, чтобы запрос на сервер
+                             был выполнен синхронно, и ответ (перенаправление) ожидал не
+                              код фронтенда (функция fetch), а сам браузер */}
+                            {/*<a href={`${this.injected.commonStore.basename}/cart/pay`}>Purchase</a>*/}
+                            <br/>КУПИТЬ
+                        </div>
+                    </div>
+                </Modal>
+                <Snackbar
+                    open={this.state.snackBarVisibility}
+                    autoHideDuration={6000} onClose={this.handleSnackBarClose}>
+                    <Alert onClose={this.handleSnackBarClose} severity={this.state.snackBarSeverity}>
+                        {this.state.snackBarText}
+                    </Alert>
+                </Snackbar>
+                {progress}
             </div>
         </Router>
     )
