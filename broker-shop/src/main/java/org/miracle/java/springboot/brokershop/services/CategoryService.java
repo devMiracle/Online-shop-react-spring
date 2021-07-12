@@ -55,6 +55,7 @@ public class CategoryService implements ICategoryService {
                                 CategoryModel.builder()
                                         .id(c.getId())
                                         .name(c.getName())
+                                        .image(c.getImage())
                                         .build()
                         )
                         .collect(Collectors.toList());

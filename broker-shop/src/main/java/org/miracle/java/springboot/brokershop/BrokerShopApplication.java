@@ -44,6 +44,20 @@ public class BrokerShopApplication {
 	@Value("${cake.image.three}")
 	private String cake3ImageString;
 
+	@Value("${cake.category.image.1}")
+	private String cake1CategoryImageString;
+	@Value("${cake.category.image.2}")
+	private String cake2CategoryImageString;
+	@Value("${cake.category.image.3}")
+	private String cake3CategoryImageString;
+	@Value("${cake.category.image.4}")
+	private String cake4CategoryImageString;
+	@Value("${cake.category.image.5}")
+	private String cake5CategoryImageString;
+	@Value("${cake.category.image.6}")
+	private String cake6CategoryImageString;
+
+
 
 	@Value("${tests.unit.strings.image-base64-msft}")
 	private String msftImageString;
@@ -99,12 +113,31 @@ public class BrokerShopApplication {
 							.role(userRole)
 							.build()
 			);
-			Category category1 = Category.builder().name("детские").build();
-			Category category2 = Category.builder().name("праздничные").build();
-			Category category3 = Category.builder().name("свадебные").build();
-			Category category4 = Category.builder().name("корпоратив").build();
-			Category category5 = Category.builder().name("тематические").build();
-			Category category6 = Category.builder().name("креативные").build();
+			Category category1 = Category.builder()
+					.name("детские")
+					.image(cake1CategoryImageString)
+					.build();
+			Category category2 = Category.builder()
+					.name("праздничные")
+					.image(cake2CategoryImageString)
+					.build();
+			Category category3 = Category.builder()
+					.name("свадебные")
+					.image(cake3CategoryImageString)
+					.build();
+			Category category4 = Category.builder()
+					.name("корпоратив")
+					.image(cake4CategoryImageString)
+					.build();
+			Category category5 = Category.builder()
+					.name("тематические")
+					.image(cake5CategoryImageString)
+					.build();
+			Category category6 = Category.builder()
+					.name("креативные")
+					.image(cake6CategoryImageString)
+					.build();
+
 			categoryDao.save(category1);
 			categoryDao.save(category2);
 			categoryDao.save(category3);

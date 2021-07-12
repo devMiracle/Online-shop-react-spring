@@ -109,27 +109,27 @@ public class CategoryServiceTest {
                 .save(categoryArgument.capture());
     }
 
-    @Test
-    void givenСategoryServiceMockWhenCallGetAllMethodThenReturnSuccessResponseModel () {
-        // Обучаем макет:
-        // вернуть что? - результат, равный ...
-        doReturn(
-                ResponseModel.builder()
-                        .status(ResponseModel.SUCCESS_STATUS)
-                        .data(Arrays.asList(
-                                new CategoryModel(1L, "c1"),
-                                new CategoryModel(2L, "c2"),
-                                new CategoryModel(3L, "c3"))
-                        ).build()
-        ).when(categoryServiceMock) // откуда? - из объекта categoryServiceMock - макета службы
-                .getAll(); // как результат вызова какого метода? - getAll
-        // вызов настроенного выше метода макета, созданного по интерфейсу
-        ResponseModel responseModel =
-                categoryServiceMock.getAll();
-        assertNotNull(responseModel);
-        assertNotNull(responseModel.getData());
-        assertEquals(((List)responseModel.getData()).size(), 3);
-    }
+//    @Test
+//    void givenСategoryServiceMockWhenCallGetAllMethodThenReturnSuccessResponseModel () {
+//        // Обучаем макет:
+//        // вернуть что? - результат, равный ...
+//        doReturn(
+//                ResponseModel.builder()
+//                        .status(ResponseModel.SUCCESS_STATUS)
+//                        .data(Arrays.asList(
+//                                new CategoryModel(1L, "c1"),
+//                                new CategoryModel(2L, "c2"),
+//                                new CategoryModel(3L, "c3"))
+//                        ).build()
+//        ).when(categoryServiceMock) // откуда? - из объекта categoryServiceMock - макета службы
+//                .getAll(); // как результат вызова какого метода? - getAll
+//        // вызов настроенного выше метода макета, созданного по интерфейсу
+//        ResponseModel responseModel =
+//                categoryServiceMock.getAll();
+//        assertNotNull(responseModel);
+//        assertNotNull(responseModel.getData());
+//        assertEquals(((List)responseModel.getData()).size(), 3);
+//    }
 
     @Test
     void givenCategoryServiceMockAndTooLongCategoryNameWhenCallCreateMethodThenThrowIllegalArgumentException () {
