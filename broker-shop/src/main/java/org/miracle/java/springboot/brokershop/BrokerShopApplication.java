@@ -99,12 +99,18 @@ public class BrokerShopApplication {
 							.role(userRole)
 							.build()
 			);
-			Category bananaFilling = Category.builder().name("banana-filling").build();
-			Category strawberryFilling = Category.builder().name("strawberry-filling").build();
-			Category chocolateFilling = Category.builder().name("chocolate-filling").build();
-			categoryDao.save(bananaFilling);
-			categoryDao.save(strawberryFilling);
-			categoryDao.save(chocolateFilling);
+			Category category1 = Category.builder().name("детские").build();
+			Category category2 = Category.builder().name("праздничные").build();
+			Category category3 = Category.builder().name("свадебные").build();
+			Category category4 = Category.builder().name("корпоратив").build();
+			Category category5 = Category.builder().name("тематические").build();
+			Category category6 = Category.builder().name("креативные").build();
+			categoryDao.save(category1);
+			categoryDao.save(category2);
+			categoryDao.save(category3);
+			categoryDao.save(category4);
+			categoryDao.save(category5);
+			categoryDao.save(category6);
 
 			Product stockMSFTProduct =
 					Product.builder()
@@ -112,7 +118,7 @@ public class BrokerShopApplication {
 							.description("Описание")
 							.price(new BigDecimal(203.92))
 							.quantity(2)
-							.category(bananaFilling)
+							.category(category1)
 							.image(cake1ImageString)
 							.build();
 			Product stockORCLProduct =
@@ -121,7 +127,7 @@ public class BrokerShopApplication {
 							.description("Описание")
 							.price(new BigDecimal(55.82))
 							.quantity(4)
-							.category(strawberryFilling)
+							.category(category2)
 							.image(cake2ImageString)
 							.build();
 			Product stockORCLProduct2 =
@@ -130,7 +136,7 @@ public class BrokerShopApplication {
 							.description("Описание")
 							.price(new BigDecimal(56.12))
 							.quantity(5)
-							.category(chocolateFilling)
+							.category(category3)
 							.image(cake3ImageString)
 							.build();
 //			Product cryptoEthereumProduct =

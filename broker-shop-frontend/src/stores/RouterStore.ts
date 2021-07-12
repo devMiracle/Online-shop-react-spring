@@ -10,16 +10,21 @@ import SignUp from "../components/pages/SignUp"
 import DashboardCategories from "../components/pages/admin/DashboardCategories"
 import DashboardProducts from "../components/pages/admin/DashboardProducts"
 import Dashboard from "../components/pages/admin/Dashboard"
+import Categories from "../components/pages/Categories";
+import Sections from "../components/pages/Sections";
+import Order from "../components/pages/Order";
 
 class RouterStore {
 
     // список моделей роутов для гостя
     private anonymousRoutes: Array<RouteModel> = [
-        { path: '/', name: 'Home', Component: Home },
-        { path: '/shopping', name: '', Component: Shopping },
-        { path: '/about', name: 'About', Component: About },
-        { path: '/signin', name: 'Log In', Component: SignIn },
-        { path: '/signup', name: 'Registration', Component: SignUp }
+        { path: '/', name: 'КАТЕГОРИИ', Component: Categories },
+        { path: '/sections', name: 'РАЗРЕЗЫ', Component: Sections },
+        { path: '/order', name: 'ЗАКАЗАТЬ', Component: Order },
+        { path: '/shopping', name: 'Shopping', Component: Shopping },
+        // { path: '/about', name: 'About', Component: About },
+        // { path: '/signin', name: 'Log In', Component: SignIn },
+        // { path: '/signup', name: 'Registration', Component: SignUp }
     ]
 
     // список моделей роутов для аунтентифицированного пользователя
@@ -27,7 +32,7 @@ class RouterStore {
         { path: '/', name: 'Home', Component: Home },
         { path: '/shopping', name: 'Shopping', Component: Shopping },
         { path: '/about', name: 'About', Component: About },
-        { path: '/auth:out', name: 'Log Out', Component: Home }
+        { path: '/auth:out', name: 'Log Out', Component: Categories }
     ]
 
 
@@ -39,7 +44,7 @@ class RouterStore {
         { path: '/admin', name: 'Dashboard' , Component: Dashboard },
         { path: '/admin/categories', name: 'DashboardCategories' , Component: DashboardCategories },
         { path: '/admin/products', name: 'DashboardProducts' , Component: DashboardProducts },
-        { path: '/auth:out', name: 'Log Out', Component: Home }
+        { path: '/auth:out', name: 'Log Out', Component: Categories }
     ]
 
     // наблюдаемый текущий список роутов

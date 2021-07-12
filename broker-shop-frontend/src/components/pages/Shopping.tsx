@@ -242,6 +242,7 @@ class Shopping extends Component<IProps, IState> {
                 </Button>
                 {/* drawer */}
                 <Drawer
+                    anchor={'top'}
                     open={ this.state.sidePanelVisibility }
                     onClose={this.toggleDrawer(false)}
                     className={classes.drawer}
