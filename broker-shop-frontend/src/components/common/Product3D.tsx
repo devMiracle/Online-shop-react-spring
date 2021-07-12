@@ -25,12 +25,14 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class Product3D extends Component<IProps, IState> {
+
     constructor(props: IProps) {
         super(props);
         this.state = {
         }
 
     }
+
     get injected () {
         // по факту все внешние параметры содержатся в this.props,
         // но для доступа к неявно переданным из них
@@ -39,9 +41,8 @@ class Product3D extends Component<IProps, IState> {
     }
 
     componentDidMount() {
+
     }
-
-
 
     render() {
         // const { classes } = this.injected

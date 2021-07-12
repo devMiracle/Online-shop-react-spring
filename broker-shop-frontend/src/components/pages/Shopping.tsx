@@ -46,6 +46,7 @@ interface IState {
 const styles = (theme: Theme) =>
     createStyles({
         productCard: {
+            margin: '15px 0',
             maxWidth: 300
         },
         productCardImage: {
@@ -53,7 +54,7 @@ const styles = (theme: Theme) =>
         },
         filterButton: {
             position: 'sticky',
-            marginTop: 20,
+            margin: '20px 0',
             top: '8%',
             left: 10,
             zIndex: 999,
@@ -236,7 +237,7 @@ class Shopping extends Component<IProps, IState> {
                     className={classes.filterButton}
                     onClick={this.handleTogglePanelButton}
                 >
-                    Filter
+                    Фильтры
                     <FilterIcon/>
                 </Button>
                 {/* drawer */}
@@ -384,15 +385,26 @@ class Shopping extends Component<IProps, IState> {
                         </AccordionDetails>
                     </Accordion>
                 </Drawer>
-                <Grid container>
+                <Grid
+                    container
+                    direction={'row'}
+                    justify={'center'}
+                    alignItems={'center'}
+                >
                     {products.map(product => {
                         return (
-                            <Grid item
+                            <Grid
+                                container
+                                direction={'row'}
+                                justify={'center'}
+                                alignItems={'center'}
+                                item
                                   xs={12}
-                                  sm={12}
+                                  sm={6}
                                   md={6}
                                   lg={4}
-                                  xl={3}
+                                  xl={4}
+                                spacing={0}
                             >
                                 <Card className={classes.productCard}>
                                     <CardActionArea>
@@ -403,7 +415,7 @@ class Shopping extends Component<IProps, IState> {
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                {product.title} - <strong>${product.price}</strong>
+                                                {product.title} - <strong>{product.price} грн.</strong>
                                             </Typography>
                                             <Typography variant="body2" color="textSecondary" component="p">
                                                 {product.description}

@@ -24,10 +24,11 @@ import {
     withStyles,
     WithStyles
 } from "@material-ui/core"
-
+import CakeIcon from '@material-ui/icons/Cake';
 import history from "../history"
 import {CSSTransition} from "react-transition-group";
 import AppBarCollapse from "./common/AppBarCollapse";
+import FooterElement from "./common/FooterElement";
 
 interface IProps {
     // Перечисляются все внешние параметры (свойства)
@@ -54,19 +55,45 @@ const styles = (theme: Theme) => createStyles({
     root: {
         // атрибут класса стиля
         flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        // overflow: 'hidden',
+
     },
+    header: {
+
+    },
+    main: {
+        flex: '1 0 auto'
+    },
+
     container: {
+        // maxWidth: '1200px',
+        // width: '1200px',
+        padding: '0',
+        // margin: '0 auto',
+        backgroundColor: 'gray',
+
+
         maxWidth: '970px',
         '& .page' : {
             position: 'static'
         }
     },
     navBar: {
-        color: '#fff',
-        backgroundColor: '#ee6e73',
+
+        color: '#424242',
+        backgroundColor: '#fff',
+
+
+    },
+    toolBar: {
+        display: 'flex',
     },
     title: {
         flexGrow: 1,
+        marginLeft: '10px'
     },
     modal: {
         display: 'flex',
@@ -90,6 +117,24 @@ const styles = (theme: Theme) => createStyles({
         float:'right',
         marginTop: '-80px',
         marginRight: '-25px',
+    },
+    page: {
+        // display: 'flex',
+        // alignItems: 'center',
+        // justifyContent: 'center'
+
+    },
+    cakeIcon: {
+        border: '1px solid white',
+        backgroundColor : 'rgba(255,255,255,0.4)',
+        borderRadius: '50%',
+        width: '50px',
+        height: '50px',
+        margin: '5px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'black'
     }
 })
 
@@ -158,41 +203,51 @@ class App extends React.Component<IProps, IState> {
     return (
         <Router history={history}>
             <div className={classes.root}>
-                <div>number: +3800-000-0000</div>
-                <div>number: +3800-000-0000</div>
-                <div>number: +3800-000-0000</div>
-                <div>number: +3800-000-0000</div>
-                <div>number: +3800-000-0000</div>
-                <div>number: +3800-000-0000</div>
+                <div className={classes.header}>
+                    <div>number: +3800-000-0000</div>
+                    <div>number: +3800-000-0000</div>
+                    <div>number: +3800-000-0000</div>
+                    <div>number: +3800-000-0000</div>
+                    <div>number: +3800-000-0000</div>
+                    <div>number: +3800-000-0000</div>
+                </div>
                 {/* панель приложения, "приклееная" к верхней части страницы */}
                 <AppBar position='sticky' className={classes.navBar}>
-                    <Toolbar>
+                    <Toolbar className={classes.toolBar}>
+                        <div className={classes.cakeIcon}>
+                            <CakeIcon fontSize={'large'} />
+                        </div>
                         <Typography variant='h6' className={classes.title}>
-                            Mr.Pekar
+                            НАЗВАНИЕ
                         </Typography>
                         {/* панель навигации */}
                         <AppBarCollapse routes={routerStore.routes} />
                     </Toolbar>
                 </AppBar>
                 {/* область для вывода экземпляра текущего раздела веб-приложения */}
-                <Container maxWidth="sm" className={classes.container}>
-                    {this.injected.routerStore.routes.map(({ path, Component }) => (
-                        <Route key={path} exact path={path}>
-                            {({ match }) => (
-                                <CSSTransition
-                                    in={match != null}
-                                    timeout={300}
-                                    classNames='page'
-                                    unmountOnExit
-                                >
-                                    <div className='page'>
-                                        <Component />
-                                    </div>
-                                </CSSTransition>
-                            )}
-                        </Route>
-                    ))}
-                </Container>
+                <main className={classes.main}>
+                    <Container maxWidth="sm" className={classes.container}>
+                        {this.injected.routerStore.routes.map(({ path, Component }) => (
+                            <Route key={path} exact path={path}>
+                                {({ match }) => (
+                                    <CSSTransition
+                                        in={match != null}
+                                        timeout={0}
+                                        classNames='page'
+                                        unmountOnExit
+                                    >
+                                        <div className='page'>
+                                            <Component />
+                                        </div>
+                                    </CSSTransition>
+                                )}
+                            </Route>
+                        ))}
+                    </Container>
+                </main>
+                <footer /*className={classes.footer}*/>
+                    <FooterElement/>
+                </footer>
                 {/* Окно, которое появляется только при наличии содержательного значения
                 в наблюдаемом свойстве error */}
                 <Modal

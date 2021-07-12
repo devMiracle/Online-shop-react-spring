@@ -29,6 +29,7 @@ const styles = ((theme: Theme) => createStyles({
     root: {
         position: "absolute",
         right: 0,
+
     },
     buttonBar: {
         // если ширина экрана - мобильная или меньше
@@ -45,22 +46,28 @@ const styles = ((theme: Theme) => createStyles({
         display: "inline"
     },
     buttonBarItem: {
+        '&:hover': {
+            backgroundColor: 'rgba(0,181,140,0.4)',
+        },
         webkitTransition: 'background-color .3s',
         transition: 'background-color .3s',
         fontSize: '1rem',
-        color: '#fff',
+        color: '#424242',
         padding: '15px',
         cursor: 'pointer',
-        textDecoration: 'none'
+        textDecoration: 'none',
     },
+
     buttonBarItemActive: {
-        backgroundColor: '#ea454b',
+        backgroundColor: '#00b58c',
+
     },
     mobileButtonBarItem: {
         textDecoration: 'none',
+
     },
     mobileButtonBarItemActive: {
-        backgroundColor: '#ccc',
+        backgroundColor: '#00b58c',
     },
     shoppingCart: {
         marginRight: '10px'
@@ -140,7 +147,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                 <div className={classes.shoppingCart} style={{display: this.injected.userStore.user ? 'inline' : 'none' }}>
                     <ShoppingCartIcon
                         onClick={this.handleCartIconClick}
-                    /> {this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice})
+                    /> {this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.
                 </div>
             </div>
         )

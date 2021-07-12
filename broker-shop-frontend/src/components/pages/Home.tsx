@@ -1,24 +1,51 @@
-import React/*, { Component }*/ from 'react'
-// import Product3D from "../common/Product3D"
-// import React360 from "../common/React360"
+import React from 'react'
+import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
 
-/* class Home extends Component {
+
+
+interface IProps {
+
+}
+
+interface IInjectedProps extends IProps, WithStyles<typeof styles>{
+
+}
+
+
+
+interface IState {
+
+}
+
+const styles = (theme: Theme) => createStyles({
+    home: {
+
+    }
+})
+
+
+class Home extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props)
+        this.state = {
+
+        }
+    }
+
+
+
+    get injected () {
+        return this.props as IInjectedProps
+    }
+
     render () {
+        const { classes } = this.injected
         return (
-            <div>
+            <div className={classes.home}>
                 <h1>Home Page</h1>
             </div>
         )
     }
-} */
-function Home() {
-    return (
-        <div>
-            <h1>Home Page</h1>
-            {/*<Product3D/>*/}
-
-        </div>
-    )
 }
 
-export default Home
+export default withStyles(styles)(Home)

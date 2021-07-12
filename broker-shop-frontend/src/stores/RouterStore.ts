@@ -16,7 +16,7 @@ class RouterStore {
     // список моделей роутов для гостя
     private anonymousRoutes: Array<RouteModel> = [
         { path: '/', name: 'Home', Component: Home },
-        { path: '/shopping', name: 'Shopping', Component: Shopping },
+        { path: '/shopping', name: '', Component: Shopping },
         { path: '/about', name: 'About', Component: About },
         { path: '/signin', name: 'Log In', Component: SignIn },
         { path: '/signup', name: 'Registration', Component: SignUp }

@@ -31,6 +31,12 @@ const styles = (theme: Theme) => createStyles({
         },
         margin: "10px",
         boxShadow: "none"
+    },
+    menuIcon: {
+        '&:hover': {
+            backgroundColor: 'rgba(0,181,140,0.4)',
+        },
+        backgroundColor: '#00b58c'
     }
 })
 
@@ -65,7 +71,7 @@ class ButtonAppBarCollapse extends Component<IProps, IState> {
         const open = Boolean(anchorEl)
         return (
             <div className={classes.buttonCollapse}>
-                <IconButton onClick={this.handleMenu} edge='start' color='inherit' aria-label='menu'>
+                <IconButton onClick={this.handleMenu} edge='start' color='inherit' aria-label='menu' className={classes.menuIcon}>
                     <MenuIcon/>
                 </IconButton>
                 <Menu

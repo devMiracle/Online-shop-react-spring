@@ -37,6 +37,13 @@ public class BrokerShopApplication {
 
 
 	}
+	@Value("${cake.image.one}")
+	private String cake1ImageString;
+	@Value("${cake.image.two}")
+	private String cake2ImageString;
+	@Value("${cake.image.three}")
+	private String cake3ImageString;
+
 
 	@Value("${tests.unit.strings.image-base64-msft}")
 	private String msftImageString;
@@ -92,53 +99,53 @@ public class BrokerShopApplication {
 							.role(userRole)
 							.build()
 			);
-			Category stockCategory = Category.builder().name("stock").build();
-			Category cryptoCategory = Category.builder().name("crypto").build();
-			Category eMoneyCategory = Category.builder().name("e-money").build();
-			categoryDao.save(stockCategory);
-			categoryDao.save(cryptoCategory);
-			categoryDao.save(eMoneyCategory);
+			Category bananaFilling = Category.builder().name("banana-filling").build();
+			Category strawberryFilling = Category.builder().name("strawberry-filling").build();
+			Category chocolateFilling = Category.builder().name("chocolate-filling").build();
+			categoryDao.save(bananaFilling);
+			categoryDao.save(strawberryFilling);
+			categoryDao.save(chocolateFilling);
 
 			Product stockMSFTProduct =
 					Product.builder()
-							.name("MSFT")
-							.description("Microsoft Stock")
+							.name("Торт бочка с икрой")
+							.description("Описание")
 							.price(new BigDecimal(203.92))
-							.quantity(1000)
-							.category(stockCategory)
-							.image(msftImageString)
+							.quantity(2)
+							.category(bananaFilling)
+							.image(cake1ImageString)
 							.build();
 			Product stockORCLProduct =
 					Product.builder()
-							.name("ORCL")
-							.description("Oracle Stock")
+							.name("Торт бочка с икрой")
+							.description("Описание")
 							.price(new BigDecimal(55.82))
-							.quantity(2000)
-							.category(stockCategory)
-							.image(orclImageString)
+							.quantity(4)
+							.category(strawberryFilling)
+							.image(cake2ImageString)
 							.build();
 			Product stockORCLProduct2 =
 					Product.builder()
-							.name("ORCL")
-							.description("Oracle Stock")
+							.name("Торт книга с деньгами")
+							.description("Описание")
 							.price(new BigDecimal(56.12))
-							.quantity(1000)
-							.category(stockCategory)
-							.image(orclImageString)
+							.quantity(5)
+							.category(chocolateFilling)
+							.image(cake3ImageString)
 							.build();
-			Product cryptoEthereumProduct =
-					Product.builder()
-							.name("ETH")
-							.description("Ethereum Cryptocurrency")
-							.price(new BigDecimal(232.48))
-							.quantity(500)
-							.category(cryptoCategory)
-							.image(ethImageString)
-							.build();
+//			Product cryptoEthereumProduct =
+//					Product.builder()
+//							.name("ETH")
+//							.description("Ethereum Cryptocurrency")
+//							.price(new BigDecimal(232.48))
+//							.quantity(500)
+//							.category(cryptoCategory)
+//							.image(ethImageString)
+//							.build();
 			productDao.save(stockMSFTProduct);
 			productDao.save(stockORCLProduct);
 			productDao.save(stockORCLProduct2);
-			productDao.save(cryptoEthereumProduct);
+			// productDao.save(cryptoEthereumProduct);
 
 
 		};
