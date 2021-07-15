@@ -30,6 +30,12 @@ import {CSSTransition} from "react-transition-group";
 import AppBarCollapse from "./common/AppBarCollapse";
 import FooterElement from "./common/FooterElement";
 
+import {library} from '@fortawesome/fontawesome-svg-core'
+
+import {faPhone, faMapMarkerAlt, faEnvelope} from '@fortawesome/free-solid-svg-icons'
+
+library.add(faPhone, faMapMarkerAlt, faEnvelope)
+
 interface IProps {
     // Перечисляются все внешние параметры (свойства)
     // переданные явно из оъекта родительского компонента
@@ -62,7 +68,7 @@ const styles = (theme: Theme) => createStyles({
 
     },
     header: {
-
+        backgroundColor: '#fcf7f1',
     },
     main: {
         flex: '1 0 auto'
@@ -73,7 +79,7 @@ const styles = (theme: Theme) => createStyles({
         // width: '1200px',
         padding: '0',
         // margin: '0 auto',
-        backgroundColor: 'gray',
+        // backgroundColor: 'gray',
 
 
         maxWidth: '970px',
@@ -218,7 +224,7 @@ class App extends React.Component<IProps, IState> {
                             <CakeIcon fontSize={'large'} />
                         </div>
                         <Typography variant='h6' className={classes.title}>
-                            НАЗВАНИЕ
+                            Тортодельня
                         </Typography>
                         {/* панель навигации */}
                         <AppBarCollapse routes={routerStore.routes} />

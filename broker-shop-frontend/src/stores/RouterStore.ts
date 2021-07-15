@@ -13,12 +13,14 @@ import Dashboard from "../components/pages/admin/Dashboard"
 import Categories from "../components/pages/Categories";
 import Sections from "../components/pages/Sections";
 import Order from "../components/pages/Order";
+import TestComponent from '../components/pages/TestComponent'
 
 class RouterStore {
 
     // список моделей роутов для гостя
     private anonymousRoutes: Array<RouteModel> = [
         { path: '/', name: 'КАТЕГОРИИ', Component: Categories },
+        { path: 'test', name: 'TEST', Component: TestComponent },
         { path: '/sections', name: 'РАЗРЕЗЫ', Component: Sections },
         { path: '/order', name: 'ЗАКАЗАТЬ', Component: Order },
         { path: '/shopping', name: 'Shopping', Component: Shopping },
