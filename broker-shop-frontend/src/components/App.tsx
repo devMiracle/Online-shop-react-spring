@@ -31,10 +31,10 @@ import AppBarCollapse from "./common/AppBarCollapse";
 import FooterElement from "./common/FooterElement";
 
 import {library} from '@fortawesome/fontawesome-svg-core'
+import {faInstagram} from '@fortawesome/free-brands-svg-icons'
+import {faPhone, faMapMarkerAlt, faEnvelope,} from '@fortawesome/free-solid-svg-icons'
 
-import {faPhone, faMapMarkerAlt, faEnvelope} from '@fortawesome/free-solid-svg-icons'
-
-library.add(faPhone, faMapMarkerAlt, faEnvelope)
+library.add(faInstagram, faPhone, faMapMarkerAlt, faEnvelope)
 
 interface IProps {
     // Перечисляются все внешние параметры (свойства)
