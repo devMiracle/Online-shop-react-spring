@@ -19,7 +19,7 @@ const styles = (theme: Theme) => createStyles({
 
 
 
-class Order extends React.Component<IProps, IState> {
+class Return extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
@@ -39,11 +39,11 @@ class Order extends React.Component<IProps, IState> {
         const { classes } = this.injected
         return (
             <div>
-                <div>заказать</div>
+                <div>ВОЗВРАТ</div>
 
             </div>
         )
     }
 }
 
-export default withStyles(styles)(Order)
+export default withStyles(styles)(Return)

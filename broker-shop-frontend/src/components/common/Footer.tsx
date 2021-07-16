@@ -1,6 +1,6 @@
 import React from 'react'
 import {createStyles, Grid, Theme, WithStyles, withStyles} from '@material-ui/core'
-import {Route} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 import imageFooter from '../../images/footer.jpg'
 import Confidentiality from '../pages/Confidentiality'
@@ -28,8 +28,6 @@ const styles = (theme: Theme) => createStyles({
     footerImageStyle: {
         background: `url(${imageFooter}) no-repeat center 50px;`,
         position: 'absolute',
-        // top: 0,
-        // right: 0,
         bottom: 0,
         left: 0,
         width: '100%',
@@ -62,7 +60,6 @@ const styles = (theme: Theme) => createStyles({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-
     },
     content: {
         width: '100%',
@@ -75,22 +72,14 @@ const styles = (theme: Theme) => createStyles({
     gridItem: {
         display: 'flex',
         alignItems: 'center',
-        // justifyContent: 'center',
         flexDirection: 'column',
         width: 240,
         paddingBottom: 30
     },
     gridContainer: {
-        // display: 'flex',
-        // justifyContent: 'space-between',
     },
     map: {
         maxWidth: '240px',
-        // border: '1px solid #000',
-        // '& iframe': {
-        //     width: '99%',
-        //     height: '99%',
-        // },
     },
     lineTitle: {
         borderTop: '1px dashed #109fcb',
@@ -102,7 +91,6 @@ const styles = (theme: Theme) => createStyles({
         fontSize: 16,
     },
     phoneNumberContainer: {
-
         display: 'flex',
         '& a': {
             textDecoration: 'none',
@@ -164,8 +152,8 @@ const styles = (theme: Theme) => createStyles({
     },
     lineSmall: {
      borderTop: '2px dashed #a7a7a7',
-        maxWidth: '220px',
-        width: '220px',
+        maxWidth: '180px',
+        width: '180px',
         margin: '10px 0',
     },
     icon: {
@@ -193,25 +181,22 @@ const styles = (theme: Theme) => createStyles({
     textRules: {
         display: 'flex',
         flexDirection: 'column',
-        '& div': {
+        '& a': {
             marginBottom: '10px',
             transition: 'all .3s ease',
-        },
-        '& div a': {
             textDecoration: 'none',
             color: '#039be6',
         },
-
-
-        '& div:hover': {
+        '& a:hover': {
             transform: 'scaleX(.96)',
         },
-
     },
     aSocietyIcons: {
         transition: 'all .3s ease',
         '&:hover': {
             transform: 'scale(.96)',
+            borderColor: '#039be6',
+            borderStyle: 'solid',
         },
         border: '1px dashed #a7a7a7',
         borderRadius: '50%',
@@ -222,11 +207,15 @@ const styles = (theme: Theme) => createStyles({
         alignItems: 'center',
         color: '#2f2f2f',
         backgroundColor: '#fcf7f1',
-        marginBottom: '10px',
+        margin: '0 0 10px 10px',
         '& *': {
             width: '30px !important',
             height: '30px !important',
         },
+
+    },
+    aSocietyIconsContainer: {
+        display: 'flex',
 
     },
 
@@ -356,9 +345,11 @@ class Footer extends React.Component<IProps, IState> {
                             >
                                 <h6 className={classes.h6}>СОЦСЕТИ</h6>
                                 <div className={classes.lineTitle}/>
-                                <a className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={instagram}/></a>
-                                <a className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={facebook}/></a>
-                                <a className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={vk}/></a>
+                                <div className={classes.aSocietyIconsContainer}>
+                                    <a target="_blank" className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={instagram}/></a>
+                                    <a target="_blank" className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={facebook}/></a>
+                                    <a target="_blank" className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={vk}/></a>
+                                </div>
                             </Grid>
                             <Grid
                                 item
@@ -371,9 +362,21 @@ class Footer extends React.Component<IProps, IState> {
                                 <h6 className={classes.h6}>ПРАВИЛА</h6>
                                 <div className={classes.lineTitle}/>
                                 <div className={classes.textRules}>
-<div><a href="/confidentiality">Конфиденциальность</a></div>
-                                    <div><a href="/order">Как заказать?</a></div>
-                                    <div><a href="/return">Возврат</a></div>
+                                    <NavLink
+                                        to={'/confidentiality'}
+                                    >
+                                        Конфиденциальность
+                                    </NavLink>
+                                    <NavLink
+                                        to={'/order'}
+                                    >
+                                        Как заказать?
+                                    </NavLink>
+                                    <NavLink
+                                        to={'/return'}
+                                    >
+                                        Возврат
+                                    </NavLink>
                                 </div>
                             </Grid>
 

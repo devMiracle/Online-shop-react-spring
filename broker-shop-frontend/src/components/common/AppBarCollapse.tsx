@@ -47,21 +47,22 @@ const styles = ((theme: Theme) => createStyles({
     },
     buttonBarItem: {
         '&:hover': {
-            backgroundColor: 'rgba(0,181,140,0.4)',
+            color: '#039be6',
         },
         webkitTransition: 'background-color .3s',
         transition: 'background-color .3s',
         fontSize: '1rem',
-        color: '#424242',
+        color: '#a6a6a6',
         padding: '15px',
         cursor: 'pointer',
         textDecoration: 'none',
     },
-
     buttonBarItemActive: {
-        backgroundColor: '#00b58c',
+        backgroundColor: '#fff',
+        color: '#424242'
 
     },
+
     mobileButtonBarItem: {
         textDecoration: 'none',
 
@@ -69,6 +70,7 @@ const styles = ((theme: Theme) => createStyles({
     mobileButtonBarItemActive: {
         backgroundColor: '#00b58c',
     },
+
     shoppingCart: {
         marginRight: '10px'
     }
@@ -104,40 +106,45 @@ class AppBarCollapse extends Component<IProps, IState> {
                         // в стандартный внешний параметр children -
                         // - представление списка пунктов меню
                         routes.map(route => {
-                            if (!/^Dashboard[A-z]+$/.test(route.name)) {
-                                return <MenuItem key={route.path}>
-                                    <NavLink
-                                        to={route.path}
-                                        className={classes.mobileButtonBarItem}
-                                        activeClassName={classes.mobileButtonBarItemActive}
-                                        exact>
-                                        {route.name}
-                                    </NavLink>
-                                </MenuItem>
-                            } else {
-                                return ''
+                            if (route.visible) {
+                                if (!/^Dashboard[A-z]+$/.test(route.name)) {
+                                    return <MenuItem key={route.path}>
+                                        <NavLink
+                                            to={route.path}
+                                            className={classes.mobileButtonBarItem}
+                                            activeClassName={classes.mobileButtonBarItemActive}
+                                            exact>
+                                            {route.name}
+                                        </NavLink>
+                                    </MenuItem>
+                                } else {
+                                    return ''
+                                }
                             }
-
                         })}
                 </ButtonAppBarCollapse>
                 {/* настольное меню */}
                 <div className={classes.buttonBar} id="appbar-collapse">
                     {routes.map(route => {
-                        if (!/^Dashboard[A-z]+$/.test(route.name)) {
-                            return <NavLink
-                                key={route.path}
-                                to={route.path}
-                                // можно указать в двойных кавычках имя
-                                // класса стиля, описанного в css
-                                className={classes.buttonBarItem}
-                                // , а в данном случае создается экранирование
-                                // фигурными скобками, и внутри него
-                                // указывается имя класса стиля,
-                                // определенного в константе styles
-                                activeClassName={classes.buttonBarItemActive}
-                                exact>
-                                {route.name}
-                            </NavLink>
+                        if (route.visible) {
+                            if (!/^Dashboard[A-z]+$/.test(route.name)) {
+                                return <NavLink
+                                    key={route.path}
+                                    to={route.path}
+                                    // можно указать в двойных кавычках имя
+                                    // класса стиля, описанного в css
+                                    className={classes.buttonBarItem}
+                                    // , а в данном случае создается экранирование
+                                    // фигурными скобками, и внутри него
+                                    // указывается имя класса стиля,
+                                    // определенного в константе styles
+                                    activeClassName={classes.buttonBarItemActive}
+                                    exact>
+                                    {route.name.toUpperCase()}
+                                </NavLink>
+                            } else {
+                                return ''
+                            }
                         } else {
                             return ''
                         }

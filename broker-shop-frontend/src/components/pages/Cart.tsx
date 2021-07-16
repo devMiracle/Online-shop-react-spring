@@ -1,5 +1,5 @@
 import React from 'react'
-import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
+import {createStyles, Grid, Theme, WithStyles, withStyles} from '@material-ui/core'
 
 interface IProps {
 
@@ -14,12 +14,13 @@ interface IState {
 }
 
 const styles = (theme: Theme) => createStyles({
+    root: {
+
+    },
 
 })
 
-
-
-class Order extends React.Component<IProps, IState> {
+class Cart extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
@@ -38,12 +39,12 @@ class Order extends React.Component<IProps, IState> {
     render () {
         const { classes } = this.injected
         return (
-            <div>
-                <div>заказать</div>
+            <div className={classes.root}>
+                <h1>корзина</h1>
 
             </div>
         )
     }
 }
 
-export default withStyles(styles)(Order)
+export default withStyles(styles)(Cart)
