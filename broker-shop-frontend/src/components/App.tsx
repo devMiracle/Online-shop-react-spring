@@ -28,7 +28,7 @@ import CakeIcon from '@material-ui/icons/Cake';
 import history from "../history"
 import {CSSTransition} from "react-transition-group";
 import AppBarCollapse from "./common/AppBarCollapse";
-import FooterElement from "./common/FooterElement";
+import Footer from "./common/Footer";
 
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faInstagram} from '@fortawesome/free-brands-svg-icons'
@@ -252,7 +252,7 @@ class App extends React.Component<IProps, IState> {
                     </Container>
                 </main>
                 <footer /*className={classes.footer}*/>
-                    <FooterElement/>
+                    <Footer/>
                 </footer>
                 {/* Окно, которое появляется только при наличии содержательного значения
                 в наблюдаемом свойстве error */}

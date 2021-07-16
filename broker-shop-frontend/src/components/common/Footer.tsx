@@ -1,13 +1,13 @@
 import React from 'react'
 import {createStyles, Grid, Theme, WithStyles, withStyles} from '@material-ui/core'
+import {Route} from 'react-router-dom'
 
 import imageFooter from '../../images/footer.jpg'
-
+import Confidentiality from '../pages/Confidentiality'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faInstagramSquare as instagram} from '@fortawesome/free-brands-svg-icons'
 import {faFacebookSquare as facebook} from '@fortawesome/free-brands-svg-icons'
 import {faVk as vk} from '@fortawesome/free-brands-svg-icons'
-import {NavLink} from "react-router-dom";
 
 interface IProps {
 
@@ -233,7 +233,7 @@ const styles = (theme: Theme) => createStyles({
 
 })
 
-class FooterElement extends React.Component<IProps, IState> {
+class Footer extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
@@ -295,7 +295,7 @@ class FooterElement extends React.Component<IProps, IState> {
                                     <div>
                                         <div className={classes.phoneItem}>
                                             <div className={classes.phoneIcon}>
-                                                <FontAwesomeIcon icon="phone" />
+                                                <FontAwesomeIcon icon="phone"/>
                                             </div>
                                             <div className={classes.phoneNumber}>
                                                 <a href="tel:0975127077">+380 (97) 512-70-77</a>
@@ -303,7 +303,7 @@ class FooterElement extends React.Component<IProps, IState> {
                                         </div>
                                         <div className={classes.phoneItem}>
                                             <div className={classes.phoneIcon}>
-                                                <FontAwesomeIcon icon="phone" />
+                                                <FontAwesomeIcon icon="phone"/>
                                             </div>
                                             <div className={classes.phoneNumber}>
                                                 <a href="tel:0975127077">+380 (97) 512-70-77</a>
@@ -316,7 +316,7 @@ class FooterElement extends React.Component<IProps, IState> {
                                     <div className={classes.addressTitle}>Адрес офиса 'Тортодельня':</div>
                                     <div className={classes.address}>
                                         <div className={classes.mapIcon}>
-                                            <FontAwesomeIcon icon="map-marker-alt" />
+                                            <FontAwesomeIcon icon="map-marker-alt"/>
                                         </div>
                                         <div className={classes.aStyle}>
                                             <a target="_blank"
@@ -328,53 +328,54 @@ class FooterElement extends React.Component<IProps, IState> {
                                     </div>
                                 </div>
                                 <div className={classes.lineSmall}/>
-                                    Электронная почта:
-                                    <div className={classes.mail}>
-                                        <div className={classes.mailIcon}>
-                                            <FontAwesomeIcon icon="envelope" />
-                                        </div>
-                                        <div className={classes.aStyle}>
-                                            <a href="mailto:tortodelna@gmail.com">
-                                                tortodelna@gmail.com
-                                            </a>
-                                        </div>
+                                Электронная почта:
+                                <div className={classes.mail}>
+                                    <div className={classes.mailIcon}>
+                                        <FontAwesomeIcon icon="envelope"/>
                                     </div>
-                                    < div className={classes.lineSmall}/>
-                                    <div className={classes.text}>
-                                        <div>Время работы</div>
-                                        <div>Ежедневно с <b>10.00</b>-<b>20.00</b></div>
-                                        <div>Без выходных</div>
+                                    <div className={classes.aStyle}>
+                                        <a href="mailto:tortodelna@gmail.com">
+                                            tortodelna@gmail.com
+                                        </a>
                                     </div>
-                                </Grid>
-                                <Grid
-                                    item
-                                    lg={3}
-                                    md={4}
-                                    sm={12}
-                                    xs={12}
-                                    className={classes.gridItem}
-                                >
-                                    <h6 className={classes.h6}>СОЦСЕТИ</h6>
-                                    <div className={classes.lineTitle}/>
-                                        <a className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={instagram} /></a>
-                                        <a className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={facebook} /></a>
-                                        <a className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={vk} /></a>
-                                </Grid>
-                                <Grid
-                                    item
-                                    lg={3}
-                                    md={4}
-                                    sm={12}
-                                    xs={12}
-                                    className={classes.gridItem}
-                                >
-                                    <h6 className={classes.h6}>ПРАВИЛА</h6>
-                                    <div className={classes.lineTitle}/>
-                                    <div className={classes.textRules}>
-                                        <div><a href="/test">Конфиденциальность</a></div>
-                                        <div><a href="/test">Возврат</a></div>
-                                    </div>
-                                </Grid>
+                                </div>
+                                < div className={classes.lineSmall}/>
+                                <div className={classes.text}>
+                                    <div>Время работы</div>
+                                    <div>Ежедневно с <b>10.00</b>-<b>20.00</b></div>
+                                    <div>Без выходных</div>
+                                </div>
+                            </Grid>
+                            <Grid
+                                item
+                                lg={3}
+                                md={4}
+                                sm={12}
+                                xs={12}
+                                className={classes.gridItem}
+                            >
+                                <h6 className={classes.h6}>СОЦСЕТИ</h6>
+                                <div className={classes.lineTitle}/>
+                                <a className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={instagram}/></a>
+                                <a className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={facebook}/></a>
+                                <a className={classes.aSocietyIcons} href=""><FontAwesomeIcon icon={vk}/></a>
+                            </Grid>
+                            <Grid
+                                item
+                                lg={3}
+                                md={4}
+                                sm={12}
+                                xs={12}
+                                className={classes.gridItem}
+                            >
+                                <h6 className={classes.h6}>ПРАВИЛА</h6>
+                                <div className={classes.lineTitle}/>
+                                <div className={classes.textRules}>
+<div><a href="/confidentiality">Конфиденциальность</a></div>
+                                    <div><a href="/order">Как заказать?</a></div>
+                                    <div><a href="/return">Возврат</a></div>
+                                </div>
+                            </Grid>
 
                         </Grid>
                     </div>
@@ -382,8 +383,8 @@ class FooterElement extends React.Component<IProps, IState> {
                 <div className={classes.footerImageStyle}/>
             </div>
 
-        )
+        );
     }
 }
 
-export default withStyles(styles)(FooterElement)
+export default withStyles(styles)(Footer)
