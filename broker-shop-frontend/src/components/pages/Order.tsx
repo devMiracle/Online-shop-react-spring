@@ -36,7 +36,7 @@ class Order extends React.Component<IProps, IState> {
     }
 
     render () {
-        const { classes } = this.injected
+        // const { classes } = this.injected
         return (
             <div>
                 <div>заказать</div>

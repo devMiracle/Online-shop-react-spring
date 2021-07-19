@@ -4,19 +4,24 @@ import {CommonStore} from '../stores/CommonStore'
 import {RouterStore} from '../stores/RouterStore'
 import {UserStore} from '../stores/UserStore'
 import {CartStore} from '../stores/CartStore'
+
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+
 import {
     Close as CloseIcon,
     ExposurePlus1 as ExposurePlus1Icon,
     ExposureNeg1 as ExposureNeg1Icon,
-    Clear as ClearIcon
+    Clear as ClearIcon, StarBorder
 } from '@material-ui/icons'
 
 import {inject, observer} from "mobx-react"
 import {Alert, Color} from "@material-ui/lab"
 import {
-    AppBar, Button, CircularProgress,
+    AppBar, Button, CircularProgress, Collapse,
     Container,
-    createStyles, Grid, IconButton,
+    createStyles, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText,
     Modal, Snackbar,
     Theme,
     Toolbar,
@@ -29,6 +34,7 @@ import history from "../history"
 import {CSSTransition} from "react-transition-group";
 import AppBarCollapse from "./common/AppBarCollapse";
 import Footer from "./common/Footer";
+
 
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faInstagram} from '@fortawesome/free-brands-svg-icons'
@@ -52,9 +58,8 @@ interface IState {
     snackBarVisibility: boolean,
     snackBarText: string,
     snackBarSeverity: Color
+    openMenu: boolean
 }
-
-
 const styles = (theme: Theme) => createStyles({
     // объявление пользовательского класса стиля
     // (для корневого компонента разметки текущего компонента)
@@ -64,8 +69,10 @@ const styles = (theme: Theme) => createStyles({
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        // overflow: 'hidden',
-
+    },
+    heading: {
+        fontSize: theme.typography.pxToRem(15),
+        fontWeight: theme.typography.fontWeightRegular,
     },
     header: {
         backgroundColor: '#fcf7f1',
@@ -73,26 +80,16 @@ const styles = (theme: Theme) => createStyles({
     main: {
         flex: '1 0 auto'
     },
-
     container: {
-        // maxWidth: '1200px',
-        // width: '1200px',
         padding: '0',
-        // margin: '0 auto',
-        // backgroundColor: 'gray',
-
-
         maxWidth: '970px',
         '& .page' : {
             position: 'static'
         }
     },
     navBar: {
-
         color: '#424242',
         backgroundColor: '#fff',
-
-
     },
     toolBar: {
         display: 'flex',
@@ -104,7 +101,7 @@ const styles = (theme: Theme) => createStyles({
     modal: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     modalContent: {
         backgroundColor: theme.palette.background.paper,
@@ -125,10 +122,6 @@ const styles = (theme: Theme) => createStyles({
         marginRight: '-25px',
     },
     page: {
-        // display: 'flex',
-        // alignItems: 'center',
-        // justifyContent: 'center'
-
     },
     cakeIcon: {
         border: '1px solid white',
@@ -141,9 +134,11 @@ const styles = (theme: Theme) => createStyles({
         justifyContent: 'center',
         alignItems: 'center',
         color: 'black'
-    }
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
+    },
 })
-
 
 @inject('commonStore', 'routerStore', 'userStore', 'cartStore')
 @observer
@@ -160,9 +155,17 @@ class App extends React.Component<IProps, IState> {
         this.state = {
             snackBarVisibility: false,
             snackBarText: '',
-            snackBarSeverity: 'success'
+            snackBarSeverity: 'success',
+
+            openMenu: false
         }
     }
+
+    handleClick = () => {
+        this.setState({openMenu: !this.state.openMenu})
+    };
+
+
 
     handleErrorModalClose = (e: React.KeyboardEvent | React.MouseEvent) => {
         this.injected.commonStore.setError('')

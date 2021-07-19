@@ -1,5 +1,5 @@
 import React from 'react'
-import {createStyles, Grid, Theme, WithStyles, withStyles} from '@material-ui/core'
+import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
 
 interface IProps {
 

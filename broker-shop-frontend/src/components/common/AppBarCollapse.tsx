@@ -1,17 +1,23 @@
 import React, {Component} from "react"
-import {createStyles, MenuItem} from "@material-ui/core"
+import {Collapse, createStyles, List, ListItem, ListItemText, MenuItem} from "@material-ui/core"
 import { WithStyles, withStyles, Theme } from "@material-ui/core/styles"
 import ButtonAppBarCollapse from "./ButtonAppBarCollapse"
+
+
+
 import {
     NavLink
 } from 'react-router-dom'
 import {
-    ShoppingCart as ShoppingCartIcon
-}  from "@material-ui/icons"
+    ExpandLess, ExpandMore,
+    ShoppingCart as ShoppingCartIcon, StarBorder
+} from "@material-ui/icons"
 import {inject, observer} from "mobx-react"
 import {UserStore} from '../../stores/UserStore'
 import {CartStore} from '../../stores/CartStore'
+import {CategoryStore} from '../../stores/CategoryStore'
 import RouteModel from "../../models/RouteModel"
+import CategoryModel from "../../models/CategoryModel";
 
 interface IProps {
     routes: Array<RouteModel>
@@ -20,16 +26,19 @@ interface IProps {
 interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     userStore: UserStore
     cartStore: CartStore
+    categoryStore: CategoryStore
 }
 
 interface IState {
+    openStateMenu: boolean
 }
 
 const styles = ((theme: Theme) => createStyles({
     root: {
-        position: "absolute",
-        right: 0,
-
+        display: 'flex',
+        flexDirection: 'column',
+        // position: "absolute",
+        // right: 0,
     },
     buttonBar: {
         // если ширина экрана - мобильная или меньше
@@ -43,7 +52,8 @@ const styles = ((theme: Theme) => createStyles({
         position: "relative",
         width: "100%",
         background: "transparent",
-        display: "inline"
+        display: 'flex',
+        flexDirection: 'row',
     },
     buttonBarItem: {
         '&:hover': {
@@ -73,12 +83,31 @@ const styles = ((theme: Theme) => createStyles({
 
     shoppingCart: {
         marginRight: '10px'
-    }
+    },
+    nested: {
+        flexDirection: 'column',
+    },
+    listItem: {
+
+    },
+
 }))
 
-@inject('userStore', 'cartStore')
+
+
+
+
+@inject('userStore', 'cartStore', 'categoryStore')
 @observer
 class AppBarCollapse extends Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props)
+        this.state = {
+            openStateMenu: false
+        }
+    }
+
+
 
     get injected () {
         return this.props as IInjectedProps
@@ -93,9 +122,19 @@ class AppBarCollapse extends Component<IProps, IState> {
         }
     }
 
+    handleClick = () => {
+        this.setState({openStateMenu: !this.state.openStateMenu})
+    }
+
+    componentDidMount() {
+        this.injected.categoryStore.fetchCategories()
+    }
+
+
     render () {
         const { classes } = this.injected
         const { routes } = this.props
+        const { categories } = this.injected.categoryStore
         return (
             <div className={classes.root}>
                 {/* экземпляр мобильного меню */}
@@ -127,23 +166,44 @@ class AppBarCollapse extends Component<IProps, IState> {
                 <div className={classes.buttonBar} id="appbar-collapse">
                     {routes.map(route => {
                         if (route.visible) {
-                            if (!/^Dashboard[A-z]+$/.test(route.name)) {
-                                return <NavLink
-                                    key={route.path}
-                                    to={route.path}
-                                    // можно указать в двойных кавычках имя
-                                    // класса стиля, описанного в css
-                                    className={classes.buttonBarItem}
-                                    // , а в данном случае создается экранирование
-                                    // фигурными скобками, и внутри него
-                                    // указывается имя класса стиля,
-                                    // определенного в константе styles
-                                    activeClassName={classes.buttonBarItemActive}
-                                    exact>
-                                    {route.name.toUpperCase()}
-                                </NavLink>
+                            if (route.name.includes('торты')) {
+                                return <List>
+                                    <ListItem button onClick={this.handleClick}>
+                                        {route.name.toUpperCase()}
+                                        {this.state.openStateMenu ? <ExpandLess /> : <ExpandMore />}
+                                    </ListItem>
+                                    <Collapse in={this.state.openStateMenu} timeout="auto" unmountOnExit>
+                                        <List component="div" disablePadding>
+                                                {categories.map((category: CategoryModel) => {
+                                                    return <ListItem button className={classes.nested}>
+                                                    <ListItemText primary={
+                                                        <a href="/">{category.name}</a>
+
+                                                    } />
+                                                    </ListItem>
+                                                })}
+                                        </List>
+                                    </Collapse>
+                                </List>
                             } else {
-                                return ''
+                                if (!/^Dashboard[A-z]+$/.test(route.name)) {
+                                    return <NavLink
+                                        key={route.path}
+                                        to={route.path}
+                                        // можно указать в двойных кавычках имя
+                                        // класса стиля, описанного в css
+                                        className={classes.buttonBarItem}
+                                        // , а в данном случае создается экранирование
+                                        // фигурными скобками, и внутри него
+                                        // указывается имя класса стиля,
+                                        // определенного в константе styles
+                                        activeClassName={classes.buttonBarItemActive}
+                                        exact>
+                                        {route.name.toUpperCase()}
+                                    </NavLink>
+                                } else {
+                                    return ''
+                                }
                             }
                         } else {
                             return ''
