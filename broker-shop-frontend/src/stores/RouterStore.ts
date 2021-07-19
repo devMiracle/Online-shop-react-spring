@@ -27,7 +27,7 @@ class RouterStore {
         { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
         { path: '/order', name: 'заказать', visible: true, Component: Order },
         { path: '/cart', name: 'корзина', visible: true, Component: Cart },
-        { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
+        { path: '/shopping', name: 'покупки', visible: true, Component: Shopping },
         { path: '/about', name: 'о нас', visible: false, Component: About },
         { path: '/signin', name: 'вход', visible: true, Component: SignIn },
         { path: '/signup', name: 'регистрация', visible: true, Component: SignUp }

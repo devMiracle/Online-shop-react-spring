@@ -54,6 +54,7 @@ const styles = ((theme: Theme) => createStyles({
         background: "transparent",
         display: 'flex',
         flexDirection: 'row',
+        height: '60px',
     },
     buttonBarItem: {
         '&:hover': {
@@ -85,10 +86,30 @@ const styles = ((theme: Theme) => createStyles({
         marginRight: '10px'
     },
     nested: {
+        '&:hover': {
+            color: '#039be6',
+            backgroundColor: '#fcf7f1',
+
+        },
         flexDirection: 'column',
+        background: '#fcf7f1',
     },
     listItem: {
-
+        '&:hover': {
+            color: '#039be6',
+            backgroundColor: '#fcf7f1',
+        },
+        justifyContent: 'flex-end',
+        width: '140px',
+    },
+    listItemActive: {
+        '&:hover': {
+            color: '#039be6',
+            backgroundColor: '#fcf7f1',
+        },
+        justifyContent: 'flex-end',
+        width: '140px',
+        background: '#fcf7f1'
     },
 
 }))
@@ -168,7 +189,9 @@ class AppBarCollapse extends Component<IProps, IState> {
                         if (route.visible) {
                             if (route.name.includes('торты')) {
                                 return <List>
-                                    <ListItem button onClick={this.handleClick}>
+                                    <ListItem
+                                        className={this.state.openStateMenu ? classes.listItemActive : classes.listItem}
+                                        button onClick={this.handleClick}>
                                         {route.name.toUpperCase()}
                                         {this.state.openStateMenu ? <ExpandLess /> : <ExpandMore />}
                                     </ListItem>
@@ -178,7 +201,6 @@ class AppBarCollapse extends Component<IProps, IState> {
                                                     return <ListItem button className={classes.nested}>
                                                     <ListItemText primary={
                                                         <a href="/">{category.name}</a>
-
                                                     } />
                                                     </ListItem>
                                                 })}
