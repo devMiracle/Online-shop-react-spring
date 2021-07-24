@@ -30,6 +30,7 @@ class ProductStore {
     @observable priceTo: number | null = null
     @observable quantityFrom: number | null = null
     @observable quantityTo: number | null = null
+
     @observable priceFromBound: number = 0
     @observable priceToBound: number = 1000000
     @observable quantityFromBound: number = 0
@@ -45,7 +46,7 @@ class ProductStore {
     // отдельных полей состояния фильтра и установка его в адресную строку браузера
     private changeShoppingUrlParams () {
         history.push({
-            pathname: '/shopping',
+            pathname: '/items',
             search: `?orderBy=${this.orderBy}
                         &sortingDirection=${this.sortingDirection}
                         &search=
@@ -228,8 +229,6 @@ class ProductStore {
                 if (responseModel.status === 'success') {
                     // сохранение минимума и максимума цены
                     // в наблюдаемых свойствах
-
-
                     this.priceFromBound = responseModel.data.min
                     this.priceToBound = responseModel.data.max
                     // если разрешено применение граничных значений цены
@@ -318,7 +317,7 @@ class ProductStore {
                         JSON.parse(
                             decodeURIComponent(
                                 JSON.stringify(responseModel.data)
-                                    .replace(/(%2E)/ig, '%20')
+                                    .replace(/(%2E)/ig, '%20')// ASCII -> UTF-8 (In title and description)
                             )
                         )
                 } else if (responseModel.status === 'fail') {
@@ -413,8 +412,14 @@ class ProductStore {
         // запрос на бэкенд для получения списка моделей товаров
         // согласно новому состоянию фильтра (набора свойств локального хранилища
         // для фильтрации)
+
         this.changeShoppingUrlParams()
     }
+    @action clearAllCategoryId() {
+        this.categories = []
+    }
+
+
 
     @action setFilterDataPriceFrom(priceFrom: number) {
         this.priceFrom = priceFrom

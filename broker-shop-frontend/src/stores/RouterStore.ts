@@ -16,11 +16,13 @@ import Order from "../components/pages/Order"
 import Cart from "../components/pages/Cart"
 import Confidentiality from '../components/pages/Confidentiality'
 import Return from "../components/pages/Return"
+import Items from "../components/pages/Items";
 class RouterStore {
 
     // список моделей роутов для гостя
     private anonymousRoutes: Array<RouteModel> = [
-        { path: '/', name: 'торты', visible: true, Component: Categories },
+        { path: '/', name: 'торты', visible: true, Component: Home },
+        { path: '/items', name: 'позиции', visible: false, Component: Items },
         { path: '/confidentiality', name: 'конфиденциальность', visible: false, Component: Confidentiality },
         { path: '/return', name: 'возврат', visible: false, Component: Return },
 

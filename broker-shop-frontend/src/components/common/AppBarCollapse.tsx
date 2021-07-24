@@ -18,6 +18,7 @@ import {CartStore} from '../../stores/CartStore'
 import {CategoryStore} from '../../stores/CategoryStore'
 import RouteModel from "../../models/RouteModel"
 import CategoryModel from "../../models/CategoryModel";
+import {ProductStore} from "../../stores/ProductStore";
 
 interface IProps {
     routes: Array<RouteModel>
@@ -26,7 +27,8 @@ interface IProps {
 interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     userStore: UserStore
     cartStore: CartStore
-    categoryStore: CategoryStore
+    categoryStore: CategoryStore,
+    productStore: ProductStore
 }
 
 interface IState {
@@ -88,7 +90,7 @@ const styles = ((theme: Theme) => createStyles({
     nested: {
         '&:hover': {
             color: '#039be6',
-            backgroundColor: '#fcf7f1',
+            backgroundColor: '#fff',
 
         },
         flexDirection: 'column',
@@ -97,19 +99,20 @@ const styles = ((theme: Theme) => createStyles({
     listItem: {
         '&:hover': {
             color: '#039be6',
-            backgroundColor: '#fcf7f1',
+            backgroundColor: '#fff',
         },
         justifyContent: 'flex-end',
-        width: '140px',
+        width: '200px',
     },
     listItemActive: {
         '&:hover': {
             color: '#039be6',
-            backgroundColor: '#fcf7f1',
+            backgroundColor: '#fff',
         },
         justifyContent: 'flex-end',
-        width: '140px',
-        background: '#fcf7f1'
+        width: '200px',
+        background: '#fff'
+
     },
 
 }))
@@ -118,7 +121,7 @@ const styles = ((theme: Theme) => createStyles({
 
 
 
-@inject('userStore', 'cartStore', 'categoryStore')
+@inject('userStore', 'cartStore', 'categoryStore', 'productStore')
 @observer
 class AppBarCollapse extends Component<IProps, IState> {
     constructor(props: IProps) {
@@ -144,6 +147,11 @@ class AppBarCollapse extends Component<IProps, IState> {
     }
 
     handleClick = () => {
+        this.setState({openStateMenu: !this.state.openStateMenu})
+    }
+    handleClickItemList = (e: React.MouseEvent, categoryId: number) => {
+        this.injected.productStore.clearAllCategoryId()
+        this.injected.productStore.setFilterDataCategory(categoryId, true)
         this.setState({openStateMenu: !this.state.openStateMenu})
     }
 
@@ -198,11 +206,24 @@ class AppBarCollapse extends Component<IProps, IState> {
                                     <Collapse in={this.state.openStateMenu} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
                                                 {categories.map((category: CategoryModel) => {
-                                                    return <ListItem button className={classes.nested}>
-                                                    <ListItemText primary={
-                                                        <a href="/">{category.name}</a>
-                                                    } />
-                                                    </ListItem>
+                                                    return <ListItem button
+                                                                     className={classes.nested}
+                                                                     onClick={(e) => {
+                                                                         this.handleClickItemList(e, category.id)
+                                                                     }}
+                                                        >
+                                                            <ListItemText primary={
+                                                                category.name.toUpperCase()
+                                                                // <NavLink
+                                                                //     to={`/items`}
+                                                                //     //to={`/shopping?orderBy=id&sortingDirection=DESC&search=price>:0;price<:5000;quantity>:0;quantity<:100;category:[${category.id}]`}
+                                                                //     //className={classes.buttonBarItem}
+                                                                //     //activeClassName={classes.buttonBarItemActive}
+                                                                //     exact>
+                                                                //     {category.name.toUpperCase()}
+                                                                // </NavLink>
+                                                            } />
+                                                        </ListItem>
                                                 })}
                                         </List>
                                     </Collapse>

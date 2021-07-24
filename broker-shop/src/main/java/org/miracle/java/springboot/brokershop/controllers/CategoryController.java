@@ -18,7 +18,7 @@ private final CategoryService categoryService;
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
-
+    //
     @GetMapping("/categories")
     public ResponseEntity<ResponseModel> getAll() {
         return new ResponseEntity<>(categoryService.getAll(), HttpStatus.OK);

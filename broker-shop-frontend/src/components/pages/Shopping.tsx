@@ -242,7 +242,7 @@ class Shopping extends Component<IProps, IState> {
                 </Button>
                 {/* drawer */}
                 <Drawer
-                    anchor={'top'}
+                    anchor={'left'}
                     open={ this.state.sidePanelVisibility }
                     onClose={this.toggleDrawer(false)}
                     className={classes.drawer}
@@ -259,7 +259,7 @@ class Shopping extends Component<IProps, IState> {
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <FormGroup row>
+                            <FormGroup row={false}>
                                 {categories.map((category: CategoryModel) => {
                                     return (
                                         <FormControlLabel
@@ -353,7 +353,7 @@ class Shopping extends Component<IProps, IState> {
                                     this.handleOrderButtonClick(e, 'id', 'DESC', 'New')
                                 }}
                             >
-                                New
+                                Новые
                             </Button>
                             <Button
                                 className={classes.buttonSort + ' ' + (this.state.activeOrderButton === 'Old' ? classes.active : "")}
@@ -362,7 +362,7 @@ class Shopping extends Component<IProps, IState> {
                                     this.handleOrderButtonClick(e, 'id', 'ASC', 'Old')
                                 }}
                             >
-                                Old
+                                Старые
                             </Button>
 
                             <Button
@@ -372,7 +372,7 @@ class Shopping extends Component<IProps, IState> {
                                     this.handleOrderButtonClick(e, 'price', 'ASC', 'Cheep')
                                 }}
                             >
-                                Cheep
+                                Дешёвые
                             </Button>
                             <Button
                                 className={classes.buttonSort + ' ' + (this.state.activeOrderButton === 'Costly' ? classes.active : "")}
@@ -381,7 +381,7 @@ class Shopping extends Component<IProps, IState> {
                                     this.handleOrderButtonClick(e, 'price', 'DESC', 'Costly')
                                 }}
                             >
-                                Costly
+                                Дорогие
                             </Button>
                         </AccordionDetails>
                     </Accordion>

@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-// Данный класс содершит логику шифрования паролей вшитую в спринг секьюриит
+// Данный класс содержит логику шифрования паролей вшитую в спринг секьюриит
 public class Encoder {
 
     @Bean
