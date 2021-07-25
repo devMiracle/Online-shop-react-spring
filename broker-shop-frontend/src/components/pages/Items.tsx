@@ -14,6 +14,8 @@ import {
 import {inject, observer} from "mobx-react";
 import {ProductStore} from "../../stores/ProductStore";
 import {CategoryStore} from "../../stores/CategoryStore";
+import history from "../../history";
+import {CommonStore} from "../../stores/CommonStore";
 
 interface IPreviousSearch {
     searchString: string,
@@ -28,7 +30,7 @@ interface IProps {
 interface IInjectedProps extends IProps , WithStyles<typeof styles> {
     productStore: ProductStore,
     categoryStore: CategoryStore,
-
+    commonStore: CommonStore
 }
 
 interface IState {
@@ -46,11 +48,10 @@ const styles = (theme: Theme) => createStyles({
     productCardImage: {
         height: 300
     },
-
 })
 
 
-@inject('productStore', 'categoryStore')
+@inject('productStore', 'categoryStore', 'commonStore')
 @observer
 class Items extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -62,6 +63,7 @@ class Items extends React.Component<IProps, IState> {
                 sortingDirection: ''
             },
         }
+
     }
 
     get injected () {
@@ -69,27 +71,35 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
+        console.log('componentDidMount')
         // сразу после монтирования компонента в виртуальный DOM
         // просим у локального хранилища загрузить
         // список моделей категорий и границы цен и количств товаров
         this.injected.categoryStore.fetchCategories()
-
+        // this.injected.productStore.fetchFilteredProducts()
         this.injected.productStore.fetchProductPriceBounds()
         this.injected.productStore.fetchProductQuantityBounds()
 
-        // this.injected.productStore.fetchFilteredProducts()
+
+
+
+
     }
 
     componentDidUpdate(prevProps: Readonly<IProps>) {
+        console.log('componentDidUpdate')
         // если работа фильтра в данный момент не выполняется - передаем
         // параметры из адресной строки в состояние фильра в локальном хранилище
-        console.log('1111111')
         if (this.injected.productStore.allowFetchFilteredProducts) {
-
+            console.log('вошли')
             // считывание цепочки параметров из адресной строки
             const windowUrl = window.location.search
+            console.log(windowUrl)
             // вызов конструктора парсера параметров адресной строки
             const params = new URLSearchParams(windowUrl)
+            console.log(params.get('search'))
+            console.log(params.get('orderBy'))
+            console.log(params.get('sortingDirection'))
             // для тех параметров, которые отсутствуют в адресной строке,
             // устанавливаем значения - пустые строки
             const searchString: string = params.get('search') || ''
@@ -103,6 +113,7 @@ class Items extends React.Component<IProps, IState> {
                 || orderBy !== this.state.prevSearch.orderBy
                 || sortingDirection !== this.state.prevSearch.sortingDirection
             ) {
+                console.log('меняем')
                 // новое состояние фильтра (поиска) и сортировки записывается на место старого
                 this.setState({prevSearch: {
                         searchString: searchString,
@@ -126,9 +137,16 @@ class Items extends React.Component<IProps, IState> {
         }
     }
 
+    componentWillUnmount() {
+        console.log('componentWillUnmount')
+    }
+
     render () {
+        const { loading } = this.injected.commonStore
+
         const { classes } = this.injected
         const { products } = this.injected.productStore
+        const { categories } = this.injected.categoryStore
 
         return (
             <div className={classes.root}>

@@ -19,6 +19,7 @@ import {CategoryStore} from '../../stores/CategoryStore'
 import RouteModel from "../../models/RouteModel"
 import CategoryModel from "../../models/CategoryModel";
 import {ProductStore} from "../../stores/ProductStore";
+import Items from "../pages/Items";
 
 interface IProps {
     routes: Array<RouteModel>
@@ -48,7 +49,7 @@ const styles = ((theme: Theme) => createStyles({
             // скрываем настольную версию пунктов меню навигации и аутентификации
             display: "none"
         },
-        margin: "10px",
+        // margin: "10px",
         paddingLeft: "16px",
         right: "10px",
         position: "relative",
@@ -66,14 +67,17 @@ const styles = ((theme: Theme) => createStyles({
         transition: 'background-color .3s',
         fontSize: '1rem',
         color: '#a6a6a6',
-        padding: '15px',
+        padding: '0 15px 0 0',
         cursor: 'pointer',
         textDecoration: 'none',
+        alignSelf: 'center',
+        lineHeight: '23px',
     },
     buttonBarItemActive: {
         backgroundColor: '#fff',
-        color: '#424242'
-
+        color: '#424242',
+        alignSelf: 'center',
+        lineHeight: '23px',
     },
 
     mobileButtonBarItem: {
@@ -103,6 +107,12 @@ const styles = ((theme: Theme) => createStyles({
         },
         justifyContent: 'flex-end',
         width: '200px',
+        //alignItems: 'baseline',
+        '& > div': {
+            //alignItems: 'center',
+        },
+        paddingTop: '10px',
+        paddingBottom: '10px',
     },
     listItemActive: {
         '&:hover': {
@@ -111,8 +121,10 @@ const styles = ((theme: Theme) => createStyles({
         },
         justifyContent: 'flex-end',
         width: '200px',
-        background: '#fff'
-
+        background: '#fff',
+        //alignItems: 'baseline',
+        paddingTop: '10px',
+        paddingBottom: '10px',
     },
 
 }))
@@ -160,6 +172,7 @@ class AppBarCollapse extends Component<IProps, IState> {
     }
 
 
+
     render () {
         const { classes } = this.injected
         const { routes } = this.props
@@ -200,7 +213,9 @@ class AppBarCollapse extends Component<IProps, IState> {
                                     <ListItem
                                         className={this.state.openStateMenu ? classes.listItemActive : classes.listItem}
                                         button onClick={this.handleClick}>
-                                        {route.name.toUpperCase()}
+                                        <div>
+                                            {route.name.toUpperCase()}
+                                        </div>
                                         {this.state.openStateMenu ? <ExpandLess /> : <ExpandMore />}
                                     </ListItem>
                                     <Collapse in={this.state.openStateMenu} timeout="auto" unmountOnExit>

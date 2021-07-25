@@ -4,7 +4,9 @@ import {CommonStore} from '../stores/CommonStore'
 import {RouterStore} from '../stores/RouterStore'
 import {UserStore} from '../stores/UserStore'
 import {CartStore} from '../stores/CartStore'
-
+import {
+    NavLink
+} from 'react-router-dom'
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -65,7 +67,7 @@ const styles = (theme: Theme) => createStyles({
     // (для корневого компонента разметки текущего компонента)
     root: {
         // атрибут класса стиля
-        flexGrow: 1,
+        // flexGrow: 1,
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
@@ -95,7 +97,7 @@ const styles = (theme: Theme) => createStyles({
         display: 'flex',
     },
     title: {
-        flexGrow: 1,
+        // flexGrow: 1,
         marginLeft: '10px'
     },
     modal: {
@@ -127,16 +129,32 @@ const styles = (theme: Theme) => createStyles({
         border: '1px solid white',
         backgroundColor : 'rgba(255,255,255,0.4)',
         borderRadius: '50%',
-        width: '50px',
-        height: '50px',
-        margin: '5px',
-        display: 'flex',
+        //width: '50px',
+        //height: '50px',
+        //margin: '5px',
+        //display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         color: 'black'
     },
     nested: {
         paddingLeft: theme.spacing(4),
+    },
+    mainTitle: {
+        fontFamily: "'Source Sans Pro', sans-serif",
+        flexGrow: 1,
+        marginLeft: '10px',
+        fontWeight: 700,
+        fontSize: 'xx-large',
+    },
+    LogoTitleContainer: {
+        '& *': {
+            textDecoration: 'none',
+            display: 'flex',
+            color: '#424242',
+            // flexGrow: 1,
+        },
+        flexGrow: 1,
     },
 })
 
@@ -159,6 +177,10 @@ class App extends React.Component<IProps, IState> {
 
             openMenu: false
         }
+        // history.listen((location, action) => {
+        //     console.log(action, location.pathname, location.search)
+        //
+        // });
     }
 
     handleClick = () => {
@@ -223,12 +245,17 @@ class App extends React.Component<IProps, IState> {
                 {/* панель приложения, "приклееная" к верхней части страницы */}
                 <AppBar position='sticky' className={classes.navBar}>
                     <Toolbar className={classes.toolBar}>
-                        <div className={classes.cakeIcon}>
-                            <CakeIcon fontSize={'large'} />
+                        <div className={classes.LogoTitleContainer}>
+                            <NavLink to="/"
+                                     exact
+                            >
+                                <div className={classes.cakeIcon}>
+                                    <CakeIcon fontSize={'large'} />
+                                </div>
+                                <div className={classes.mainTitle}>Тортодельня</div>
+                            </NavLink>
                         </div>
-                        <Typography variant='h6' className={classes.title}>
-                            Тортодельня
-                        </Typography>
+
                         {/* панель навигации */}
                         <AppBarCollapse routes={routerStore.routes} />
                     </Toolbar>
