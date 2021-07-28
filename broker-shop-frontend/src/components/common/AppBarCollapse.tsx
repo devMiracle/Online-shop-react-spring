@@ -98,7 +98,7 @@ const styles = ((theme: Theme) => createStyles({
 
         },
         flexDirection: 'column',
-        background: '#fcf7f1',
+        background: '#f3f3f3',
     },
     listItem: {
         '&:hover': {

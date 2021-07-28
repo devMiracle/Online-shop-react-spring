@@ -17,7 +17,7 @@ import {
     ExposureNeg1 as ExposureNeg1Icon,
     Clear as ClearIcon, StarBorder
 } from '@material-ui/icons'
-
+import Fab from '@material-ui/core/Fab';
 import {inject, observer} from "mobx-react"
 import {Alert, Color} from "@material-ui/lab"
 import {
@@ -36,11 +36,14 @@ import history from "../history"
 import {CSSTransition} from "react-transition-group";
 import AppBarCollapse from "./common/AppBarCollapse";
 import Footer from "./common/Footer";
-
-
+import Zoom from '@material-ui/core/Zoom';
+import { makeStyles } from '@material-ui/core/styles';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faInstagram} from '@fortawesome/free-brands-svg-icons'
 import {faPhone, faMapMarkerAlt, faEnvelope,} from '@fortawesome/free-solid-svg-icons'
+import Header from "./common/Header";
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 library.add(faInstagram, faPhone, faMapMarkerAlt, faEnvelope)
 
@@ -62,6 +65,66 @@ interface IState {
     snackBarSeverity: Color
     openMenu: boolean
 }
+
+interface PropsScrollTop {
+    /**
+     * Injected by the documentation to work in an iframe.
+     * You won't need it on your project.
+     */
+    window?: () => Window;
+    children: React.ReactElement;
+}
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        rootScrollTop: {
+            '& > *': {
+                //backgroundColor: 'rgba(3,155,230,.6)',
+                backgroundColor: '#039be6',
+                opacity: '.6',
+            },
+            '& > *:hover': {
+                backgroundColor: '#039be6',
+            },
+            zIndex: 999,
+            position: 'fixed',
+            bottom: theme.spacing(2),
+            right: theme.spacing(2),
+        },
+    }),
+);
+
+function ScrollTop(props: PropsScrollTop) {
+    const { children, window } = props;
+    const classes = useStyles();
+    // Note that you normally won't need to set the window ref as useScrollTrigger
+    // will default to window.
+    // This is only being set here because the demo is in an iframe.
+    const trigger = useScrollTrigger({
+        target: window ? window() : undefined,
+        disableHysteresis: true,
+        threshold: 100,
+    });
+
+    const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        const anchor = ((event.target as HTMLDivElement).ownerDocument || document).querySelector(
+            '#back-to-top-anchor',
+        );
+
+        if (anchor) {
+            anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
+    return (
+        <Zoom in={trigger}>
+            <div onClick={handleClick} role="presentation" className={classes.rootScrollTop}>
+                {children}
+            </div>
+        </Zoom>
+    );
+}
+
 const styles = (theme: Theme) => createStyles({
     // объявление пользовательского класса стиля
     // (для корневого компонента разметки текущего компонента)
@@ -76,9 +139,7 @@ const styles = (theme: Theme) => createStyles({
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },
-    header: {
-        backgroundColor: '#fcf7f1',
-    },
+
     main: {
         flex: '1 0 auto'
     },
@@ -126,13 +187,15 @@ const styles = (theme: Theme) => createStyles({
     page: {
     },
     cakeIcon: {
-        border: '1px solid white',
-        backgroundColor : 'rgba(255,255,255,0.4)',
+        border: '1px dashed #a7a7a7',
+        // backgroundColor : 'rgba(255,255,255,0.4)',
         borderRadius: '50%',
-        //width: '50px',
-        //height: '50px',
-        //margin: '5px',
-        //display: 'flex',
+
+        width: '60px',
+        height: '60px',
+        position: 'absolute',
+        top: 2,
+        left: 10,
         justifyContent: 'center',
         alignItems: 'center',
         color: 'black'
@@ -141,9 +204,10 @@ const styles = (theme: Theme) => createStyles({
         paddingLeft: theme.spacing(4),
     },
     mainTitle: {
-        fontFamily: "'Source Sans Pro', sans-serif",
+        // fontFamily: "'Source Sans Pro', sans-serif",
+        fontFamily: "''Montserrat', sans-serif",
         flexGrow: 1,
-        marginLeft: '10px',
+        marginLeft: '60px',
         fontWeight: 700,
         fontSize: 'xx-large',
     },
@@ -174,13 +238,13 @@ class App extends React.Component<IProps, IState> {
             snackBarVisibility: false,
             snackBarText: '',
             snackBarSeverity: 'success',
-
-            openMenu: false
+            openMenu: false,
         }
         // history.listen((location, action) => {
         //     console.log(action, location.pathname, location.search)
         //
         // });
+
     }
 
     handleClick = () => {
@@ -228,20 +292,22 @@ class App extends React.Component<IProps, IState> {
         this.injected.userStore.check()
     }
 
+
+
+
+
     render() {
     const {classes, routerStore} = this.injected
     const progress = (this.injected.commonStore.loading ? <CircularProgress/> : '')
+
+
+
+
     return (
         <Router history={history}>
             <div className={classes.root}>
-                <div className={classes.header}>
-                    <div>number: +3800-000-0000</div>
-                    <div>number: +3800-000-0000</div>
-                    <div>number: +3800-000-0000</div>
-                    <div>number: +3800-000-0000</div>
-                    <div>number: +3800-000-0000</div>
-                    <div>number: +3800-000-0000</div>
-                </div>
+                <div id="back-to-top-anchor"/>
+                <Header/>
                 {/* панель приложения, "приклееная" к верхней части страницы */}
                 <AppBar position='sticky' className={classes.navBar}>
                     <Toolbar className={classes.toolBar}>
@@ -249,9 +315,9 @@ class App extends React.Component<IProps, IState> {
                             <NavLink to="/"
                                      exact
                             >
-                                <div className={classes.cakeIcon}>
-                                    <CakeIcon fontSize={'large'} />
-                                </div>
+
+                                    <img className={classes.cakeIcon} src="/images/icon.png" alt="cake logo"/>
+
                                 <div className={classes.mainTitle}>Тортодельня</div>
                             </NavLink>
                         </div>
@@ -284,6 +350,11 @@ class App extends React.Component<IProps, IState> {
                 <footer /*className={classes.footer}*/>
                     <Footer/>
                 </footer>
+                <ScrollTop {...Window}>
+                    <Fab color="secondary" size="small" aria-label="scroll back to top">
+                        <KeyboardArrowUpIcon />
+                    </Fab>
+                </ScrollTop>
                 {/* Окно, которое появляется только при наличии содержательного значения
                 в наблюдаемом свойстве error */}
                 <Modal

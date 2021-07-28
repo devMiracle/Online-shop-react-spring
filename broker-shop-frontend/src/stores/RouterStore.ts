@@ -25,35 +25,64 @@ class RouterStore {
         { path: '/items', name: 'позиции', visible: false, Component: Items },
         { path: '/confidentiality', name: 'конфиденциальность', visible: false, Component: Confidentiality },
         { path: '/return', name: 'возврат', visible: false, Component: Return },
-
         { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
         { path: '/order', name: 'заказать', visible: true, Component: Order },
         { path: '/cart', name: 'корзина', visible: true, Component: Cart },
-        { path: '/shopping', name: 'покупки', visible: true, Component: Shopping },
-        { path: '/about', name: 'о нас', visible: false, Component: About },
-        { path: '/signin', name: 'вход', visible: true, Component: SignIn },
-        { path: '/signup', name: 'регистрация', visible: true, Component: SignUp }
+        { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
+        { path: '/about', name: 'о нас', visible: true, Component: About },
+        { path: '/signin', name: 'вход', visible: false, Component: SignIn },
+        { path: '/signup', name: 'регистрация', visible: false, Component: SignUp }
     ]
 
     // список моделей роутов для аунтентифицированного пользователя
     private loggedRoutes: Array<RouteModel> = [
-        { path: '/', name: 'Home', visible: true, Component: Home },
-        { path: '/shopping', name: 'Shopping', visible: true, Component: Shopping },
-        { path: '/about', name: 'About', visible: true, Component: About },
-        { path: '/auth:out', name: 'Log Out', visible: true, Component: Categories }
+        { path: '/', name: 'торты', visible: true, Component: Home },
+        { path: '/items', name: 'позиции', visible: false, Component: Items },
+        { path: '/confidentiality', name: 'конфиденциальность', visible: false, Component: Confidentiality },
+        { path: '/return', name: 'возврат', visible: false, Component: Return },
+        { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
+        { path: '/order', name: 'заказать', visible: true, Component: Order },
+        { path: '/cart', name: 'корзина', visible: true, Component: Cart },
+        { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
+        { path: '/about', name: 'о нас', visible: true, Component: About },
+        { path: '/auth:out', name: 'выйти', visible: true, Component: Categories }
     ]
-
 
     // список моделей роутов для аунтентифицированного пользователя с ролью админ
     private adminRoutes: Array<RouteModel> = [
-        { path: '/', name: 'Home', visible: true, Component: Home },
-        { path: '/shopping', name: 'Shopping', visible: true, Component: Shopping },
-        { path: '/about', name: 'About', visible: true, Component: About },
+        { path: '/', name: 'торты', visible: true, Component: Home },
+        { path: '/items', name: 'позиции', visible: false, Component: Items },
+        { path: '/confidentiality', name: 'конфиденциальность', visible: false, Component: Confidentiality },
+        { path: '/return', name: 'возврат', visible: false, Component: Return },
+        { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
+        { path: '/order', name: 'заказать', visible: true, Component: Order },
+        { path: '/cart', name: 'корзина', visible: true, Component: Cart },
+        { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
+        { path: '/about', name: 'о нас', visible: true, Component: About },
         { path: '/admin', name: 'Dashboard' , visible: true, Component: Dashboard },
-        { path: '/admin/categories', name: 'DashboardCategories' , visible: true, Component: DashboardCategories },
-        { path: '/admin/products', name: 'DashboardProducts' , visible: true, Component: DashboardProducts },
-        { path: '/auth:out', name: 'Log Out', visible: true, Component: Categories }
+        { path: '/auth:out', name: 'выйти', visible: true, Component: Categories }
     ]
+
+
+
+    // список моделей роутов для аунтентифицированного пользователя
+    // private loggedRoutes: Array<RouteModel> = [
+    //     { path: '/', name: 'Home', visible: true, Component: Home },
+    //     { path: '/shopping', name: 'Shopping', visible: true, Component: Shopping },
+    //     { path: '/about', name: 'About', visible: true, Component: About },
+    //     { path: '/auth:out', name: 'Log Out', visible: true, Component: Categories }
+    // ]
+
+    // список моделей роутов для аунтентифицированного пользователя с ролью админ
+    // private adminRoutes: Array<RouteModel> = [
+    //     { path: '/', name: 'Home', visible: true, Component: Home },
+    //     { path: '/shopping', name: 'Shopping', visible: true, Component: Shopping },
+    //     { path: '/about', name: 'About', visible: true, Component: About },
+    //     { path: '/admin', name: 'Dashboard' , visible: true, Component: Dashboard },
+    //     { path: '/admin/categories', name: 'DashboardCategories' , visible: true, Component: DashboardCategories },
+    //     { path: '/admin/products', name: 'DashboardProducts' , visible: true, Component: DashboardProducts },
+    //     { path: '/auth:out', name: 'Log Out', visible: true, Component: Categories }
+    // ]
 
     // наблюдаемый текущий список роутов
     // (по умолчнию - для гостя)

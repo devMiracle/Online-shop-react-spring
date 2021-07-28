@@ -16,6 +16,7 @@ import {ProductStore} from "../../stores/ProductStore";
 import {CategoryStore} from "../../stores/CategoryStore";
 import history from "../../history";
 import {CommonStore} from "../../stores/CommonStore";
+import {ExpandLess, ExpandMore} from "@material-ui/icons";
 
 interface IPreviousSearch {
     searchString: string,
@@ -47,6 +48,9 @@ const styles = (theme: Theme) => createStyles({
     },
     productCardImage: {
         height: 300
+    },
+    displayNone: {
+        display: 'none',
     },
 })
 
@@ -84,12 +88,14 @@ class Items extends React.Component<IProps, IState> {
 
 
 
+
     }
 
     componentDidUpdate(prevProps: Readonly<IProps>) {
         console.log('componentDidUpdate')
         // если работа фильтра в данный момент не выполняется - передаем
         // параметры из адресной строки в состояние фильра в локальном хранилище
+
         if (this.injected.productStore.allowFetchFilteredProducts) {
             console.log('вошли')
             // считывание цепочки параметров из адресной строки
@@ -135,6 +141,7 @@ class Items extends React.Component<IProps, IState> {
                 this.injected.productStore.setAllowFetchFilteredProducts(false)
             }
         }
+
     }
 
     componentWillUnmount() {
@@ -142,15 +149,22 @@ class Items extends React.Component<IProps, IState> {
     }
 
     render () {
+        console.log('render')
         const { loading } = this.injected.commonStore
 
         const { classes } = this.injected
         const { products } = this.injected.productStore
-        const { categories } = this.injected.categoryStore
+        const { categories } = this.injected.productStore
 
-        return (
+        // <div className={classes.displayNone}>{categories}</div>
+
+            return (
+
+
+
             <div className={classes.root}>
-                <h1>Items</h1>
+
+                {products.length > 0 ?
 
                 <Grid
                     container
@@ -209,9 +223,10 @@ class Items extends React.Component<IProps, IState> {
                         )
                     })}
                 </Grid>
-
+                    : <div>пусто</div>}
             </div>
         )
+
     }
 }
 

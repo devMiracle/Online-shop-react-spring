@@ -1,4 +1,4 @@
-import {action, makeObservable, observable} from 'mobx'
+import {action, makeObservable, observable, reaction} from 'mobx'
 import history from "../history";
 import Product from '../models/ProductModel'
 import commonStore from './CommonStore'
@@ -41,6 +41,9 @@ class ProductStore {
     constructor() {
         makeObservable(this)
     }
+
+
+
 
     // сборка веб-адреса для раздела покупок из значений
     // отдельных полей состояния фильтра и установка его в адресную строку браузера

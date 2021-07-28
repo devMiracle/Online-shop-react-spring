@@ -33,10 +33,12 @@ const styles = (theme: Theme) => createStyles({
         boxShadow: "none"
     },
     menuIcon: {
-        '&:hover': {
-            backgroundColor: 'rgba(0,181,140,0.4)',
-        },
-        backgroundColor: '#00b58c'
+        // '&:hover': {
+        //     backgroundColor: 'rgba(0,181,140,0.6)',
+        // },
+        backgroundColor: 'rgba(3,155,230,.6)',
+        color: 'white',
+
     }
 })
 
