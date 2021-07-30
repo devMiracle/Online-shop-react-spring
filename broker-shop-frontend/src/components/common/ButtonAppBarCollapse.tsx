@@ -25,11 +25,11 @@ interface IState {
 const styles = (theme: Theme) => createStyles({
     buttonCollapse: {
         // при ширинах экрана свыше ширины планшетов
-        [theme.breakpoints.up("sm")]: {
+        [theme.breakpoints.up("md")]: {
             // скрывать мобильное меню
             display: "none"
         },
-        margin: "10px",
+        // margin: "10px",
         boxShadow: "none"
     },
     menuIcon: {

@@ -5,6 +5,7 @@ import { createStyles, Theme } from '@material-ui/core/styles'
 import SendIcon from "@material-ui/icons/Send"
 import {CommonStore} from "../../stores/CommonStore";
 import {UserStore} from "../../stores/UserStore";
+import history from "../../history";
 // тип CommonStore экспортируется из модуля
 // не по умолчанию,
 // поэтому здесь импортируется в фигурных скобках,
@@ -23,14 +24,36 @@ const styles = (theme: Theme) => createStyles
     root: {
         '& > *': {
             margin: theme.spacing(1),
-            width: '25ch',
+            //width: '25ch',
         },
+
     },
     signInGrid: {
-        minHeight: '100vh'
+        //minHeight: '40vh'
     },
     card: {
-        width: 275
+        marginTop: '40px',
+        color: '#424242',
+        backgroundColor: 'rgba(166,166,166,0.05)',
+        width: 275,
+    },
+    buttonSubmit: {
+      backgroundColor: '#fcf7f1',
+        position: 'relative',
+        bottom: '-15px',
+    },
+    SendIcon: {
+      marginLeft: '10px',
+    },
+    text: {
+        '&:hover': {
+            color: '#424242',
+            cursor:  'pointer',
+        },
+        color: '#a6a6a6',
+        marginTop: '25px',
+        textAlign: 'center',
+        textDecoration: 'underline',
     },
 })
 
@@ -67,6 +90,10 @@ class SignIn extends Component<IProps, IState> {
         this.injected.userStore.login()
     }
 
+    handleClickRegistration = () => {
+        history.push('/signup')
+    }
+
     render () {
         const { loading } = this.injected.commonStore
         const { classes } = this.injected
@@ -93,10 +120,11 @@ class SignIn extends Component<IProps, IState> {
                                   autoComplete="off"
                                   title="Sign In"
                             >
+                                <h2>{'вход'.toUpperCase()}</h2>
                                 <div>
                                     <TextField
                                         id='username'
-                                        label='Login'
+                                        label='Логин'
                                         value={userName}
                                         onChange={this.handleUserNameChange}
                                     />
@@ -104,7 +132,7 @@ class SignIn extends Component<IProps, IState> {
                                 <div>
                                     <TextField
                                         id='password'
-                                        label='Password'
+                                        label='Пароль'
                                         value={password}
                                         type="password"
                                         onChange={this.handlePasswordChange}
@@ -116,10 +144,14 @@ class SignIn extends Component<IProps, IState> {
                                         variant='outlined'
                                         disabled={loading}
                                         onClick={this.handleSubmitForm}
+                                        className={classes.buttonSubmit}
                                     >
-                                        Submit
-                                        <SendIcon/>
+                                        {'вход'.toUpperCase()}
+                                        <SendIcon className={classes.SendIcon}/>
                                     </Button>
+                                </div>
+                                <div className={classes.text}>
+                                    <div onClick={this.handleClickRegistration}>Зарегистрироваться</div>
                                 </div>
                             </form>
                         </CardContent>

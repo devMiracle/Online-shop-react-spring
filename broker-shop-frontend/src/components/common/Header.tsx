@@ -1,6 +1,6 @@
 import React from 'react'
 import {NavLink} from "react-router-dom";
-import {createStyles, Grid, Theme, WithStyles, withStyles} from '@material-ui/core'
+import {Button, createStyles, Grid, Theme, WithStyles, withStyles} from '@material-ui/core'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faFacebookSquare as facebook,
@@ -10,6 +10,8 @@ import {
 import {UserStore} from "../../stores/UserStore";
 import {observable} from "mobx";
 import {inject, observer} from "mobx-react";
+
+
 
 interface IProps {
 
@@ -41,6 +43,7 @@ const styles = (theme: Theme) => createStyles({
             border: '1px solid #039be6',
         },
         '& *': {
+            transition: 'all .3s linear',
             color: 'white',
             textDecoration: 'none',
             width: '160px',
@@ -67,6 +70,7 @@ const styles = (theme: Theme) => createStyles({
             border: '1px solid #a6a6a6',
         },
         '& *': {
+            transition: 'all .3s linear',
             color: 'white',
             textDecoration: 'none',
             width: '160px',
@@ -89,6 +93,7 @@ const styles = (theme: Theme) => createStyles({
     buttons: {
         display: 'flex',
         flexDirection: 'row',
+
     },
     gridContainer: {
         maxWidth: '970px',

@@ -14,7 +14,7 @@ import {
 import {CommonStore} from "../../stores/CommonStore";
 import {UserStore} from "../../stores/UserStore";
 import SendIcon from "@material-ui/icons/Send";
-
+import history from "../../history";
 interface IProps {}
 
 // типизация для свойств компонента: унаследованное свойство classes
@@ -34,14 +34,36 @@ const styles = (theme: Theme) =>
         root: {
             '& > *': {
                 margin: theme.spacing(1),
-                width: '25ch',
+                //width: '25ch',
             },
+
         },
         signUpGrid: {
-            minHeight: '100vh'
+            //minHeight: '40vh'
         },
         card: {
-            width: 275
+            marginTop: '40px',
+            color: '#424242',
+            backgroundColor: 'rgba(166,166,166,0.05)',
+            width: 275,
+        },
+        buttonSubmit: {
+            backgroundColor: '#fcf7f1',
+            position: 'relative',
+            bottom: '-15px',
+        },
+        SendIcon: {
+            marginLeft: '10px',
+        },
+        text: {
+            '&:hover': {
+                color: '#424242',
+                cursor:  'pointer',
+            },
+            color: '#a6a6a6',
+            marginTop: '25px',
+            textAlign: 'center',
+            textDecoration: 'underline',
         },
     })
 
@@ -71,10 +93,15 @@ class SignUp extends Component<IProps, IState> {
         this.injected.userStore.register()
     }
 
+    handleClickAuthorization = () => {
+        history.push('/signin')
+    }
+
     render () {
         const { loading } = this.injected.commonStore
         const { userName, password } = this.injected.userStore
         const { classes } = this.injected
+
         return (
             <Grid container
                   spacing={0}
@@ -92,16 +119,16 @@ class SignUp extends Component<IProps, IState> {
                 >
                     <Card className={classes.card}>
                         <CardContent>
-                            <form
-                                className={classes.root}
-                                noValidate
-                                autoComplete="off"
-                                title="Register"
+                            <form className={classes.root}
+                                  noValidate
+                                  autoComplete="off"
+                                  title="Register"
                             >
+                                <h2>{'регистрация'.toUpperCase()}</h2>
                                 <div>
                                     <TextField
                                         id='username'
-                                        label='Login'
+                                        label='Логин'
                                         value={userName}
                                         onChange={this.handleUserNameChange}
                                     />
@@ -109,7 +136,7 @@ class SignUp extends Component<IProps, IState> {
                                 <div>
                                     <TextField
                                         id='password'
-                                        label='Password'
+                                        label='Пароль'
                                         value={password}
                                         type="password"
                                         onChange={this.handlePasswordChange}
@@ -121,10 +148,14 @@ class SignUp extends Component<IProps, IState> {
                                         variant='outlined'
                                         disabled={loading}
                                         onClick={this.handleSubmitForm}
+                                        className={classes.buttonSubmit}
                                     >
-                                        Submit
-                                        <SendIcon/>
+                                        {'вход'.toUpperCase()}
+                                        <SendIcon className={classes.SendIcon}/>
                                     </Button>
+                                </div>
+                                <div className={classes.text}>
+                                    <div onClick={this.handleClickAuthorization}>Уже есть акаунт? Вход</div>
                                 </div>
                             </form>
                         </CardContent>
@@ -132,6 +163,64 @@ class SignUp extends Component<IProps, IState> {
                 </Grid>
             </Grid>
         )
+
+        // return (
+        //     <Grid container
+        //           spacing={0}
+        //           direction='column'
+        //           alignContent='center'
+        //           justify='center'
+        //           className={classes.signUpGrid}
+        //     >
+        //         <Grid item
+        //               xs={12}
+        //               sm={12}
+        //               md={3}
+        //               lg={3}
+        //               xl={3}
+        //         >
+        //             <Card className={classes.card}>
+        //                 <CardContent>
+        //                     <form
+        //                         className={classes.root}
+        //                         noValidate
+        //                         autoComplete="off"
+        //                         title="Register"
+        //                     >
+        //                         <div>
+        //                             <TextField
+        //                                 id='username'
+        //                                 label='Login'
+        //                                 value={userName}
+        //                                 onChange={this.handleUserNameChange}
+        //                             />
+        //                         </div>
+        //                         <div>
+        //                             <TextField
+        //                                 id='password'
+        //                                 label='Password'
+        //                                 value={password}
+        //                                 type="password"
+        //                                 onChange={this.handlePasswordChange}
+        //                             />
+        //                         </div>
+        //                         <div>
+        //                             <Button
+        //                                 id='signUpButton'
+        //                                 variant='outlined'
+        //                                 disabled={loading}
+        //                                 onClick={this.handleSubmitForm}
+        //                             >
+        //                                 Submit
+        //                                 <SendIcon/>
+        //                             </Button>
+        //                         </div>
+        //                     </form>
+        //                 </CardContent>
+        //             </Card>
+        //         </Grid>
+        //     </Grid>
+        // )
     }
 }
 // обертывание компонента в вспомогательный компонент,

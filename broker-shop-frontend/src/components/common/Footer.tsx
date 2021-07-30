@@ -136,9 +136,6 @@ const styles = (theme: Theme) => createStyles({
             textDecoration: 'none',
             color: '#039be6',
         },
-        // '&:hover': {
-        //     transform: 'scaleX(.96)',
-        // },
         display: 'flex',
     },
     mailIcon: {
@@ -170,8 +167,6 @@ const styles = (theme: Theme) => createStyles({
         marginRight: '10px',
     },
     mapIcon: {
-        // position: 'relative',
-        // right: '-40px',
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',

@@ -27,9 +27,9 @@ class RouterStore {
         { path: '/return', name: 'возврат', visible: false, Component: Return },
         { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
         { path: '/order', name: 'заказать', visible: true, Component: Order },
-        { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
         { path: '/about', name: 'о нас', visible: true, Component: About },
+        { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/signin', name: 'вход', visible: false, Component: SignIn },
         { path: '/signup', name: 'регистрация', visible: false, Component: SignUp }
     ]
@@ -42,9 +42,9 @@ class RouterStore {
         { path: '/return', name: 'возврат', visible: false, Component: Return },
         { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
         { path: '/order', name: 'заказать', visible: true, Component: Order },
-        { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
         { path: '/about', name: 'о нас', visible: true, Component: About },
+        { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/auth:out', name: 'выйти', visible: true, Component: Categories }
     ]
 
@@ -56,9 +56,9 @@ class RouterStore {
         { path: '/return', name: 'возврат', visible: false, Component: Return },
         { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
         { path: '/order', name: 'заказать', visible: true, Component: Order },
-        { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
         { path: '/about', name: 'о нас', visible: true, Component: About },
+        { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/admin', name: 'Dashboard' , visible: true, Component: Dashboard },
         { path: '/auth:out', name: 'выйти', visible: true, Component: Categories }
     ]
@@ -129,7 +129,7 @@ class RouterStore {
                 // где ИМЯ_ПОЛЬЗОВАТЕЛЯ узнаем из наблюдаемого свойства userStore.user
 
                 if (signOutRoute) {
-                    signOutRoute['name'] = `Log Out (${user.name})`
+                    signOutRoute['name'] = `${'выйти'.toUpperCase()} (${user.name})`
                 }
                 if (user.roleName.includes('ADMIN')) {
                     this.setAdminRoutes()
@@ -147,7 +147,7 @@ class RouterStore {
                 // на список моделей роутов для пользователя-гостя
                 this.setAnonymousRoutes()
                 // выполняем переход на раздел 'Вход'
-                history.replace('/signin')
+                history.replace('/')
             }
         }
     )

@@ -153,6 +153,7 @@ const styles = (theme: Theme) => createStyles({
     navBar: {
         color: '#424242',
         backgroundColor: '#fff',
+        width: '100%',
     },
     toolBar: {
         display: 'flex',
@@ -191,11 +192,11 @@ const styles = (theme: Theme) => createStyles({
         // backgroundColor : 'rgba(255,255,255,0.4)',
         borderRadius: '50%',
 
-        width: '60px',
-        height: '60px',
-        position: 'absolute',
-        top: 2,
-        left: 10,
+        width: '48px',
+        height: '48px',
+        position: 'relative',
+        //top: 8,
+        //left: 10,
         justifyContent: 'center',
         alignItems: 'center',
         color: 'black'
@@ -205,9 +206,9 @@ const styles = (theme: Theme) => createStyles({
     },
     mainTitle: {
         // fontFamily: "'Source Sans Pro', sans-serif",
-        fontFamily: "''Montserrat', sans-serif",
+        fontFamily: "'Montserrat', sans-serif",
         flexGrow: 1,
-        marginLeft: '60px',
+        marginLeft: '5px',
         fontWeight: 700,
         fontSize: 'xx-large',
     },
@@ -275,7 +276,6 @@ class App extends React.Component<IProps, IState> {
         })
     }
 
-
     handleCartModalClose = (e: React.MouseEvent) => {
         this.injected.cartStore.setCartVisibility(false)
     }
@@ -292,16 +292,9 @@ class App extends React.Component<IProps, IState> {
         this.injected.userStore.check()
     }
 
-
-
-
-
     render() {
     const {classes, routerStore} = this.injected
     const progress = (this.injected.commonStore.loading ? <CircularProgress/> : '')
-
-
-
 
     return (
         <Router history={history}>
@@ -377,7 +370,7 @@ class App extends React.Component<IProps, IState> {
                 >
                     <div className={classes.cartModalContent}>
                         <div id="simple-modal-title">
-                            <h2>Shopping Cart</h2>
+                            <h2>Корзина</h2>
                             <IconButton
                                 onClick={this.handleCartModalClose}
                                 className={classes.closeButton}>
@@ -389,10 +382,10 @@ class App extends React.Component<IProps, IState> {
                                 <table className="table">
                                     <thead>
                                     <tr>
-                                        <th>name</th>
-                                        <th>price</th>
-                                        <th>quantity</th>
-                                        <th>total</th>
+                                        <th>Название</th>
+                                        <th>Цена</th>
+                                        <th>Кол-во</th>
+                                        <th>Итого</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -437,7 +430,7 @@ class App extends React.Component<IProps, IState> {
                                     </tbody>
                                 </table>
                             ) : (
-                                <span>Your cart is empty</span>
+                                <span>Ваша корзина пуста</span>
                             )}
                             {/* Обычная html-гиперссылка для того, чтобы запрос на сервер
                              был выполнен синхронно, и ответ (перенаправление) ожидал не

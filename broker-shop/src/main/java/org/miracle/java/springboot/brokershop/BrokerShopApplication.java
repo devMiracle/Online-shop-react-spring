@@ -145,7 +145,7 @@ public class BrokerShopApplication {
 			categoryDao.save(category5);
 			categoryDao.save(category6);
 
-			Product stockMSFTProduct =
+			Product Product1 =
 					Product.builder()
 							.name("Торт бочка с икрой")
 							.description("Описание")
@@ -154,7 +154,7 @@ public class BrokerShopApplication {
 							.category(category1)
 							.image(cake1ImageString)
 							.build();
-			Product stockORCLProduct =
+			Product Product2 =
 					Product.builder()
 							.name("Торт бочка с икрой")
 							.description("Описание")
@@ -163,7 +163,71 @@ public class BrokerShopApplication {
 							.category(category2)
 							.image(cake2ImageString)
 							.build();
-			Product stockORCLProduct2 =
+			Product Product3 =
+					Product.builder()
+							.name("Торт книга с деньгами")
+							.description("Описание")
+							.price(new BigDecimal(56.12))
+							.quantity(5)
+							.category(category3)
+							.image(cake3ImageString)
+							.build();
+
+			Product Product4 =
+					Product.builder()
+							.name("Торт книга с деньгами")
+							.description("Описание")
+							.price(new BigDecimal(56.12))
+							.quantity(5)
+							.category(category3)
+							.image(cake3ImageString)
+							.build();
+			Product Product5 =
+					Product.builder()
+							.name("Торт книга с деньгами")
+							.description("Описание")
+							.price(new BigDecimal(56.12))
+							.quantity(5)
+							.category(category3)
+							.image(cake3ImageString)
+							.build();
+			Product Product6 =
+					Product.builder()
+							.name("Торт книга с деньгами")
+							.description("Описание")
+							.price(new BigDecimal(56.12))
+							.quantity(5)
+							.category(category3)
+							.image(cake3ImageString)
+							.build();
+			Product Product7 =
+					Product.builder()
+							.name("Торт книга с деньгами")
+							.description("Описание")
+							.price(new BigDecimal(56.12))
+							.quantity(5)
+							.category(category3)
+							.image(cake3ImageString)
+							.build();
+			Product Product8 =
+					Product.builder()
+							.name("Торт книга с деньгами")
+							.description("Описание")
+							.price(new BigDecimal(56.12))
+							.quantity(5)
+							.category(category3)
+							.image(cake3ImageString)
+							.build();
+			Product Product9 =
+					Product.builder()
+							.name("Торт книга с деньгами")
+							.description("Описание")
+							.price(new BigDecimal(56.12))
+							.quantity(5)
+							.category(category3)
+							.image(cake3ImageString)
+							.build();
+			Product Product10 =
 					Product.builder()
 							.name("Торт книга с деньгами")
 							.description("Описание")
@@ -181,9 +245,18 @@ public class BrokerShopApplication {
 //							.category(cryptoCategory)
 //							.image(ethImageString)
 //							.build();
-			productDao.save(stockMSFTProduct);
-			productDao.save(stockORCLProduct);
-			productDao.save(stockORCLProduct2);
+			productDao.save(Product1);
+			productDao.save(Product2);
+			productDao.save(Product3);
+			productDao.save(Product4);
+			productDao.save(Product5);
+			productDao.save(Product6);
+			productDao.save(Product7);
+			productDao.save(Product8);
+			productDao.save(Product9);
+			productDao.save(Product10);
+
+
 			// productDao.save(cryptoEthereumProduct);
 
 

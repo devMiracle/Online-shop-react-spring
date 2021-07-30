@@ -6,7 +6,7 @@ import {
     CardContent,
     CardMedia,
     createStyles,
-    Grid,
+    Grid, Snackbar,
     Theme, Typography,
     WithStyles,
     withStyles
@@ -17,6 +17,9 @@ import {CategoryStore} from "../../stores/CategoryStore";
 import history from "../../history";
 import {CommonStore} from "../../stores/CommonStore";
 import {ExpandLess, ExpandMore} from "@material-ui/icons";
+import {CartStore} from "../../stores/CartStore";
+import {Alert} from "@material-ui/lab";
+import {UserStore} from "../../stores/UserStore";
 
 interface IPreviousSearch {
     searchString: string,
@@ -31,11 +34,15 @@ interface IProps {
 interface IInjectedProps extends IProps , WithStyles<typeof styles> {
     productStore: ProductStore,
     categoryStore: CategoryStore,
-    commonStore: CommonStore
+    commonStore: CommonStore,
+    cartStore: CartStore,
+    userStore: UserStore
 }
 
 interface IState {
     prevSearch: IPreviousSearch,
+    snackBarVisibility: boolean,
+    snackBarText: string,
 }
 
 const styles = (theme: Theme) => createStyles({
@@ -52,22 +59,50 @@ const styles = (theme: Theme) => createStyles({
     displayNone: {
         display: 'none',
     },
+    buttonAddToCart: {
+        fontFamily: "'Comfortaa', cursive",
+        '&:hover': {
+            backgroundColor: 'white',
+            color: '#039be6',
+            border: '1px solid #039be6',
+        },
+        border: '1px solid white',
+        backgroundColor: '#039be6',
+        color: 'white',
+    },
+    CardActions: {
+
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    buttonUnauthorized: {
+        fontFamily: "'Comfortaa', cursive",
+        '&:hover': {
+            backgroundColor: 'white',
+            color: '#a6a6a6',
+            border: '1px solid #a6a6a6',
+        },
+        border: '1px solid white',
+        backgroundColor: '#a6a6a6',
+        color: 'white',
+    },
 })
 
 
-@inject('productStore', 'categoryStore', 'commonStore')
+@inject('productStore', 'categoryStore', 'commonStore', 'cartStore', 'userStore')
 @observer
 class Items extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
+            snackBarVisibility: false,
+            snackBarText: '',
             prevSearch: {
                 searchString: '',
                 orderBy: '',
                 sortingDirection: ''
             },
         }
-
     }
 
     get injected () {
@@ -75,37 +110,25 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
-        console.log('componentDidMount')
         // сразу после монтирования компонента в виртуальный DOM
         // просим у локального хранилища загрузить
         // список моделей категорий и границы цен и количств товаров
         this.injected.categoryStore.fetchCategories()
         // this.injected.productStore.fetchFilteredProducts()
+
         this.injected.productStore.fetchProductPriceBounds()
         this.injected.productStore.fetchProductQuantityBounds()
-
-
-
-
-
-
     }
 
     componentDidUpdate(prevProps: Readonly<IProps>) {
-        console.log('componentDidUpdate')
         // если работа фильтра в данный момент не выполняется - передаем
         // параметры из адресной строки в состояние фильра в локальном хранилище
 
         if (this.injected.productStore.allowFetchFilteredProducts) {
-            console.log('вошли')
             // считывание цепочки параметров из адресной строки
             const windowUrl = window.location.search
-            console.log(windowUrl)
             // вызов конструктора парсера параметров адресной строки
             const params = new URLSearchParams(windowUrl)
-            console.log(params.get('search'))
-            console.log(params.get('orderBy'))
-            console.log(params.get('sortingDirection'))
             // для тех параметров, которые отсутствуют в адресной строке,
             // устанавливаем значения - пустые строки
             const searchString: string = params.get('search') || ''
@@ -119,7 +142,6 @@ class Items extends React.Component<IProps, IState> {
                 || orderBy !== this.state.prevSearch.orderBy
                 || sortingDirection !== this.state.prevSearch.sortingDirection
             ) {
-                console.log('меняем')
                 // новое состояние фильтра (поиска) и сортировки записывается на место старого
                 this.setState({prevSearch: {
                         searchString: searchString,
@@ -145,16 +167,33 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
-        console.log('componentWillUnmount')
+        this.injected.productStore.clearAllCategoryId()
+    }
+
+    handleAddToCart = (e: React.MouseEvent, productId: number) => {
+        this.injected.cartStore.addToCart(productId, () => {
+            this.setState({snackBarText: 'Товар добавлен в корзину'})
+            this.setState({snackBarVisibility: true})
+        })
+    }
+
+    handleSnackBarClose = (event?: React.SyntheticEvent, reason?: string) => {
+        // если причина появления события закрытия уведомления -
+        // это клик вне окошка уведомления -
+        // - не реагируем, чтобы пользователь успевал прочесть текст уведомления
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({snackBarVisibility: false})
     }
 
     render () {
-        console.log('render')
         const { loading } = this.injected.commonStore
 
         const { classes } = this.injected
         const { products } = this.injected.productStore
         const { categories } = this.injected.productStore
+        const { user } = this.injected.userStore
 
         // <div className={classes.displayNone}>{categories}</div>
 
@@ -203,20 +242,32 @@ class Items extends React.Component<IProps, IState> {
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
-                                    <CardActions>
+                                    <CardActions className={classes.CardActions}>
                                         {/*<Button size="small" color="primary">
                                         Share
                                     </Button>*/}
-                                        <Button
+                                        {user ? <Button
+                                            className={classes.buttonAddToCart}
                                             size="small"
-                                            color="primary"
                                             onClick={(e) => {
-                                                // this.handleAddToCart(e, product.id)
+                                                this.handleAddToCart(e, product.id)
                                             }}
                                             // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}
-                                            >
-                                            Add to cart
-                                        </Button>
+                                        >
+                                            Добавить в корзину
+                                            {/*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*/}
+                                        </Button> : <Button
+                                            className={classes.buttonUnauthorized}
+                                            size="small"
+                                            onClick={(e) => {
+                                               history.push('/signin')
+                                            }}
+                                            // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}
+                                        >
+                                            На страницу входа
+                                            {/*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*/}
+                                        </Button>}
+
                                     </CardActions>
                                 </Card>
                             </Grid>
@@ -224,6 +275,13 @@ class Items extends React.Component<IProps, IState> {
                     })}
                 </Grid>
                     : <div>пусто</div>}
+                <Snackbar
+                    open={this.state.snackBarVisibility}
+                    autoHideDuration={6000} onClose={this.handleSnackBarClose}>
+                    <Alert onClose={this.handleSnackBarClose} severity="success">
+                        {this.state.snackBarText}
+                    </Alert>
+                </Snackbar>
             </div>
         )
 

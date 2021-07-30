@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import history from "../../history"
 import {Collapse, createStyles, List, ListItem, ListItemText, MenuItem} from "@material-ui/core"
 import { WithStyles, withStyles, Theme } from "@material-ui/core/styles"
 import ButtonAppBarCollapse from "./ButtonAppBarCollapse"
@@ -45,7 +46,7 @@ const styles = ((theme: Theme) => createStyles({
     },
     buttonBar: {
         // если ширина экрана - мобильная или меньше
-        [theme.breakpoints.down("xs")]: {
+        [theme.breakpoints.down("sm")]: {
             // скрываем настольную версию пунктов меню навигации и аутентификации
             display: "none"
         },
@@ -79,26 +80,50 @@ const styles = ((theme: Theme) => createStyles({
         alignSelf: 'center',
         lineHeight: '23px',
     },
-
     mobileButtonBarItem: {
         textDecoration: 'none',
 
     },
     mobileButtonBarItemActive: {
-        backgroundColor: '#00b58c',
+        // backgroundColor: '#00b58c',
     },
-
     shoppingCart: {
-        marginRight: '10px'
+        // marginRight: '10px',
+        // position: 'absolute',
+        // right: '0',
+        // top: '70px',
+        textAlign: 'center',
     },
     nested: {
+        '& > * > *': {
+            fontFamily: "'Comfortaa', cursive",
+        },
         '&:hover': {
             color: '#039be6',
-            backgroundColor: '#fff',
-
+            background: '#fff',
         },
+        // opacity: '.96',
         flexDirection: 'column',
-        background: '#f3f3f3',
+        background: '#fff',
+        color: '#a6a6a6',
+    },
+    nestedActive: {
+        '& > * > *': {
+            fontFamily: "'Comfortaa', cursive",
+        },
+        '&:hover': {
+            color: '#039be6',
+            background: '#fff',
+        },
+        // opacity: '.96',
+        flexDirection: 'column',
+        background: '#fff',
+        color: '#424242',
+    },
+    nestedAllItems: {
+        '& > div': {
+            borderBottom: '1px dashed #00a2d0',
+        },
     },
     listItem: {
         '&:hover': {
@@ -113,6 +138,7 @@ const styles = ((theme: Theme) => createStyles({
         },
         paddingTop: '10px',
         paddingBottom: '10px',
+        color: '#a6a6a6',
     },
     listItemActive: {
         '&:hover': {
@@ -125,13 +151,12 @@ const styles = ((theme: Theme) => createStyles({
         //alignItems: 'baseline',
         paddingTop: '10px',
         paddingBottom: '10px',
+        color: '#a6a6a6',
     },
-
+    nestedAllActive: {
+        color: '#424242',
+    },
 }))
-
-
-
-
 
 @inject('userStore', 'cartStore', 'categoryStore', 'productStore')
 @observer
@@ -142,8 +167,6 @@ class AppBarCollapse extends Component<IProps, IState> {
             openStateMenu: false
         }
     }
-
-
 
     get injected () {
         return this.props as IInjectedProps
@@ -165,10 +188,30 @@ class AppBarCollapse extends Component<IProps, IState> {
         this.injected.productStore.clearAllCategoryId()
         this.injected.productStore.setFilterDataCategory(categoryId, true)
         this.setState({openStateMenu: !this.state.openStateMenu})
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+        // window.scrollTo(0, 0)
+    }
+
+    handleClickAllItemList = (e: React.MouseEvent) => {
+        this.injected.productStore.clearAllCategoryId()
+        // this.injected.productStore.fetchFilteredProducts()
+        this.injected.productStore.fetchProductPriceBounds()
+        this.injected.productStore.fetchProductQuantityBounds()
+        this.setState({openStateMenu: !this.state.openStateMenu})
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
     }
 
     componentDidMount() {
         this.injected.categoryStore.fetchCategories()
+
+
     }
 
 
@@ -177,6 +220,8 @@ class AppBarCollapse extends Component<IProps, IState> {
         const { classes } = this.injected
         const { routes } = this.props
         const { categories } = this.injected.categoryStore
+        const catId = this.injected.productStore.categories
+
         return (
             <div className={classes.root}>
                 {/* экземпляр мобильного меню */}
@@ -222,27 +267,34 @@ class AppBarCollapse extends Component<IProps, IState> {
                                         <List component="div" disablePadding>
                                                 {categories.map((category: CategoryModel) => {
                                                     return <ListItem button
-                                                                     className={classes.nested}
+                                                                     className={classes.nested + ((catId[0] === category.id) ? ' ' + classes.nestedActive : '')}
                                                                      onClick={(e) => {
                                                                          this.handleClickItemList(e, category.id)
                                                                      }}
                                                         >
                                                             <ListItemText primary={
                                                                 category.name.toUpperCase()
-                                                                // <NavLink
-                                                                //     to={`/items`}
-                                                                //     //to={`/shopping?orderBy=id&sortingDirection=DESC&search=price>:0;price<:5000;quantity>:0;quantity<:100;category:[${category.id}]`}
-                                                                //     //className={classes.buttonBarItem}
-                                                                //     //activeClassName={classes.buttonBarItemActive}
-                                                                //     exact>
-                                                                //     {category.name.toUpperCase()}
-                                                                // </NavLink>
                                                             } />
                                                         </ListItem>
                                                 })}
+                                            <ListItem button
+                                                      className={classes.nested + ' ' + classes.nestedAllItems + ((catId.length === 0 && window.location.pathname.includes('/items')) ? ' ' + classes.nestedAllActive : '')}
+                                                      onClick={(e) => {
+                                                          this.handleClickAllItemList(e)
+                                                      }}
+                                            >
+                                                <ListItemText primary={
+                                                    'Все торты'.toUpperCase()
+                                                } />
+                                            </ListItem>
                                         </List>
                                     </Collapse>
                                 </List>
+                            } else if (route.name.includes('корзина')) {
+                                return <div onClick={this.handleCartIconClick} className={classes.buttonBarItem} style={{display: this.injected.userStore.user ? 'flex' : 'none' }}>
+                                    <ShoppingCartIcon
+                                    /> <div className={classes.shoppingCart}>{this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.</div>
+                                </div>
                             } else {
                                 if (!/^Dashboard[A-z]+$/.test(route.name)) {
                                     return <NavLink
@@ -269,11 +321,11 @@ class AppBarCollapse extends Component<IProps, IState> {
                     }
                     )}
                 </div>
-                <div className={classes.shoppingCart} style={{display: this.injected.userStore.user ? 'inline' : 'none' }}>
-                    <ShoppingCartIcon
-                        onClick={this.handleCartIconClick}
-                    /> {this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.
-                </div>
+                {/*<div className={classes.shoppingCart} style={{display: this.injected.userStore.user ? 'inline' : 'none' }}>*/}
+                {/*    <ShoppingCartIcon*/}
+                {/*        onClick={this.handleCartIconClick}*/}
+                {/*    /> {this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.*/}
+                {/*</div>*/}
             </div>
         )
     }
