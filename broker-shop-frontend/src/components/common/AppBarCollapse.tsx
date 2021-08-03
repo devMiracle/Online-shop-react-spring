@@ -1,5 +1,4 @@
 import React, {Component} from "react"
-import history from "../../history"
 import {Collapse, createStyles, List, ListItem, ListItemText, MenuItem} from "@material-ui/core"
 import { WithStyles, withStyles, Theme } from "@material-ui/core/styles"
 import ButtonAppBarCollapse from "./ButtonAppBarCollapse"
@@ -11,7 +10,7 @@ import {
 } from 'react-router-dom'
 import {
     ExpandLess, ExpandMore,
-    ShoppingCart as ShoppingCartIcon, StarBorder
+    ShoppingCart as ShoppingCartIcon
 } from "@material-ui/icons"
 import {inject, observer} from "mobx-react"
 import {UserStore} from '../../stores/UserStore'
@@ -20,7 +19,6 @@ import {CategoryStore} from '../../stores/CategoryStore'
 import RouteModel from "../../models/RouteModel"
 import CategoryModel from "../../models/CategoryModel";
 import {ProductStore} from "../../stores/ProductStore";
-import Items from "../pages/Items";
 
 interface IProps {
     routes: Array<RouteModel>
@@ -166,6 +164,8 @@ class AppBarCollapse extends Component<IProps, IState> {
         this.state = {
             openStateMenu: false
         }
+
+
     }
 
     get injected () {
@@ -192,14 +192,14 @@ class AppBarCollapse extends Component<IProps, IState> {
             top: 0,
             behavior: "smooth"
         });
-        // window.scrollTo(0, 0)
     }
 
     handleClickAllItemList = (e: React.MouseEvent) => {
         this.injected.productStore.clearAllCategoryId()
-        // this.injected.productStore.fetchFilteredProducts()
+        //this.injected.productStore.fetchProducts()
         this.injected.productStore.fetchProductPriceBounds()
         this.injected.productStore.fetchProductQuantityBounds()
+        this.injected.productStore.fetchFilteredProducts()
         this.setState({openStateMenu: !this.state.openStateMenu})
         window.scrollTo({
             top: 0,
@@ -211,6 +211,22 @@ class AppBarCollapse extends Component<IProps, IState> {
     componentDidMount() {
         this.injected.categoryStore.fetchCategories()
 
+        // const target1 = document.getElementById('targetClick1')
+        // const target2 = document.getElementById('targetClick2')
+        // const target3 = document.getElementById('targetClick3')
+        //
+        // document.addEventListener('click', function (e) {
+        //     //console.log(e.target)
+        //     if (e.target === target1) {
+        //         console.log('click1')
+        //     }
+        //     if (e.target === target2) {
+        //         console.log('click2')
+        //     }
+        //     if (e.target === target3) {
+        //         console.log('click3')
+        //     }
+        // })
 
     }
 
@@ -236,6 +252,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                                 if (!/^Dashboard[A-z]+$/.test(route.name)) {
                                     return <MenuItem key={route.path}>
                                         <NavLink
+                                            key={route.path}
                                             to={route.path}
                                             className={classes.mobileButtonBarItem}
                                             activeClassName={classes.mobileButtonBarItemActive}
@@ -254,8 +271,10 @@ class AppBarCollapse extends Component<IProps, IState> {
                     {routes.map(route => {
                         if (route.visible) {
                             if (route.name.includes('торты')) {
-                                return <List>
+                                return <List
+                                    key={route.path}>
                                     <ListItem
+
                                         className={this.state.openStateMenu ? classes.listItemActive : classes.listItem}
                                         button onClick={this.handleClick}>
                                         <div>
@@ -266,18 +285,22 @@ class AppBarCollapse extends Component<IProps, IState> {
                                     <Collapse in={this.state.openStateMenu} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
                                                 {categories.map((category: CategoryModel) => {
-                                                    return <ListItem button
-                                                                     className={classes.nested + ((catId[0] === category.id) ? ' ' + classes.nestedActive : '')}
-                                                                     onClick={(e) => {
-                                                                         this.handleClickItemList(e, category.id)
-                                                                     }}
+                                                    return <ListItem
+                                                                    key={category.id}
+                                                                    button
+                                                                    className={classes.nested + ((catId[0] === category.id) ? ' ' + classes.nestedActive : '')}
+                                                                    onClick={(e) => {
+                                                                    this.handleClickItemList(e, category.id)
+                                                                    }}
+
                                                         >
                                                             <ListItemText primary={
                                                                 category.name.toUpperCase()
                                                             } />
                                                         </ListItem>
                                                 })}
-                                            <ListItem button
+                                            <ListItem
+                                                      button
                                                       className={classes.nested + ' ' + classes.nestedAllItems + ((catId.length === 0 && window.location.pathname.includes('/items')) ? ' ' + classes.nestedAllActive : '')}
                                                       onClick={(e) => {
                                                           this.handleClickAllItemList(e)
@@ -291,13 +314,16 @@ class AppBarCollapse extends Component<IProps, IState> {
                                     </Collapse>
                                 </List>
                             } else if (route.name.includes('корзина')) {
-                                return <div onClick={this.handleCartIconClick} className={classes.buttonBarItem} style={{display: this.injected.userStore.user ? 'flex' : 'none' }}>
+                                return <div
+                                    key={route.path}
+                                    onClick={this.handleCartIconClick} className={classes.buttonBarItem} style={{display: this.injected.userStore.user ? 'flex' : 'none' }}>
                                     <ShoppingCartIcon
                                     /> <div className={classes.shoppingCart}>{this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.</div>
                                 </div>
                             } else {
                                 if (!/^Dashboard[A-z]+$/.test(route.name)) {
                                     return <NavLink
+
                                         key={route.path}
                                         to={route.path}
                                         // можно указать в двойных кавычках имя
@@ -321,11 +347,6 @@ class AppBarCollapse extends Component<IProps, IState> {
                     }
                     )}
                 </div>
-                {/*<div className={classes.shoppingCart} style={{display: this.injected.userStore.user ? 'inline' : 'none' }}>*/}
-                {/*    <ShoppingCartIcon*/}
-                {/*        onClick={this.handleCartIconClick}*/}
-                {/*    /> {this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.*/}
-                {/*</div>*/}
             </div>
         )
     }

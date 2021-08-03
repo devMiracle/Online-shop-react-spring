@@ -1,12 +1,13 @@
 import React from 'react'
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
-
+import {inject, observer} from "mobx-react";
+import {CommonStore} from "../../stores/CommonStore";
 interface IProps {
 
 }
 
 interface IInjectedProps extends IProps , WithStyles<typeof styles> {
-
+    commonStore: CommonStore,
 }
 
 interface IState {
@@ -20,6 +21,9 @@ const styles = (theme: Theme) => createStyles({
 
 })
 
+
+@inject('commonStore')
+@observer
 class Template extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
@@ -37,6 +41,7 @@ class Template extends React.Component<IProps, IState> {
     }
 
     render () {
+        const { loading } = this.injected.commonStore
         const { classes } = this.injected
         return (
             <div className={classes.root}>

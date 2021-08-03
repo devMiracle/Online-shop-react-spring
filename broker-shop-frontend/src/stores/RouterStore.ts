@@ -7,8 +7,6 @@ import About from "../components/pages/About"
 import Shopping from "../components/pages/Shopping"
 import SignIn from "../components/pages/SignIn"
 import SignUp from "../components/pages/SignUp"
-import DashboardCategories from "../components/pages/admin/DashboardCategories"
-import DashboardProducts from "../components/pages/admin/DashboardProducts"
 import Dashboard from "../components/pages/admin/Dashboard"
 import Categories from "../components/pages/Categories"
 import Sections from "../components/pages/Sections"
@@ -17,6 +15,7 @@ import Cart from "../components/pages/Cart"
 import Confidentiality from '../components/pages/Confidentiality'
 import Return from "../components/pages/Return"
 import Items from "../components/pages/Items";
+import Item from "../components/pages/Item";
 class RouterStore {
 
     // список моделей роутов для гостя
@@ -31,7 +30,8 @@ class RouterStore {
         { path: '/about', name: 'о нас', visible: true, Component: About },
         { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/signin', name: 'вход', visible: false, Component: SignIn },
-        { path: '/signup', name: 'регистрация', visible: false, Component: SignUp }
+        { path: '/signup', name: 'регистрация', visible: false, Component: SignUp },
+        { path: '/item', name: 'товар', visible: false, Component: Item },
     ]
 
     // список моделей роутов для аунтентифицированного пользователя
@@ -45,7 +45,8 @@ class RouterStore {
         { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
         { path: '/about', name: 'о нас', visible: true, Component: About },
         { path: '/cart', name: 'корзина', visible: true, Component: Cart },
-        { path: '/auth:out', name: 'выйти', visible: true, Component: Categories }
+        { path: '/auth:out', name: 'выйти', visible: true, Component: Categories },
+        { path: '/item', name: 'товар', visible: false, Component: Item },
     ]
 
     // список моделей роутов для аунтентифицированного пользователя с ролью админ
@@ -60,7 +61,8 @@ class RouterStore {
         { path: '/about', name: 'о нас', visible: true, Component: About },
         { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/admin', name: 'Dashboard' , visible: true, Component: Dashboard },
-        { path: '/auth:out', name: 'выйти', visible: true, Component: Categories }
+        { path: '/auth:out', name: 'выйти', visible: true, Component: Categories },
+        { path: '/item', name: 'товар', visible: false, Component: Item },
     ]
 
 

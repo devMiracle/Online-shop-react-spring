@@ -148,9 +148,9 @@ public class BrokerShopApplication {
 			Product Product1 =
 					Product.builder()
 							.name("Торт бочка с икрой")
-							.description("Описание")
+							.description("Торт выполнен в виде бочки")
 							.price(new BigDecimal(203.92))
-							.quantity(2)
+							.quantity(1)
 							.category(category1)
 							.image(cake1ImageString)
 							.build();
@@ -159,7 +159,7 @@ public class BrokerShopApplication {
 							.name("Торт бочка с икрой")
 							.description("Описание")
 							.price(new BigDecimal(55.82))
-							.quantity(4)
+							.quantity(1)
 							.category(category2)
 							.image(cake2ImageString)
 							.build();
@@ -168,7 +168,7 @@ public class BrokerShopApplication {
 							.name("Торт книга с деньгами")
 							.description("Описание")
 							.price(new BigDecimal(56.12))
-							.quantity(5)
+							.quantity(1)
 							.category(category3)
 							.image(cake3ImageString)
 							.build();
@@ -178,7 +178,7 @@ public class BrokerShopApplication {
 							.name("Торт книга с деньгами")
 							.description("Описание")
 							.price(new BigDecimal(56.12))
-							.quantity(5)
+							.quantity(1)
 							.category(category3)
 							.image(cake3ImageString)
 							.build();
@@ -187,7 +187,7 @@ public class BrokerShopApplication {
 							.name("Торт книга с деньгами")
 							.description("Описание")
 							.price(new BigDecimal(56.12))
-							.quantity(5)
+							.quantity(1)
 							.category(category3)
 							.image(cake3ImageString)
 							.build();
@@ -196,7 +196,7 @@ public class BrokerShopApplication {
 							.name("Торт книга с деньгами")
 							.description("Описание")
 							.price(new BigDecimal(56.12))
-							.quantity(5)
+							.quantity(1)
 							.category(category3)
 							.image(cake3ImageString)
 							.build();
@@ -205,7 +205,7 @@ public class BrokerShopApplication {
 							.name("Торт книга с деньгами")
 							.description("Описание")
 							.price(new BigDecimal(56.12))
-							.quantity(5)
+							.quantity(1)
 							.category(category3)
 							.image(cake3ImageString)
 							.build();
@@ -214,7 +214,7 @@ public class BrokerShopApplication {
 							.name("Торт книга с деньгами")
 							.description("Описание")
 							.price(new BigDecimal(56.12))
-							.quantity(5)
+							.quantity(1)
 							.category(category3)
 							.image(cake3ImageString)
 							.build();
@@ -223,7 +223,7 @@ public class BrokerShopApplication {
 							.name("Торт книга с деньгами")
 							.description("Описание")
 							.price(new BigDecimal(56.12))
-							.quantity(5)
+							.quantity(1)
 							.category(category3)
 							.image(cake3ImageString)
 							.build();
@@ -232,7 +232,7 @@ public class BrokerShopApplication {
 							.name("Торт книга с деньгами")
 							.description("Описание")
 							.price(new BigDecimal(56.12))
-							.quantity(5)
+							.quantity(1)
 							.category(category3)
 							.image(cake3ImageString)
 							.build();

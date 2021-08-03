@@ -41,6 +41,7 @@ public interface ProductDao extends JpaRepository<Product, Long>,
 
     Integer countProductsByCategory (Category category);
 
+    Product findProductByCategoryId (Long id);
 
     // добавление поддержки запросов query dsl
     // (предварительно нужно сгенерировать тип QProduct командой

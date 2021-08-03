@@ -10,6 +10,7 @@ public interface IProductService {
     ResponseModel create(ProductModel productModel);
     ResponseModel update(ProductModel productModel);
     ResponseModel getAll();
+    ResponseModel getOne(Long id);
     ResponseModel delete(Long id);
     ResponseModel getFiltered(ProductFilterModel filter);
     ResponseModel search(ProductSearchModel productSearchModel);

@@ -16,10 +16,10 @@ import {ProductStore} from "../../stores/ProductStore";
 import {CategoryStore} from "../../stores/CategoryStore";
 import history from "../../history";
 import {CommonStore} from "../../stores/CommonStore";
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
 import {CartStore} from "../../stores/CartStore";
 import {Alert} from "@material-ui/lab";
 import {UserStore} from "../../stores/UserStore";
+import History from "../../history";
 
 interface IPreviousSearch {
     searchString: string,
@@ -76,15 +76,17 @@ const styles = (theme: Theme) => createStyles({
         justifyContent: 'center',
     },
     buttonUnauthorized: {
+        display: 'inline-flex',
         fontFamily: "'Comfortaa', cursive",
         '&:hover': {
-            backgroundColor: 'white',
-            color: '#a6a6a6',
-            border: '1px solid #a6a6a6',
+            // backgroundColor: 'white',
+            color: '#039be6',
+            // border: '1px solid #a6a6a6',
+            cursor: 'pointer',
         },
-        border: '1px solid white',
-        backgroundColor: '#a6a6a6',
-        color: 'white',
+        // border: '1px solid white',
+        // backgroundColor: '#a6a6a6',
+        color: '#a6a6a6',
     },
 })
 
@@ -110,14 +112,33 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
-        // сразу после монтирования компонента в виртуальный DOM
-        // просим у локального хранилища загрузить
-        // список моделей категорий и границы цен и количств товаров
-        this.injected.categoryStore.fetchCategories()
-        // this.injected.productStore.fetchFilteredProducts()
+        const windowUrl = window.location.search
+        const params = new URLSearchParams(windowUrl)
+        const searchString: string = params.get('search') || ''
+        if (searchString) {
+            const triggerSearchString = searchString.indexOf('null')
+            if (triggerSearchString) {
+                this.injected.productStore.fetchProductPriceBounds()
+                this.injected.productStore.fetchProductQuantityBounds()
+            }
+            //this.injected.productStore.setFilterDataSearchString(searchString)
 
-        this.injected.productStore.fetchProductPriceBounds()
-        this.injected.productStore.fetchProductQuantityBounds()
+            if (searchString.includes(';category:[')) {
+                const categoryId = searchString.substr(searchString.indexOf(';category:[') + 11,1)
+                 this.injected.productStore.setCategoryId(parseInt(categoryId))
+            } else {
+                //this.injected.productStore.fetchFilteredProducts()
+            }
+        }
+
+
+
+
+
+
+
+
+
     }
 
     componentDidUpdate(prevProps: Readonly<IProps>) {
@@ -167,7 +188,7 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
-        this.injected.productStore.clearAllCategoryId()
+        //this.injected.productStore.clearAllCategoryId()
     }
 
     handleAddToCart = (e: React.MouseEvent, productId: number) => {
@@ -187,12 +208,19 @@ class Items extends React.Component<IProps, IState> {
         this.setState({snackBarVisibility: false})
     }
 
+    handlerClickOnCardActionArea = (event: React.MouseEvent, id: number) => {
+        this.injected.categoryStore.setCurrentCategoryId(id)
+        this.injected.productStore.setCurrentProductId(id)
+        History.push(`item?id=${id}`)
+    }
+
+
     render () {
-        const { loading } = this.injected.commonStore
 
         const { classes } = this.injected
         const { products } = this.injected.productStore
-        const { categories } = this.injected.productStore
+        // eslint-disable-next-line
+        const { categories } = this.injected.productStore // DONT DELETE
         const { user } = this.injected.userStore
 
         // <div className={classes.displayNone}>{categories}</div>
@@ -214,6 +242,7 @@ class Items extends React.Component<IProps, IState> {
                     {products.map(product => {
                         return (
                             <Grid
+                                key={'c' + product.id}
                                 container
                                 direction={'row'}
                                 justify={'center'}
@@ -227,7 +256,10 @@ class Items extends React.Component<IProps, IState> {
                                 spacing={0}
                             >
                                 <Card className={classes.productCard}>
-                                    <CardActionArea>
+                                    <CardActionArea
+                                    onClick={(e) => this.handlerClickOnCardActionArea(e, product.id)}
+
+                                    >
                                         <CardMedia
                                             className={classes.productCardImage}
                                             image={product.image}
@@ -256,17 +288,33 @@ class Items extends React.Component<IProps, IState> {
                                         >
                                             Добавить в корзину
                                             {/*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*/}
-                                        </Button> : <Button
-                                            className={classes.buttonUnauthorized}
-                                            size="small"
-                                            onClick={(e) => {
-                                               history.push('/signin')
-                                            }}
-                                            // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}
-                                        >
-                                            На страницу входа
-                                            {/*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*/}
-                                        </Button>}
+                                        </Button> :
+                                        <div>
+                                            <div>
+                                                Заказывать могут только авторизованые пользователи.
+                                            </div>
+                                            <div
+                                                className={classes.buttonUnauthorized}
+                                                onClick={(e) => {
+                                                    history.push('/signin')
+                                                }}
+                                                // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}
+                                            >
+                                                <div>Вход</div>
+                                                {/*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*/}
+                                            </div>
+                                            {' / '}
+                                            <div
+                                                className={classes.buttonUnauthorized}
+                                                onClick={(e) => {
+                                                    history.push('/signup')
+                                                }}
+                                                // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}
+                                            >
+                                                <div>Регистрация</div>
+                                                {/*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*/}
+                                            </div>
+                                        </div>}
 
                                     </CardActions>
                                 </Card>

@@ -1,4 +1,4 @@
-import {action, makeObservable, observable, reaction} from 'mobx'
+import {action, makeObservable, observable} from 'mobx'
 import history from "../history";
 import Product from '../models/ProductModel'
 import commonStore from './CommonStore'
@@ -37,7 +37,8 @@ class ProductStore {
     @observable quantityToBound: number = 1000000
     // цельная строка - значение url-параметра search
     @observable searchString: string = ''
-
+    // сторка для определенного тавара
+    @observable urlItemString: string = ''
     constructor() {
         makeObservable(this)
     }
@@ -60,6 +61,10 @@ class ProductStore {
                             ${(this.categories && this.categories.length > 0) ? ';category:' + JSON.stringify(this.categories) : ''}`
                 .replace(/\s/g, '')
         })
+    }
+
+    @action setUrlItemString(str: string) {
+        this.urlItemString = str
     }
 
     @action setCurrentProductId(id: number | null) {
@@ -99,7 +104,41 @@ class ProductStore {
     @action setProductImage(image: string) {
         this.currentProductImage = image
     }
+    @action fetchProductById(id: number) {
+        commonStore.clearError()
+        commonStore.setLoading(true)
+        fetch(commonStore.basename + `/products/${id}`)
+            .then((response) => {
+                return response.json()
+            }).then(responseModel => {
+            if (responseModel) {
+                if (responseModel.status === 'success') {
+                    // полученный объект модели может содержать
+                    // свойства, значения которых закодированы из UTF-8 в ASCII,
+                    // поэтому производим полное раскодирование:
+                    // ts-object конвертируем в json-string (stringify),
+                    // декодируем (decodeURIComponent)
+                    // json-string конвертируем в  ts-object (parse)
+                    this.products = Array<Product>(JSON.parse(
+                        decodeURIComponent(
+                            JSON.stringify(responseModel.data)
+                                .replace(/(%2E)/ig, '%20')
+                        )
+                    ))
 
+                    console.log(this.products)
+                } else if (responseModel.status === 'fail') {
+                    commonStore.setError(responseModel.message)
+                }
+            }
+        }).catch((error) => {
+            commonStore.setError(error.message)
+            throw error
+        }).finally(action(() => {
+            commonStore.setLoading(false)
+            //this.changeShoppingUrlParams()
+        }))
+    }
     @action fetchProducts() {
         commonStore.clearError()
         commonStore.setLoading(true)
@@ -131,6 +170,7 @@ class ProductStore {
             throw error
         }).finally(action(() => {
             commonStore.setLoading(false)
+            //this.changeShoppingUrlParams()
         }))
     }
 
@@ -339,6 +379,7 @@ class ProductStore {
     // в состояние локального хранилища
     @action setFilterDataSearchString(searchString: string) {
         this.searchString = searchString
+        this.changeShoppingUrlParams()
     }
     @action setOrderBy(fieldName: string) {
         this.orderBy = fieldName
@@ -417,6 +458,9 @@ class ProductStore {
         // для фильтрации)
 
         this.changeShoppingUrlParams()
+    }
+    @action setCategoryId(id: number) {
+        this.categories = [id]
     }
     @action clearAllCategoryId() {
         this.categories = []

@@ -1,14 +1,7 @@
 import React from 'react'
 import {NavLink} from "react-router-dom";
-import {Button, createStyles, Grid, Theme, WithStyles, withStyles} from '@material-ui/core'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {
-    faFacebookSquare as facebook,
-    faInstagramSquare as instagram,
-    faVk as vk
-} from "@fortawesome/free-brands-svg-icons";
+import {createStyles, Grid, Theme, WithStyles, withStyles} from '@material-ui/core'
 import {UserStore} from "../../stores/UserStore";
-import {observable} from "mobx";
 import {inject, observer} from "mobx-react";
 
 

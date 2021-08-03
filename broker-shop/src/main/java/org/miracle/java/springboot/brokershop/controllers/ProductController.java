@@ -23,6 +23,11 @@ public class ProductController {
         this.service = productService;
     }
 
+    @GetMapping("/products/{id}")
+    public ResponseEntity<ResponseModel> getOne(@PathVariable Long id) {
+        return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
+    }
+
     @GetMapping("/products")
     public ResponseEntity<ResponseModel> getAll() {
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);

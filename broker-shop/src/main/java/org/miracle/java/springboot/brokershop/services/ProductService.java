@@ -140,6 +140,30 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public ResponseModel getOne(Long id) {
+        Product product = productDao.findProductByCategoryId (id);
+        ProductModel productm = ProductModel.builder()
+                .id(product.getId())
+                .title(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
+                .image(product.getImage())
+                .category(
+                        CategoryModel.builder()
+                                .id(product.getCategory().getId())
+                                .name(product.getCategory().getName())
+                                .build()
+                )
+                .build();
+
+        return ResponseModel.builder()
+                .status(ResponseModel.SUCCESS_STATUS)
+                .data(productm)
+                .build();
+    }
+
+    @Override
     public ResponseModel delete(Long id) {
         Optional<Product> productOptional = productDao.findById(id);
         if (productOptional.isPresent()) {

@@ -10,6 +10,10 @@ body {
   /*'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',*/
   /*sans-serif;*/
 
+
+
+
+
   @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
   font-family: 'Comfortaa', cursive;
 
@@ -18,7 +22,7 @@ body {
 
   /*fontFamily: 'sans-serif',*/
 
-
+  color: #303030;
 
 }
 

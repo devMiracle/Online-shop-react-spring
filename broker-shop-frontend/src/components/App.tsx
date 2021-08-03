@@ -7,31 +7,26 @@ import {CartStore} from '../stores/CartStore'
 import {
     NavLink
 } from 'react-router-dom'
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import {
     Close as CloseIcon,
     ExposurePlus1 as ExposurePlus1Icon,
     ExposureNeg1 as ExposureNeg1Icon,
-    Clear as ClearIcon, StarBorder
+    Clear as ClearIcon
 } from '@material-ui/icons'
 import Fab from '@material-ui/core/Fab';
 import {inject, observer} from "mobx-react"
 import {Alert, Color} from "@material-ui/lab"
 import {
-    AppBar, Button, CircularProgress, Collapse,
+    AppBar, Button, CircularProgress,
     Container,
-    createStyles, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText,
+    createStyles, Grid, IconButton,
     Modal, Snackbar,
     Theme,
     Toolbar,
-    Typography,
     withStyles,
     WithStyles
 } from "@material-ui/core"
-import CakeIcon from '@material-ui/icons/Cake';
 import history from "../history"
 import {CSSTransition} from "react-transition-group";
 import AppBarCollapse from "./common/AppBarCollapse";
@@ -311,7 +306,7 @@ class App extends React.Component<IProps, IState> {
 
                                     <img className={classes.cakeIcon} src="/images/icon.png" alt="cake logo"/>
 
-                                <div className={classes.mainTitle}>Тортодельня</div>
+                                <div className={classes.mainTitle}>Тортодел</div>
                             </NavLink>
                         </div>
 
