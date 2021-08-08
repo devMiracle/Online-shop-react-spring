@@ -39,6 +39,7 @@ import {faInstagram} from '@fortawesome/free-brands-svg-icons'
 import {faPhone, faMapMarkerAlt, faEnvelope,} from '@fortawesome/free-solid-svg-icons'
 import Header from "./common/Header";
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import ModalDialog from "./common/ModalDialog";
 
 library.add(faInstagram, faPhone, faMapMarkerAlt, faEnvelope)
 
@@ -345,18 +346,28 @@ class App extends React.Component<IProps, IState> {
                 </ScrollTop>
                 {/* Окно, которое появляется только при наличии содержательного значения
                 в наблюдаемом свойстве error */}
-                <Modal
-                    // Неявное приведение типов из String в Boolean
-                    open={ !!this.injected.commonStore.error }
-                    onClose={ this.handleErrorModalClose }
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                    className={classes.modal}
-                >
-                    <div id='errorBlock' className={classes.modalContent}>
-                        {this.injected.commonStore.error}
-                    </div>
-                </Modal>
+                {/*<Modal*/}
+                {/*    // Неявное приведение типов из String в Boolean*/}
+                {/*    open={ !!this.injected.commonStore.error }*/}
+                {/*    onClose={ this.handleErrorModalClose }*/}
+                {/*    aria-labelledby="simple-modal-title"*/}
+                {/*    aria-describedby="simple-modal-description"*/}
+                {/*    className={classes.modal}*/}
+                {/*>*/}
+                {/*    <div id='errorBlock' className={classes.modalContent}>*/}
+                {/*        {this.injected.commonStore.error}*/}
+                {/*    </div>*/}
+                {/*</Modal>*/}
+
+                <ModalDialog/>
+
+
+
+
+
+
+
+
                 <Modal
                     open={ this.injected.cartStore.cartShown }
                     aria-labelledby="simple-modal-title"

@@ -210,7 +210,6 @@ class AppBarCollapse extends Component<IProps, IState> {
 
     componentDidMount() {
         this.injected.categoryStore.fetchCategories()
-
         // const target1 = document.getElementById('targetClick1')
         // const target2 = document.getElementById('targetClick2')
         // const target3 = document.getElementById('targetClick3')
@@ -292,7 +291,6 @@ class AppBarCollapse extends Component<IProps, IState> {
                                                                     onClick={(e) => {
                                                                     this.handleClickItemList(e, category.id)
                                                                     }}
-
                                                         >
                                                             <ListItemText primary={
                                                                 category.name.toUpperCase()

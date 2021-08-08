@@ -16,6 +16,7 @@ import Confidentiality from '../components/pages/Confidentiality'
 import Return from "../components/pages/Return"
 import Items from "../components/pages/Items";
 import Item from "../components/pages/Item";
+import categoryStore from './CartStore'
 class RouterStore {
 
     // список моделей роутов для гостя
@@ -142,13 +143,15 @@ class RouterStore {
                 }
 
                 // выполняем переход на раздел 'Главная'
-                history.replace('/')
+                categoryStore.fetchCartItems()
+                //history.replace('/')
             } else {
                 // если пользователь не установлен -
                 // меняем текущий список моделей роутов
                 // на список моделей роутов для пользователя-гостя
                 this.setAnonymousRoutes()
                 // выполняем переход на раздел 'Вход'
+                categoryStore.fetchCartItems()
                 history.replace('/')
             }
         }

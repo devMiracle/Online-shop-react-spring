@@ -51,7 +51,7 @@ const styles = (theme: Theme) => createStyles({
     },
     productCard: {
         margin: '15px 0',
-        maxWidth: 300
+        width: 300
     },
     productCardImage: {
         height: 300
@@ -71,7 +71,6 @@ const styles = (theme: Theme) => createStyles({
         color: 'white',
     },
     CardActions: {
-
         display: 'flex',
         justifyContent: 'center',
     },
@@ -88,6 +87,10 @@ const styles = (theme: Theme) => createStyles({
         // backgroundColor: '#a6a6a6',
         color: '#a6a6a6',
     },
+    titleText: {
+        fontFamily: "'Comfortaa', cursive",
+        fontSize: 'large',
+    }
 })
 
 
@@ -127,18 +130,9 @@ class Items extends React.Component<IProps, IState> {
                 const categoryId = searchString.substr(searchString.indexOf(';category:[') + 11,1)
                  this.injected.productStore.setCategoryId(parseInt(categoryId))
             } else {
-                //this.injected.productStore.fetchFilteredProducts()
+                this.injected.productStore.fetchFilteredProducts()
             }
         }
-
-
-
-
-
-
-
-
-
     }
 
     componentDidUpdate(prevProps: Readonly<IProps>) {
@@ -204,6 +198,7 @@ class Items extends React.Component<IProps, IState> {
         // - не реагируем, чтобы пользователь успевал прочесть текст уведомления
         if (reason === 'clickaway') {
             return;
+
         }
         this.setState({snackBarVisibility: false})
     }
@@ -219,9 +214,11 @@ class Items extends React.Component<IProps, IState> {
 
         const { classes } = this.injected
         const { products } = this.injected.productStore
+
         // eslint-disable-next-line
         const { categories } = this.injected.productStore // DONT DELETE
         const { user } = this.injected.userStore
+
 
         // <div className={classes.displayNone}>{categories}</div>
 
@@ -266,57 +263,59 @@ class Items extends React.Component<IProps, IState> {
                                             title={product.title}
                                         />
                                         <CardContent>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {product.title} - <strong>{product.price} грн.</strong>
-                                            </Typography>
-                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                {product.description}
-                                            </Typography>
+                                            <div className={classes.titleText}>
+                                                {product.title}
+                                            </div>
+                                                {/*<strong>{product.price} грн.</strong>*/}
+
+                                            {/*<Typography variant="body2" color="textSecondary" component="p">*/}
+                                            {/*    {product.description}*/}
+                                            {/*</Typography>*/}
                                         </CardContent>
                                     </CardActionArea>
-                                    <CardActions className={classes.CardActions}>
-                                        {/*<Button size="small" color="primary">
-                                        Share
-                                    </Button>*/}
-                                        {user ? <Button
-                                            className={classes.buttonAddToCart}
-                                            size="small"
-                                            onClick={(e) => {
-                                                this.handleAddToCart(e, product.id)
-                                            }}
-                                            // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}
-                                        >
-                                            Добавить в корзину
-                                            {/*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*/}
-                                        </Button> :
-                                        <div>
-                                            <div>
-                                                Заказывать могут только авторизованые пользователи.
-                                            </div>
-                                            <div
-                                                className={classes.buttonUnauthorized}
-                                                onClick={(e) => {
-                                                    history.push('/signin')
-                                                }}
-                                                // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}
-                                            >
-                                                <div>Вход</div>
-                                                {/*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*/}
-                                            </div>
-                                            {' / '}
-                                            <div
-                                                className={classes.buttonUnauthorized}
-                                                onClick={(e) => {
-                                                    history.push('/signup')
-                                                }}
-                                                // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}
-                                            >
-                                                <div>Регистрация</div>
-                                                {/*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*/}
-                                            </div>
-                                        </div>}
+                                    {/*<CardActions className={classes.CardActions}>*/}
+                                    {/*    /!*<Button size="small" color="primary">*/}
+                                    {/*    Share*/}
+                                    {/*</Button>*!/*/}
+                                    {/*    {user ? <Button*/}
+                                    {/*        className={classes.buttonAddToCart}*/}
+                                    {/*        size="small"*/}
+                                    {/*        onClick={(e) => {*/}
+                                    {/*            this.handleAddToCart(e, product.id)*/}
+                                    {/*        }}*/}
+                                    {/*        // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}*/}
+                                    {/*    >*/}
+                                    {/*        Добавить в корзину*/}
+                                    {/*        /!*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*!/*/}
+                                    {/*    </Button> :*/}
+                                    {/*    <div>*/}
+                                    {/*        <div>*/}
+                                    {/*            Заказывать могут только авторизованые пользователи.*/}
+                                    {/*        </div>*/}
+                                    {/*        <div*/}
+                                    {/*            className={classes.buttonUnauthorized}*/}
+                                    {/*            onClick={(e) => {*/}
+                                    {/*                history.push('/signin')*/}
+                                    {/*            }}*/}
+                                    {/*            // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}*/}
+                                    {/*        >*/}
+                                    {/*            <div>Вход</div>*/}
+                                    {/*            /!*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*!/*/}
+                                    {/*        </div>*/}
+                                    {/*        {' / '}*/}
+                                    {/*        <div*/}
+                                    {/*            className={classes.buttonUnauthorized}*/}
+                                    {/*            onClick={(e) => {*/}
+                                    {/*                history.push('/signup')*/}
+                                    {/*            }}*/}
+                                    {/*            // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}*/}
+                                    {/*        >*/}
+                                    {/*            <div>Регистрация</div>*/}
+                                    {/*            /!*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*!/*/}
+                                    {/*        </div>*/}
+                                    {/*    </div>}*/}
 
-                                    </CardActions>
+                                    {/*</CardActions>*/}
                                 </Card>
                             </Grid>
                         )

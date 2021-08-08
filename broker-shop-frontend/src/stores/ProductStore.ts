@@ -1,6 +1,7 @@
 import {action, makeObservable, observable} from 'mobx'
 import history from "../history";
 import Product from '../models/ProductModel'
+import ProductModelCustom from '../models/ProductModelCustom'
 import commonStore from './CommonStore'
 
 class ProductStore {
@@ -14,6 +15,7 @@ class ProductStore {
 
     @observable currentProductId: number | null = null
     @observable products: Array<Product> = []
+    @observable oneProduct: ProductModelCustom | null = null
     @observable title: string = ''
     @observable description: string = ''
     @observable quantity: number = 0
@@ -107,7 +109,7 @@ class ProductStore {
     @action fetchProductById(id: number) {
         commonStore.clearError()
         commonStore.setLoading(true)
-        fetch(commonStore.basename + `/products/${id}`)
+        fetch(commonStore.basename + `/product/${id}`)
             .then((response) => {
                 return response.json()
             }).then(responseModel => {
@@ -119,12 +121,12 @@ class ProductStore {
                     // ts-object конвертируем в json-string (stringify),
                     // декодируем (decodeURIComponent)
                     // json-string конвертируем в  ts-object (parse)
-                    this.products = Array<Product>(JSON.parse(
+                    this.oneProduct = JSON.parse(
                         decodeURIComponent(
                             JSON.stringify(responseModel.data)
                                 .replace(/(%2E)/ig, '%20')
                         )
-                    ))
+                    )
 
                     console.log(this.products)
                 } else if (responseModel.status === 'fail') {
@@ -136,7 +138,6 @@ class ProductStore {
             throw error
         }).finally(action(() => {
             commonStore.setLoading(false)
-            //this.changeShoppingUrlParams()
         }))
     }
     @action fetchProducts() {

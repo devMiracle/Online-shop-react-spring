@@ -141,7 +141,7 @@ public class ProductService implements IProductService {
 
     @Override
     public ResponseModel getOne(Long id) {
-        Product product = productDao.findProductByCategoryId (id);
+        Product product = productDao.findProductById (id);
         ProductModel productm = ProductModel.builder()
                 .id(product.getId())
                 .title(product.getName())
@@ -156,7 +156,6 @@ public class ProductService implements IProductService {
                                 .build()
                 )
                 .build();
-
         return ResponseModel.builder()
                 .status(ResponseModel.SUCCESS_STATUS)
                 .data(productm)

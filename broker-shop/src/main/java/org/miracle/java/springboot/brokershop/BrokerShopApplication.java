@@ -37,25 +37,25 @@ public class BrokerShopApplication {
 
 
 	}
-	@Value("${cake.image.one}")
-	private String cake1ImageString;
-	@Value("${cake.image.two}")
-	private String cake2ImageString;
-	@Value("${cake.image.three}")
-	private String cake3ImageString;
+	@Value("${cake.image.1}")
+	private String cakeImageString1;
+	@Value("${cake.image.2}")
+	private String cakeImageString2;
+	@Value("${cake.image.3}")
+	private String cakeImageString3;
 
-	@Value("${cake.category.image.1}")
-	private String cake1CategoryImageString;
-	@Value("${cake.category.image.2}")
-	private String cake2CategoryImageString;
-	@Value("${cake.category.image.3}")
-	private String cake3CategoryImageString;
-	@Value("${cake.category.image.4}")
-	private String cake4CategoryImageString;
-	@Value("${cake.category.image.5}")
-	private String cake5CategoryImageString;
-	@Value("${cake.category.image.6}")
-	private String cake6CategoryImageString;
+//	@Value("${cake.category.image.1}")
+//	private String cake1CategoryImageString;
+//	@Value("${cake.category.image.2}")
+//	private String cake2CategoryImageString;
+//	@Value("${cake.category.image.3}")
+//	private String cake3CategoryImageString;
+//	@Value("${cake.category.image.4}")
+//	private String cake4CategoryImageString;
+//	@Value("${cake.category.image.5}")
+//	private String cake5CategoryImageString;
+//	@Value("${cake.category.image.6}")
+//	private String cake6CategoryImageString;
 
 
 
@@ -115,27 +115,27 @@ public class BrokerShopApplication {
 			);
 			Category category1 = Category.builder()
 					.name("детские")
-					.image(cake1CategoryImageString)
+					//.image(cake1CategoryImageString)
 					.build();
 			Category category2 = Category.builder()
 					.name("праздничные")
-					.image(cake2CategoryImageString)
+					//.image(cake2CategoryImageString)
 					.build();
 			Category category3 = Category.builder()
 					.name("свадебные")
-					.image(cake3CategoryImageString)
+					//.image(cake3CategoryImageString)
 					.build();
 			Category category4 = Category.builder()
 					.name("корпоратив")
-					.image(cake4CategoryImageString)
+					//.image(cake4CategoryImageString)
 					.build();
 			Category category5 = Category.builder()
 					.name("тематические")
-					.image(cake5CategoryImageString)
+					//.image(cake5CategoryImageString)
 					.build();
 			Category category6 = Category.builder()
 					.name("креативные")
-					.image(cake6CategoryImageString)
+					//.image(cake6CategoryImageString)
 					.build();
 
 			categoryDao.save(category1);
@@ -152,7 +152,7 @@ public class BrokerShopApplication {
 							.price(new BigDecimal(203.92))
 							.quantity(1)
 							.category(category1)
-							.image(cake1ImageString)
+							.image(cakeImageString1)
 							.build();
 			Product Product2 =
 					Product.builder()
@@ -161,16 +161,16 @@ public class BrokerShopApplication {
 							.price(new BigDecimal(55.82))
 							.quantity(1)
 							.category(category2)
-							.image(cake2ImageString)
+							.image(cakeImageString2)
 							.build();
 			Product Product3 =
 					Product.builder()
 							.name("Торт книга с деньгами")
-							.description("Описание")
+							.description("Торт выполнен в виде мешка с деньгами является полностью съедобным. При покраске используются пищевые красители. Такой подарок задаст праздничное настроение и кучу положительных эмоций!")
 							.price(new BigDecimal(56.12))
 							.quantity(1)
 							.category(category3)
-							.image(cake3ImageString)
+							.image(cakeImageString3)
 							.build();
 
 			Product Product4 =
@@ -180,7 +180,7 @@ public class BrokerShopApplication {
 							.price(new BigDecimal(56.12))
 							.quantity(1)
 							.category(category3)
-							.image(cake3ImageString)
+							.image(cakeImageString1)
 							.build();
 			Product Product5 =
 					Product.builder()
@@ -189,7 +189,7 @@ public class BrokerShopApplication {
 							.price(new BigDecimal(56.12))
 							.quantity(1)
 							.category(category3)
-							.image(cake3ImageString)
+							.image(cakeImageString2)
 							.build();
 			Product Product6 =
 					Product.builder()
@@ -198,7 +198,7 @@ public class BrokerShopApplication {
 							.price(new BigDecimal(56.12))
 							.quantity(1)
 							.category(category3)
-							.image(cake3ImageString)
+							.image(cakeImageString1)
 							.build();
 			Product Product7 =
 					Product.builder()
@@ -207,7 +207,7 @@ public class BrokerShopApplication {
 							.price(new BigDecimal(56.12))
 							.quantity(1)
 							.category(category3)
-							.image(cake3ImageString)
+							.image(cakeImageString2)
 							.build();
 			Product Product8 =
 					Product.builder()
@@ -216,7 +216,7 @@ public class BrokerShopApplication {
 							.price(new BigDecimal(56.12))
 							.quantity(1)
 							.category(category3)
-							.image(cake3ImageString)
+							.image(cakeImageString1)
 							.build();
 			Product Product9 =
 					Product.builder()
@@ -224,8 +224,8 @@ public class BrokerShopApplication {
 							.description("Описание")
 							.price(new BigDecimal(56.12))
 							.quantity(1)
-							.category(category3)
-							.image(cake3ImageString)
+							.category(category2)
+							.image(cakeImageString1)
 							.build();
 			Product Product10 =
 					Product.builder()
@@ -234,7 +234,7 @@ public class BrokerShopApplication {
 							.price(new BigDecimal(56.12))
 							.quantity(1)
 							.category(category3)
-							.image(cake3ImageString)
+							.image(cakeImageString2)
 							.build();
 //			Product cryptoEthereumProduct =
 //					Product.builder()
@@ -256,6 +256,7 @@ public class BrokerShopApplication {
 			productDao.save(Product9);
 			productDao.save(Product10);
 
+			System.out.println("Server up!");
 
 			// productDao.save(cryptoEthereumProduct);
 
