@@ -51,7 +51,10 @@ const styles = (theme: Theme) => createStyles({
     },
     productCard: {
         margin: '15px 0',
-        width: 300
+        width: 300,
+        border: '1px solid #f3f3f3',
+        boxShadow: '0 0 2px #f3f3f3 ',
+        textAlign: 'center',
     },
     productCardImage: {
         height: 300
@@ -90,6 +93,13 @@ const styles = (theme: Theme) => createStyles({
     titleText: {
         fontFamily: "'Comfortaa', cursive",
         fontSize: 'large',
+    },
+    cardAct: {
+        border: "none",
+        borderRadius: 0,
+    },
+    'MuiPaper-rounded': {
+        borderRadius: '0',
     }
 })
 
@@ -115,6 +125,12 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
+
+
+        
+
+
+
         const windowUrl = window.location.search
         const params = new URLSearchParams(windowUrl)
         const searchString: string = params.get('search') || ''
@@ -136,6 +152,11 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentDidUpdate(prevProps: Readonly<IProps>) {
+        let elements = document.getElementsByClassName('MuiPaper-rounded')
+        console.log(elements)
+        Array.from(elements).forEach((el) => el.classList.remove('MuiPaper-rounded', 'MuiPaper-elevation1'));
+
+
         // если работа фильтра в данный момент не выполняется - передаем
         // параметры из адресной строки в состояние фильра в локальном хранилище
 
@@ -254,6 +275,7 @@ class Items extends React.Component<IProps, IState> {
                             >
                                 <Card className={classes.productCard}>
                                     <CardActionArea
+                                        className={classes.cardAct}
                                     onClick={(e) => this.handlerClickOnCardActionArea(e, product.id)}
 
                                     >

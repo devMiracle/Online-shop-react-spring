@@ -16,7 +16,8 @@ import {CommonStore} from "../../stores/CommonStore";
 import {ProductStore} from "../../stores/ProductStore";
 import {CategoryStore} from "../../stores/CategoryStore";
 import WeightSelector from '../../components/common/WeightSelector'
-
+import SectionsSelector from '../../components/common/SectionsSelector'
+import Decor from "../common/Decor";
 interface IProps {
 
 }
@@ -40,13 +41,11 @@ function getStepContent(step: number) {
     switch (step) {
         case 0:
             return <WeightSelector/>;
+
         case 1:
-            return 'An ad group contains one or more ads which target a shared set of keywords.';
+            return <SectionsSelector/>;
         case 2:
-            return `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`;
+            return <Decor/>;
         default:
             return 'Unknown step';
     }
@@ -129,7 +128,7 @@ const styles = (theme: Theme) => createStyles({
         padding: theme.spacing(3),
     },
     stepper: {
-      width: '100%',
+        width: '100%',
     },
 })
 
@@ -165,13 +164,6 @@ class Item extends React.Component<IProps, IState> {
         }
     }
 
-
-
-
-
-
-
-
     render() {
         const setActiveStep = (activeStep: any) => this.setState({activeStep: activeStep})
         const steps = getSteps();
@@ -185,7 +177,7 @@ class Item extends React.Component<IProps, IState> {
         };
 
         const handleReset = () => {
-            setActiveStep({activeStep: 0});
+            setActiveStep(this.state.activeStep - steps.length);
         };
 
         const { loading } = this.injected.commonStore
@@ -280,7 +272,7 @@ class Item extends React.Component<IProps, IState> {
                                     </Stepper>
                                     {this.state.activeStep === steps.length && (
                                         <Paper square elevation={0} className={classes.resetContainer}>
-                                            <Typography>All steps completed - you&apos;re finished</Typography>
+                                            <Typography>Все шаги завершены, можно заказывать!</Typography>
                                             <Button onClick={handleReset} className={classes.button}>
                                                 Сброс
                                             </Button>

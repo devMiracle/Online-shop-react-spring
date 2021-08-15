@@ -127,8 +127,6 @@ class ProductStore {
                                 .replace(/(%2E)/ig, '%20')
                         )
                     )
-
-                    console.log(this.products)
                 } else if (responseModel.status === 'fail') {
                     commonStore.setError(responseModel.message)
                 }

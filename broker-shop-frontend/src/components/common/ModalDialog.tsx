@@ -25,8 +25,8 @@ interface IState {
 
 const styles = (theme: Theme) => createStyles({
     root: {
-        width: '300px',
-        minHeight: '200px',
+        // width: '300px',
+        // minHeight: '200px',
     },
 
 })
