@@ -1,8 +1,17 @@
 import React, {Component} from "react"
-import {Collapse, createStyles, List, ListItem, ListItemText, MenuItem} from "@material-ui/core"
+import {
+    Accordion,
+    AccordionDetails, AccordionSummary,
+    Collapse,
+    createStyles,
+    List,
+    ListItem,
+    ListItemText,
+    MenuItem, Typography
+} from "@material-ui/core"
 import { WithStyles, withStyles, Theme } from "@material-ui/core/styles"
 import ButtonAppBarCollapse from "./ButtonAppBarCollapse"
-
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 import {
@@ -118,6 +127,32 @@ const styles = ((theme: Theme) => createStyles({
         background: '#fff',
         color: '#424242',
     },
+    nestedMobile: {
+        '& > * > *': {
+            fontFamily: "'Comfortaa', cursive",
+        },
+        '&:hover': {
+            color: '#039be6',
+            background: '#fff',
+        },
+        // opacity: '.96',
+        flexDirection: 'column',
+        background: '#fff',
+        color: '#a6a6a6',
+    },
+    nestedActiveMobile: {
+        '& > * > *': {
+            fontFamily: "'Comfortaa', cursive",
+        },
+        '&:hover': {
+            color: '#039be6',
+            background: '#fff',
+        },
+        // opacity: '.96',
+        flexDirection: 'column',
+        background: '#fff',
+        color: '#424242',
+    },
     nestedAllItems: {
         '& > div': {
             borderBottom: '1px dashed #00a2d0',
@@ -154,6 +189,14 @@ const styles = ((theme: Theme) => createStyles({
     nestedAllActive: {
         color: '#424242',
     },
+    heading: {
+        fontSize: theme.typography.pxToRem(15),
+        fontWeight: theme.typography.fontWeightRegular,
+    },
+    AccordionDetailsContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+    }
 }))
 
 @inject('userStore', 'cartStore', 'categoryStore', 'productStore')
@@ -248,20 +291,64 @@ class AppBarCollapse extends Component<IProps, IState> {
                         // - представление списка пунктов меню
                         routes.map(route => {
                             if (route.visible) {
-                                if (!/^Dashboard[A-z]+$/.test(route.name)) {
-                                    return <MenuItem key={route.path}>
-                                        <NavLink
+                                if (route.name.includes('торты')) {
+                                    return <Accordion>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon/>}
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                        >
+                                            <Typography className={classes.heading}>{route.name.toUpperCase()}</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className={classes.AccordionDetailsContainer}>
+                                                {categories.map((category: CategoryModel) => {
+                                                    return <div
+                                                        key={category.id}
+                                                        className={classes.nestedMobile + ((catId[0] === category.id) ? ' ' + classes.nestedActiveMobile : '')}
+                                                        onClick={(e) => {
+                                                            this.handleClickItemList(e, category.id)
+                                                        }}
+                                                    >
+                                                        {category.name.toUpperCase()}
+                                                    </div>
+                                                })}
+                                                <div
+                                                    className={classes.nested + ' ' + classes.nestedAllItems + ((catId.length === 0 && window.location.pathname.includes('/items')) ? ' ' + classes.nestedAllActive : '')}
+                                                    onClick={(e) => {
+                                                        this.handleClickAllItemList(e)
+                                                    }}
+                                                >
+                                                    {'Все торты'.toUpperCase()}
+                                                </div>
+                                            </div>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                } else if (route.name.includes('корзина')) {
+                                        return <div
                                             key={route.path}
-                                            to={route.path}
-                                            className={classes.mobileButtonBarItem}
-                                            activeClassName={classes.mobileButtonBarItemActive}
-                                            exact>
-                                            {route.name}
-                                        </NavLink>
-                                    </MenuItem>
-                                } else {
-                                    return ''
+                                            onClick={this.handleCartIconClick} className={classes.buttonBarItem} style={{display: this.injected.userStore.user ? 'flex' : 'none' }}>
+                                            <ShoppingCartIcon
+                                            /> <div className={classes.shoppingCart}>{this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.</div>
+                                        </div>
+                                    } else {
+                                        if (!/^Dashboard[A-z]+$/.test(route.name)) {
+                                            return <MenuItem key={route.path}>
+                                                <NavLink
+                                                    key={route.path}
+                                                    to={route.path}
+                                                    className={classes.mobileButtonBarItem}
+                                                    activeClassName={classes.mobileButtonBarItemActive}
+                                                    exact>
+                                                    {route.name}
+                                                </NavLink>
+                                            </MenuItem>
+                                        } else {
+                                            return ''
+                                        }
                                 }
+                            } else {
+                                return ''
                             }
                         })}
                 </ButtonAppBarCollapse>
