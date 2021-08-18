@@ -158,6 +158,11 @@ const styles = ((theme: Theme) => createStyles({
             borderBottom: '1px dashed #00a2d0',
         },
     },
+    nestedAllItemsMobile: {
+        '& > div': {
+            borderBottom: '1px dashed #00a2d0',
+        },
+    },
     listItem: {
         '&:hover': {
             color: '#039be6',
@@ -189,6 +194,9 @@ const styles = ((theme: Theme) => createStyles({
     nestedAllActive: {
         color: '#424242',
     },
+    nestedAllActiveMobile: {
+        color: '#424242',
+    },
     heading: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
@@ -207,8 +215,6 @@ class AppBarCollapse extends Component<IProps, IState> {
         this.state = {
             openStateMenu: false
         }
-
-
     }
 
     get injected () {
@@ -227,6 +233,7 @@ class AppBarCollapse extends Component<IProps, IState> {
     handleClick = () => {
         this.setState({openStateMenu: !this.state.openStateMenu})
     }
+
     handleClickItemList = (e: React.MouseEvent, categoryId: number) => {
         this.injected.productStore.clearAllCategoryId()
         this.injected.productStore.setFilterDataCategory(categoryId, true)
@@ -239,10 +246,10 @@ class AppBarCollapse extends Component<IProps, IState> {
 
     handleClickAllItemList = (e: React.MouseEvent) => {
         this.injected.productStore.clearAllCategoryId()
-        //this.injected.productStore.fetchProducts()
-        this.injected.productStore.fetchProductPriceBounds()
-        this.injected.productStore.fetchProductQuantityBounds()
-        this.injected.productStore.fetchFilteredProducts()
+        // this.injected.productStore.fetchProducts()
+        // this.injected.productStore.fetchProductPriceBounds()
+        // this.injected.productStore.fetchProductQuantityBounds()
+        // this.injected.productStore.fetchFilteredProducts()
         this.setState({openStateMenu: !this.state.openStateMenu})
         window.scrollTo({
             top: 0,
@@ -269,10 +276,7 @@ class AppBarCollapse extends Component<IProps, IState> {
         //         console.log('click3')
         //     }
         // })
-
     }
-
-
 
     render () {
         const { classes } = this.injected
@@ -314,7 +318,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                                                     </div>
                                                 })}
                                                 <div
-                                                    className={classes.nested + ' ' + classes.nestedAllItems + ((catId.length === 0 && window.location.pathname.includes('/items')) ? ' ' + classes.nestedAllActive : '')}
+                                                    className={classes.nestedMobile + ' ' + classes.nestedAllItemsMobile + ((catId.length === 0 && window.location.pathname.includes('/items')) ? ' ' + classes.nestedAllActiveMobile : '')}
                                                     onClick={(e) => {
                                                         this.handleClickAllItemList(e)
                                                     }}
@@ -374,7 +378,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                                                     return <ListItem
                                                                     key={category.id}
                                                                     button
-                                                                    className={classes.nested + ((catId[0] === category.id) ? ' ' + classes.nestedActive : '')}
+                                                                    className={classes.nested + ((catId[0] === category.id && window.location.pathname.includes('/items')) ? ' ' + classes.nestedActive : '')}
                                                                     onClick={(e) => {
                                                                     this.handleClickItemList(e, category.id)
                                                                     }}
@@ -405,8 +409,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                                     <ShoppingCartIcon
                                     /> <div className={classes.shoppingCart}>{this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.</div>
                                 </div>
-                            } else {
-                                if (!/^Dashboard[A-z]+$/.test(route.name)) {
+                            } else if (!/^Dashboard[A-z]+$/.test(route.name)) {
                                     return <NavLink
 
                                         key={route.path}
@@ -422,9 +425,8 @@ class AppBarCollapse extends Component<IProps, IState> {
                                         exact>
                                         {route.name.toUpperCase()}
                                     </NavLink>
-                                } else {
-                                    return ''
-                                }
+                            } else {
+                                return ''
                             }
                         } else {
                             return ''

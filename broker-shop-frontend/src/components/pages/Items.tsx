@@ -4,7 +4,7 @@ import {
     Card,
     CardActionArea, CardActions,
     CardContent,
-    CardMedia,
+    CardMedia, CircularProgress,
     createStyles,
     Grid, Snackbar,
     Theme, Typography,
@@ -100,7 +100,13 @@ const styles = (theme: Theme) => createStyles({
     },
     'MuiPaper-rounded': {
         borderRadius: '0',
-    }
+    },
+    progressBar: {
+        width: '100%',
+        display: "flex",
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })
 
 
@@ -225,8 +231,8 @@ class Items extends React.Component<IProps, IState> {
     }
 
     handlerClickOnCardActionArea = (event: React.MouseEvent, id: number) => {
-        this.injected.categoryStore.setCurrentCategoryId(id)
-        this.injected.productStore.setCurrentProductId(id)
+        // this.injected.categoryStore.setCurrentCategoryId(id)
+        // this.injected.productStore.setCurrentProductId(id)
         History.push(`item?id=${id}`)
     }
 
@@ -235,7 +241,7 @@ class Items extends React.Component<IProps, IState> {
 
         const { classes } = this.injected
         const { products } = this.injected.productStore
-
+        const { loading } = this.injected.commonStore
         // eslint-disable-next-line
         const { categories } = this.injected.productStore // DONT DELETE
         const { user } = this.injected.userStore
@@ -243,117 +249,123 @@ class Items extends React.Component<IProps, IState> {
 
         // <div className={classes.displayNone}>{categories}</div>
 
-            return (
 
+               if (loading) {
 
+                   return(
+                       <div className={classes.progressBar}>
+                           <CircularProgress disableShrink />
+                       </div>
+                   )
+               } else {
+                   return(<div className={classes.root}>
 
-            <div className={classes.root}>
+                       {products.length > 0 ?
 
-                {products.length > 0 ?
+                           <Grid
+                               container
+                               direction={'row'}
+                               //justify={'center'}
+                               //alignItems={'center'}
+                           >
+                               {products.map(product => {
+                                   return (
+                                       <Grid
+                                           key={'c' + product.id}
+                                           container
+                                           direction={'row'}
+                                           justify={'center'}
+                                           alignItems={'center'}
+                                           item
+                                           xs={12}
+                                           sm={6}
+                                           md={4}
+                                           lg={4}
+                                           xl={4}
+                                           spacing={0}
+                                       >
+                                           <Card className={classes.productCard}>
+                                               <CardActionArea
+                                                   className={classes.cardAct}
+                                                   onClick={(e) => this.handlerClickOnCardActionArea(e, product.id)}
 
-                <Grid
-                    container
-                    direction={'row'}
-                    //justify={'center'}
-                    //alignItems={'center'}
-                >
-                    {products.map(product => {
-                        return (
-                            <Grid
-                                key={'c' + product.id}
-                                container
-                                direction={'row'}
-                                justify={'center'}
-                                alignItems={'center'}
-                                item
-                                xs={12}
-                                sm={6}
-                                md={4}
-                                lg={4}
-                                xl={4}
-                                spacing={0}
-                            >
-                                <Card className={classes.productCard}>
-                                    <CardActionArea
-                                        className={classes.cardAct}
-                                    onClick={(e) => this.handlerClickOnCardActionArea(e, product.id)}
+                                               >
+                                                   <CardMedia
+                                                       className={classes.productCardImage}
+                                                       image={product.image}
+                                                       title={product.title}
+                                                   />
+                                                   <CardContent>
+                                                       <div className={classes.titleText}>
+                                                           {product.title}
+                                                       </div>
+                                                       {/*<strong>{product.price} грн.</strong>*/}
 
-                                    >
-                                        <CardMedia
-                                            className={classes.productCardImage}
-                                            image={product.image}
-                                            title={product.title}
-                                        />
-                                        <CardContent>
-                                            <div className={classes.titleText}>
-                                                {product.title}
-                                            </div>
-                                                {/*<strong>{product.price} грн.</strong>*/}
+                                                       {/*<Typography variant="body2" color="textSecondary" component="p">*/}
+                                                       {/*    {product.description}*/}
+                                                       {/*</Typography>*/}
+                                                   </CardContent>
+                                               </CardActionArea>
+                                               {/*<CardActions className={classes.CardActions}>*/}
+                                               {/*    /!*<Button size="small" color="primary">*/}
+                                               {/*    Share*/}
+                                               {/*</Button>*!/*/}
+                                               {/*    {user ? <Button*/}
+                                               {/*        className={classes.buttonAddToCart}*/}
+                                               {/*        size="small"*/}
+                                               {/*        onClick={(e) => {*/}
+                                               {/*            this.handleAddToCart(e, product.id)*/}
+                                               {/*        }}*/}
+                                               {/*        // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}*/}
+                                               {/*    >*/}
+                                               {/*        Добавить в корзину*/}
+                                               {/*        /!*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*!/*/}
+                                               {/*    </Button> :*/}
+                                               {/*    <div>*/}
+                                               {/*        <div>*/}
+                                               {/*            Заказывать могут только авторизованые пользователи.*/}
+                                               {/*        </div>*/}
+                                               {/*        <div*/}
+                                               {/*            className={classes.buttonUnauthorized}*/}
+                                               {/*            onClick={(e) => {*/}
+                                               {/*                history.push('/signin')*/}
+                                               {/*            }}*/}
+                                               {/*            // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}*/}
+                                               {/*        >*/}
+                                               {/*            <div>Вход</div>*/}
+                                               {/*            /!*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*!/*/}
+                                               {/*        </div>*/}
+                                               {/*        {' / '}*/}
+                                               {/*        <div*/}
+                                               {/*            className={classes.buttonUnauthorized}*/}
+                                               {/*            onClick={(e) => {*/}
+                                               {/*                history.push('/signup')*/}
+                                               {/*            }}*/}
+                                               {/*            // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}*/}
+                                               {/*        >*/}
+                                               {/*            <div>Регистрация</div>*/}
+                                               {/*            /!*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*!/*/}
+                                               {/*        </div>*/}
+                                               {/*    </div>}*/}
 
-                                            {/*<Typography variant="body2" color="textSecondary" component="p">*/}
-                                            {/*    {product.description}*/}
-                                            {/*</Typography>*/}
-                                        </CardContent>
-                                    </CardActionArea>
-                                    {/*<CardActions className={classes.CardActions}>*/}
-                                    {/*    /!*<Button size="small" color="primary">*/}
-                                    {/*    Share*/}
-                                    {/*</Button>*!/*/}
-                                    {/*    {user ? <Button*/}
-                                    {/*        className={classes.buttonAddToCart}*/}
-                                    {/*        size="small"*/}
-                                    {/*        onClick={(e) => {*/}
-                                    {/*            this.handleAddToCart(e, product.id)*/}
-                                    {/*        }}*/}
-                                    {/*        // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}*/}
-                                    {/*    >*/}
-                                    {/*        Добавить в корзину*/}
-                                    {/*        /!*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*!/*/}
-                                    {/*    </Button> :*/}
-                                    {/*    <div>*/}
-                                    {/*        <div>*/}
-                                    {/*            Заказывать могут только авторизованые пользователи.*/}
-                                    {/*        </div>*/}
-                                    {/*        <div*/}
-                                    {/*            className={classes.buttonUnauthorized}*/}
-                                    {/*            onClick={(e) => {*/}
-                                    {/*                history.push('/signin')*/}
-                                    {/*            }}*/}
-                                    {/*            // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}*/}
-                                    {/*        >*/}
-                                    {/*            <div>Вход</div>*/}
-                                    {/*            /!*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*!/*/}
-                                    {/*        </div>*/}
-                                    {/*        {' / '}*/}
-                                    {/*        <div*/}
-                                    {/*            className={classes.buttonUnauthorized}*/}
-                                    {/*            onClick={(e) => {*/}
-                                    {/*                history.push('/signup')*/}
-                                    {/*            }}*/}
-                                    {/*            // style={{display: this.injected.userStore.user ? 'inline' : 'none' }}*/}
-                                    {/*        >*/}
-                                    {/*            <div>Регистрация</div>*/}
-                                    {/*            /!*<Button className={classes.buttonAddToCart}>Добавить в корзину</Button>*!/*/}
-                                    {/*        </div>*/}
-                                    {/*    </div>}*/}
+                                               {/*</CardActions>*/}
+                                           </Card>
+                                       </Grid>
+                                   )
+                               })}
+                           </Grid>
+                           : <div>пусто</div>
+                       }
 
-                                    {/*</CardActions>*/}
-                                </Card>
-                            </Grid>
-                        )
-                    })}
-                </Grid>
-                    : <div>пусто</div>}
-                <Snackbar
-                    open={this.state.snackBarVisibility}
-                    autoHideDuration={6000} onClose={this.handleSnackBarClose}>
-                    <Alert onClose={this.handleSnackBarClose} severity="success">
-                        {this.state.snackBarText}
-                    </Alert>
-                </Snackbar>
-            </div>
-        )
-
+                       <Snackbar
+                           open={this.state.snackBarVisibility}
+                           autoHideDuration={6000} onClose={this.handleSnackBarClose}>
+                           <Alert onClose={this.handleSnackBarClose} severity="success">
+                               {this.state.snackBarText}
+                           </Alert>
+                       </Snackbar>
+                   </div>)
+               }
     }
 }
 

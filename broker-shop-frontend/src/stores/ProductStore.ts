@@ -458,11 +458,12 @@ class ProductStore {
 
         this.changeShoppingUrlParams()
     }
-    @action setCategoryId(id: number) {
-        this.categories = [id]
+    @action setCategoryId(...id: number[]) {
+        this.categories = id
     }
     @action clearAllCategoryId() {
         this.categories = []
+        this.changeShoppingUrlParams()
     }
 
 

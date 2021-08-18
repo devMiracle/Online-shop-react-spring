@@ -18,6 +18,7 @@ import {CategoryStore} from "../../stores/CategoryStore";
 import WeightSelector from '../../components/common/WeightSelector'
 import SectionsSelector from '../../components/common/SectionsSelector'
 import Decor from "../common/Decor";
+import {UserStore} from "../../stores/UserStore";
 interface IProps {
 
 }
@@ -26,6 +27,7 @@ interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     commonStore: CommonStore,
     productStore: ProductStore,
     categoryStore: CategoryStore,
+    userStore: UserStore
 }
 
 interface IState {
@@ -71,6 +73,7 @@ const styles = (theme: Theme) => createStyles({
         width: '100%',
     },
     item: {
+        width: '100vw',
         display: 'flex',
     },
     textContainer: {
@@ -132,7 +135,7 @@ const styles = (theme: Theme) => createStyles({
     },
 })
 
-@inject('commonStore', 'productStore', 'categoryStore')
+@inject('commonStore', 'productStore', 'categoryStore', 'userStore')
 @observer
 class Item extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -179,7 +182,7 @@ class Item extends React.Component<IProps, IState> {
         const handleReset = () => {
             setActiveStep(this.state.activeStep - steps.length);
         };
-
+        const { user } = this.injected.userStore
         const { loading } = this.injected.commonStore
         const { article } = this.injected.commonStore
         const category = this.injected.productStore.oneProduct?.category
@@ -219,7 +222,7 @@ class Item extends React.Component<IProps, IState> {
                                         <div className={classes.textArt}><p>арт. </p><p>{article + this.injected.productStore.oneProduct?.id}</p></div>
                                         <p className={classes.title}>{Store.oneProduct?.title}</p>
                                         <div className={classes.categoryContainer}>
-                                            <div className={classes.categoryTitle}>категория:</div>
+                                            <div className={classes.categoryTitle}>категория:&nbsp;</div>
                                             <div className={classes.categoryText}>{category?.name}</div>
                                         </div>
                                         <div>
@@ -240,45 +243,47 @@ class Item extends React.Component<IProps, IState> {
                                 lg={12}
                                 xl={12}
                             >
-                                <div className={classes.stepper}>
-                                    <Stepper activeStep={this.state.activeStep} orientation="vertical">
-                                        {steps.map((label, index) => (
-                                            <Step key={label}>
-                                                <StepLabel>{label}</StepLabel>
-                                                <StepContent>
-                                                    <Typography>{getStepContent(index)}</Typography>
-                                                    <div className={classes.actionsContainer}>
-                                                        <div>
-                                                            <Button
-                                                                disabled={this.state.activeStep === 0}
-                                                                onClick={handleBack}
-                                                                className={classes.button}
-                                                            >
-                                                                Назад
-                                                            </Button>
-                                                            <Button
-                                                                variant="contained"
-                                                                color="primary"
-                                                                onClick={handleNext}
-                                                                className={classes.button}
-                                                            >
-                                                                {this.state.activeStep === steps.length - 1 ? 'Готово' : 'Далее'}
-                                                            </Button>
+                                {user ? <div>
+                                    <div className={classes.stepper}>
+                                        <Stepper activeStep={this.state.activeStep} orientation="vertical">
+                                            {steps.map((label, index) => (
+                                                <Step key={label}>
+                                                    <StepLabel>{label}</StepLabel>
+                                                    <StepContent>
+                                                        <Typography>{getStepContent(index)}</Typography>
+                                                        <div className={classes.actionsContainer}>
+                                                            <div>
+                                                                <Button
+                                                                    disabled={this.state.activeStep === 0}
+                                                                    onClick={handleBack}
+                                                                    className={classes.button}
+                                                                >
+                                                                    Назад
+                                                                </Button>
+                                                                <Button
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    onClick={handleNext}
+                                                                    className={classes.button}
+                                                                >
+                                                                    {this.state.activeStep === steps.length - 1 ? 'Готово' : 'Далее'}
+                                                                </Button>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </StepContent>
-                                            </Step>
-                                        ))}
-                                    </Stepper>
-                                    {this.state.activeStep === steps.length && (
-                                        <Paper square elevation={0} className={classes.resetContainer}>
-                                            <Typography>Все шаги завершены, можно заказывать!</Typography>
-                                            <Button onClick={handleReset} className={classes.button}>
-                                                Сброс
-                                            </Button>
-                                        </Paper>
-                                    )}
-                                </div>
+                                                    </StepContent>
+                                                </Step>
+                                            ))}
+                                        </Stepper>
+                                        {this.state.activeStep === steps.length && (
+                                            <Paper square elevation={0} className={classes.resetContainer}>
+                                                <Typography>Все шаги завершены, можно заказывать!</Typography>
+                                                <Button onClick={handleReset} className={classes.button}>
+                                                    Сброс
+                                                </Button>
+                                            </Paper>
+                                        )}
+                                    </div>
+                                </div> : <div>нужно авторизоваться</div>}
 
 
                             </Grid>
