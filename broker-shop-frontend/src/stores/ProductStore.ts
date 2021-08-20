@@ -13,9 +13,9 @@ class ProductStore {
     private allowGetPriceBounds: boolean = true
     private allowGetQuantityBounds: boolean = true
 
-    @observable currentProductId: number | null = null
-    @observable products: Array<Product> = []
     @observable oneProduct: ProductModelCustom | null = null
+    @observable products: Array<Product> = []
+    @observable currentProductId: number | null = null
     @observable title: string = ''
     @observable description: string = ''
     @observable quantity: number = 0
@@ -76,6 +76,7 @@ class ProductStore {
         if (currentProduct) {
             this.setProductTitle(currentProduct.title)
             this.setProductDescription(currentProduct.description)
+            console.log('currentProduct = ' + currentProduct.categoryId)
             this.setProductCategory(currentProduct.categoryId)
             this.setProductPrice(currentProduct.price)
             this.setProductQuantity(currentProduct.quantity)
@@ -106,13 +107,13 @@ class ProductStore {
     @action setProductImage(image: string) {
         this.currentProductImage = image
     }
-    @action fetchProductById(id: number) {
+    @action fetchProductById(id: number | null) {
         commonStore.clearError()
         commonStore.setLoading(true)
         fetch(commonStore.basename + `/product/${id}`)
-            .then((response) => {
-                return response.json()
-            }).then(responseModel => {
+        .then((response) => {
+            return response.json()
+        }).then(responseModel => {
             if (responseModel) {
                 if (responseModel.status === 'success') {
                     // полученный объект модели может содержать
@@ -286,7 +287,7 @@ class ProductStore {
                         }
                         // после изменения значений фильтра
                         // вызываем обновление адресной строки
-                        this.changeShoppingUrlParams()
+                        // this.changeShoppingUrlParams()
                     }
                 } else if (responseModel.status === 'fail') {
                     commonStore.setError(responseModel.message)
@@ -378,15 +379,15 @@ class ProductStore {
     // в состояние локального хранилища
     @action setFilterDataSearchString(searchString: string) {
         this.searchString = searchString
-        this.changeShoppingUrlParams()
+        // this.changeShoppingUrlParams()
     }
     @action setOrderBy(fieldName: string) {
         this.orderBy = fieldName
-        this.changeShoppingUrlParams()
+        // this.changeShoppingUrlParams()
     }
     @action setSortingDirection(direction: string) {
         this.sortingDirection = direction
-        this.changeShoppingUrlParams()
+        // this.changeShoppingUrlParams()
     }
     // получение отфильтрованных отсортированных товаров с сервера
     @action fetchFilteredProducts () {

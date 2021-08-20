@@ -131,12 +131,6 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
-
-
-        
-
-
-
         const windowUrl = window.location.search
         const params = new URLSearchParams(windowUrl)
         const searchString: string = params.get('search') || ''
@@ -147,7 +141,6 @@ class Items extends React.Component<IProps, IState> {
                 this.injected.productStore.fetchProductQuantityBounds()
             }
             //this.injected.productStore.setFilterDataSearchString(searchString)
-
             if (searchString.includes(';category:[')) {
                 const categoryId = searchString.substr(searchString.indexOf(';category:[') + 11,1)
                  this.injected.productStore.setCategoryId(parseInt(categoryId))
@@ -159,9 +152,7 @@ class Items extends React.Component<IProps, IState> {
 
     componentDidUpdate(prevProps: Readonly<IProps>) {
         let elements = document.getElementsByClassName('MuiPaper-rounded')
-        console.log(elements)
         Array.from(elements).forEach((el) => el.classList.remove('MuiPaper-rounded', 'MuiPaper-elevation1'));
-
 
         // если работа фильтра в данный момент не выполняется - передаем
         // параметры из адресной строки в состояние фильра в локальном хранилище
@@ -209,7 +200,7 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
-        //this.injected.productStore.clearAllCategoryId()
+        // this.injected.productStore.clearAllCategoryId()
     }
 
     handleAddToCart = (e: React.MouseEvent, productId: number) => {
@@ -231,8 +222,7 @@ class Items extends React.Component<IProps, IState> {
     }
 
     handlerClickOnCardActionArea = (event: React.MouseEvent, id: number) => {
-        // this.injected.categoryStore.setCurrentCategoryId(id)
-        // this.injected.productStore.setCurrentProductId(id)
+        this.injected.productStore.fetchProductById(id)
         History.push(`item?id=${id}`)
     }
 
@@ -251,7 +241,6 @@ class Items extends React.Component<IProps, IState> {
 
 
                if (loading) {
-
                    return(
                        <div className={classes.progressBar}>
                            <CircularProgress disableShrink />

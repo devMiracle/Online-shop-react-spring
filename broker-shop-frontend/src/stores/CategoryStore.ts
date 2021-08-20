@@ -8,22 +8,21 @@ class CategoryStore {
     private HTTP_STATUS_OK: number = 200
     private HTTP_STATUS_CREATED: number = 201
 
-    @observable currentCategoryId: number | null = null
     @observable categories: Array<Category> = []
-    @observable name: string = ''
+    @observable currentCategoryId: number | null = null
+    @observable currentCategoryName: string = ''
 
     constructor() {
         makeObservable(this)
     }
 
     @action setName(name: string) {
-        this.name = name
+        this.currentCategoryName = name
     }
 
     @action setCurrentCategoryId(id: number | null) {
         this.currentCategoryId = id
-        const currentCategory =
-            this.categories.find((c: CategoryModel) => c.id === id)
+        const currentCategory = this.categories.find((c: CategoryModel) => c.id === id)
         this.setName(currentCategory?.name || '')
     }
 
@@ -71,7 +70,7 @@ class CategoryStore {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({'name': encodeURIComponent(this.name)})
+            body: JSON.stringify({'name': encodeURIComponent(this.currentCategoryName)})
         }).then((response) => {
             return response.status
         }).then(responseStatusCode => {
@@ -97,7 +96,7 @@ class CategoryStore {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({'name': encodeURIComponent(this.name)})
+            body: JSON.stringify({'name': encodeURIComponent(this.currentCategoryName)})
         }).then((response) => {
             return response.status
         }).then(responseStatusCode => {

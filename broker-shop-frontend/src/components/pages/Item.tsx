@@ -154,17 +154,23 @@ class Item extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
+        // console.log(this.injected.categoryStore.currentCategoryId)
+        // console.log(this.injected.categoryStore.categories)
+        // console.log(this.injected.categoryStore.name)
+        // console.log(this.injected.productStore.currentProductId)
 
-        const windowUrl = window.location.search
-        const params = new URLSearchParams(windowUrl)
-        const id: string = params.get('id') || ''
-        if (id){
-            //this.injected.categoryStore.fetchCategories()
-            this.injected.productStore.fetchProductById(Number(id))
+        console.log(this.injected.productStore.oneProduct)
 
 
-            this.setState({itemIdIsExist: true})
-        }
+        // Анализ строки URL
+        // const windowUrl = window.location.search
+        // const params = new URLSearchParams(windowUrl)
+        // const id: string = params.get('id') || ''
+        // if (id){
+        //     //this.injected.categoryStore.fetchCategories()
+        //     this.injected.productStore.fetchProductById(Number(id))
+        //     this.setState({itemIdIsExist: true})
+        // }
     }
 
     render() {
@@ -185,11 +191,14 @@ class Item extends React.Component<IProps, IState> {
         const { user } = this.injected.userStore
         const { loading } = this.injected.commonStore
         const { article } = this.injected.commonStore
-        const category = this.injected.productStore.oneProduct?.category
-        const { name } = this.injected.categoryStore
-        const Store = this.injected.productStore
         const { classes } = this.injected
-            if (this.state.itemIdIsExist) {
+
+        const { oneProduct } = this.injected.productStore
+
+
+
+
+            if (!loading) {
                 return(
                     <div className={classes.root}>
                         <Grid
@@ -205,7 +214,7 @@ class Item extends React.Component<IProps, IState> {
                                 lg={6}
                                 xl={6}
                             >
-                               <div className={classes.imageContainer}><img id={'imgId'} className={classes.img} src={Store.oneProduct?.image} alt="image item"/></div>
+                               <div className={classes.imageContainer}><img id={'imgId'} className={classes.img} src={oneProduct?.image} alt="image item"/></div>
                             </Grid>
                             <Grid
                                 id={'item'}
@@ -219,15 +228,15 @@ class Item extends React.Component<IProps, IState> {
                             >
                                 <div className={classes.textContainer}>
                                     <div>
-                                        <div className={classes.textArt}><p>арт. </p><p>{article + this.injected.productStore.oneProduct?.id}</p></div>
-                                        <p className={classes.title}>{Store.oneProduct?.title}</p>
+                                        <div className={classes.textArt}><p>арт. </p><p>{article + oneProduct?.id}</p></div>
+                                        <p className={classes.title}>{oneProduct?.title}</p>
                                         <div className={classes.categoryContainer}>
                                             <div className={classes.categoryTitle}>категория:&nbsp;</div>
-                                            <div className={classes.categoryText}>{category?.name}</div>
+                                            <div className={classes.categoryText}>{oneProduct?.category.name}</div>
                                         </div>
                                         <div>
                                             <p className={classes.descriptionTitle}>описание</p>
-                                            <p className={classes.description}>{Store.oneProduct?.description}</p>
+                                            <p className={classes.description}>{oneProduct?.description}</p>
                                         </div>
                                         {/*<p>цена: {Store.oneProduct?.price}</p>*/}
                                     </div>

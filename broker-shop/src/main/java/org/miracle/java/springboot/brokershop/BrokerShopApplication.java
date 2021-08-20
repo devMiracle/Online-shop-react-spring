@@ -221,7 +221,7 @@ public class BrokerShopApplication {
 			Product Product9 =
 					Product.builder()
 							.name("Торт книга с деньгами")
-							.description("Описание")
+							.description("fdgsdrgsdfgdfggfdgd")
 							.price(new BigDecimal(56.12))
 							.quantity(1)
 							.category(category2)

@@ -123,7 +123,7 @@ class DashboardCategories extends Component<IProps, IState> {
                         <TextField
                             id="name"
                             label={'category name'}
-                            value={this.injected.categoryStore.name}
+                            value={this.injected.categoryStore.currentCategoryName}
                             onChange={this.handleCategoryNameChange}
                         />
                     </div>
