@@ -15,6 +15,8 @@ class CartStore {
     // отображать ли корзину?
     @observable cartShown: boolean = false
 
+
+
     constructor() {
         makeObservable(this)
     }

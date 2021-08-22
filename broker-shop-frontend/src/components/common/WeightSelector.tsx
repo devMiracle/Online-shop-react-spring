@@ -43,7 +43,10 @@ interface IState {
 
 const styles = (theme: Theme) => createStyles({
     root: {
-        width: '100%',
+        marginTop: '75px',
+        marginLeft: '50px',
+        maxWidth: '300px',
+        // width: '100%',
     },
     margin: {
         height: theme.spacing(3),

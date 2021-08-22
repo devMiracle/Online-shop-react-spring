@@ -17,8 +17,8 @@ import {ProductStore} from "../../stores/ProductStore";
 import {CategoryStore} from "../../stores/CategoryStore";
 import WeightSelector from '../../components/common/WeightSelector'
 import SectionsSelector from '../../components/common/SectionsSelector'
-import Decor from "../common/Decor";
 import {UserStore} from "../../stores/UserStore";
+import DecorSelector from "../common/DecorSelector";
 interface IProps {
 
 }
@@ -47,7 +47,7 @@ function getStepContent(step: number) {
         case 1:
             return <SectionsSelector/>;
         case 2:
-            return <Decor/>;
+            return <DecorSelector/>;
         default:
             return 'Unknown step';
     }
@@ -61,7 +61,8 @@ const styles = (theme: Theme) => createStyles({
         background: '#f2f2f2',
         color: '#414141',
         //color: '#424242',
-        maxWidth: '970px',
+        // maxWidth: '970px',
+        minWidth: '300px',
         margin: '0 auto',
         padding: '10px',
     },
@@ -73,7 +74,7 @@ const styles = (theme: Theme) => createStyles({
         width: '100%',
     },
     item: {
-        width: '100vw',
+        width: '100%',
         display: 'flex',
     },
     textContainer: {
@@ -133,6 +134,9 @@ const styles = (theme: Theme) => createStyles({
     stepper: {
         width: '100%',
     },
+    ItemContainer: {
+      width: '100%',
+    },
 })
 
 @inject('commonStore', 'productStore', 'categoryStore', 'userStore')
@@ -163,14 +167,14 @@ class Item extends React.Component<IProps, IState> {
 
 
         // Анализ строки URL
-        // const windowUrl = window.location.search
-        // const params = new URLSearchParams(windowUrl)
-        // const id: string = params.get('id') || ''
-        // if (id){
-        //     //this.injected.categoryStore.fetchCategories()
-        //     this.injected.productStore.fetchProductById(Number(id))
-        //     this.setState({itemIdIsExist: true})
-        // }
+        const windowUrl = window.location.search
+        const params = new URLSearchParams(windowUrl)
+        const id: string = params.get('id') || ''
+        if (id){
+            //this.injected.categoryStore.fetchCategories()
+            this.injected.productStore.fetchProductById(Number(id))
+            this.setState({itemIdIsExist: true})
+        }
     }
 
     render() {
@@ -252,7 +256,7 @@ class Item extends React.Component<IProps, IState> {
                                 lg={12}
                                 xl={12}
                             >
-                                {user ? <div>
+                                {user ? <div className={classes.ItemContainer}>
                                     <div className={classes.stepper}>
                                         <Stepper activeStep={this.state.activeStep} orientation="vertical">
                                             {steps.map((label, index) => (
@@ -285,7 +289,7 @@ class Item extends React.Component<IProps, IState> {
                                         </Stepper>
                                         {this.state.activeStep === steps.length && (
                                             <Paper square elevation={0} className={classes.resetContainer}>
-                                                <Typography>Все шаги завершены, можно заказывать!</Typography>
+                                                <Typography>Заказ сформирован, можно заказывать.</Typography>
                                                 <Button onClick={handleReset} className={classes.button}>
                                                     Сброс
                                                 </Button>
