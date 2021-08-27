@@ -4,6 +4,7 @@
 import {action, computed, makeObservable, observable} from 'mobx'
 import commonStore from './CommonStore'
 import CartItemModel from "../models/CartItemModel"
+import CartItemModelCustom from "../models/CartItemModelCustom";
 
 class CartStore {
 
@@ -15,10 +16,11 @@ class CartStore {
     // отображать ли корзину?
     @observable cartShown: boolean = false
 
-
+    data: CartItemModelCustom | null = null
 
     constructor() {
         makeObservable(this)
+
     }
 
     // вычисляемое свойство (пересчитывается при каждом обращении к нему
@@ -37,6 +39,85 @@ class CartStore {
             .map(cartItem => cartItem.price * cartItem.quantity)
             .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
             .toFixed(2)
+    }
+
+    @action dataReset(){
+        // console.log(
+        //     this.data?.productId,
+        //     this.data?.price,
+        //     this.data?.title,
+        //     this.data?.filling,
+        //     this.data?.weight,
+        //     this.data?.description,
+        //     this.data?.sculpture,
+        //     this.data?.quantity,
+        //     )
+        this.data = new CartItemModelCustom(
+            0,
+            0,
+            '',
+            false,
+            null,
+            null,
+            0,
+            1
+        )
+        // console.log(
+        //     this.data?.productId,
+        //     this.data?.price,
+        //     this.data?.title,
+        //     this.data?.filling,
+        //     this.data?.weight,
+        //     this.data?.description,
+        //     this.data?.sculpture,
+        //     this.data?.quantity,
+        // )
+    }
+
+    @action setProductId(id: number | undefined) {
+        if (this.data) {
+            this.data.productId = id
+        }
+    }
+
+    @action setPrice(price: number | undefined) {
+        if (this.data) {
+            this.data.price = price
+        }
+    }
+
+    @action setTitle(title: string | null | undefined) {
+        if (this.data) {
+            this.data.title = title
+        }
+    }
+
+    @action setDescription(description: string | null) {
+        if (this.data) {
+            this.data.description = description
+        }
+    }
+
+    @action setSculpture(sculpture: boolean) {
+        if (this.data) {
+            this.data.sculpture = sculpture
+        }
+    }
+
+    @action setWeight(weight: number) {
+        if (this.data) {
+            this.data.weight = weight
+        }
+    }
+
+    @action setFilling(filling: string) {
+        if (this.data) {
+            this.data.filling = filling
+        }
+    }
+
+    @action addData(data: CartItemModelCustom) {
+        this.data = data
     }
 
     @action setCartVisibility (open: boolean) {
@@ -80,6 +161,7 @@ class CartStore {
         commonStore.setLoading(true)
         fetch(`${commonStore.basename}/cart/` + productId,{
             method: 'POST',
+            body: JSON.stringify(this.data),
             credentials: 'include'
         }).then((response) => {
             return response.json()

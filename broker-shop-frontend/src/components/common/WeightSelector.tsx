@@ -16,6 +16,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils';
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
+import CartItemModelCustom from "../../models/CartItemModelCustom";
+import {CartStore} from "../../stores/CartStore";
 
 
 interface IProps {
@@ -24,6 +26,7 @@ interface IProps {
 
 interface IInjectedProps extends IProps , WithStyles<typeof styles> {
     commonStore: CommonStore,
+    cartStore: CartStore,
 }
 
 interface IState {
@@ -65,7 +68,7 @@ const styles = (theme: Theme) => createStyles({
     },
 })
 
-@inject('commonStore')
+@inject('commonStore', 'cartStore')
 @observer
 class WeightSelector extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -92,6 +95,7 @@ class WeightSelector extends React.Component<IProps, IState> {
         const observer = new MutationObserver((e) => {
             const elemThumb = document.getElementsByClassName('MuiSlider-thumb')[0]
             const itemValue = Number(elemThumb.attributes.getNamedItem('aria-valuenow')?.value)
+            this.injected.cartStore.setWeight(itemValue)
             const tooltip = document.getElementById('tooltipId')
             if (tooltip !== null) {
                 tooltip.innerHTML = this.injected.commonStore.marks.find((el) => el.value === itemValue)?.text as string
@@ -99,38 +103,15 @@ class WeightSelector extends React.Component<IProps, IState> {
         })
         observer.observe(elem, config);
         elem.setAttribute('aria-valuenow', '0')
-        // const observer = new MutationObserver((e) => {
-        //         //     const elemThumb = document.getElementsByClassName('MuiSlider-thumb')[0]
-        //         //     const itemValue = Number(elemThumb.attributes.getNamedItem('aria-valuenow')?.value)
-        //         //     const tooltip = document.getElementById('tooltipId')
-        //         //     if (tooltip !== null) {
-        //         //         tooltip.innerText = this.injected.commonStore.marks.find((el) => el.value === itemValue)?.text as string
-        //         //     }
-        //         // });
-        //         // observer.observe(elem, config);
-
-        // const element = document.getElementsByClassName('MuiSlider-root')[0]
-        // element.addEventListener('mousemove', (e) => {
-        //     const elemThumb = document.getElementsByClassName('MuiSlider-thumb')[0]
-        //     const itemValue = Number(elemThumb.attributes.getNamedItem('aria-valuenow')?.value)
-        //     const tooltip = document.getElementById('tooltipId')
-        //     if (tooltip !== null) {
-        //         tooltip.innerHTML = marks.find((el) => el.value === itemValue)?.text as string
-        //     }
-        // })
     }
 
     componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
-        // const elemThumb = document.getElementsByClassName('MuiSlider-thumb')[0]
-        // elemThumb.setAttribute('aria-valuenow', '0')
+
     }
 
     render () {
-
-
         const { loading } = this.injected.commonStore
         const { classes } = this.injected
-
         return (
             <div className={classes.root}>
                 <Slider

@@ -15,6 +15,7 @@ import {Favorite, FavoriteBorder} from "@material-ui/icons";
 import {green} from "@material-ui/core/colors";
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import {CartStore} from "../../stores/CartStore";
 
 
 interface IProps {
@@ -23,12 +24,14 @@ interface IProps {
 
 interface IInjectedProps extends IProps , WithStyles<typeof styles> {
     commonStore: CommonStore,
+    cartStore: CartStore,
 }
 
 interface IState {
     checkedA: boolean,
     checkedB: boolean,
     titleCake: string,
+    prevTitle: string | null | undefined,
 }
 
 const GreenCheckbox = withStyles({
@@ -57,7 +60,7 @@ const styles = (theme: Theme) => createStyles({
 })
 
 
-@inject('commonStore')
+@inject('commonStore', 'cartStore')
 @observer
 class DecorSelector extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -66,6 +69,7 @@ class DecorSelector extends React.Component<IProps, IState> {
             checkedA: false,
             checkedB: false,
             titleCake: '',
+            prevTitle: null,
         }
     }
 
@@ -75,15 +79,27 @@ class DecorSelector extends React.Component<IProps, IState> {
 
     componentDidMount () {
 
+        this.injected.cartStore.setTitle(null);
+        this.injected.cartStore.setDescription(null);
+    }
+
+    componentWillUnmount() {
+        this.injected.cartStore.setTitle(null);
+        this.injected.cartStore.setDescription(null);
     }
 
     handleChangeA = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({checkedA : event.target.checked});
+        this.injected.cartStore.setSculpture(event.target.checked);
     };
     handleChangeB = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ checkedB: event.target.checked});
+        if (!event.target.checked) {
+            this.injected.cartStore.setTitle(null);
+        } else {
+            this.injected.cartStore.setTitle(this.state.prevTitle);
+        }
     };
-
 
     handleOnChangeFieldTitleCake = (event: React.ChangeEvent<HTMLInputElement>) => {
         // if (this.state.titleCake.length >= 10) {
@@ -102,15 +118,14 @@ class DecorSelector extends React.Component<IProps, IState> {
         }
     }
 
-    // onInput = (event: any) => {
-    //     console.log(event)
-    //     if (this.state.titleCake.length >= 10) {
-    //         return
-    //     } else {
-    //         this.setState({titleCake: event.target.value})
-    //     }
-    //     console.log(this.state.titleCake)
-    // }
+    onInputTitle = (event: any) => {
+        this.injected.cartStore.setTitle(event.target.value);
+        this.setState({prevTitle: event.target.value})
+    }
+
+    onInputDescription = (event: any) => {
+        this.injected.cartStore.setDescription(event.target.value);
+    }
 
     render () {
         const { loading } = this.injected.commonStore
@@ -128,8 +143,8 @@ class DecorSelector extends React.Component<IProps, IState> {
                     />
                 </FormGroup>
                 <TextField
-                    error={this.state.titleCake.length >= 10}
-                    helperText={this.state.titleCake.length >= 10 ? 'достигнута максимальная длина' : ''}
+                    // error={this.state.titleCake.length >= 10}
+                    // helperText={this.state.titleCake.length >= 10 ? 'достигнута максимальная длина' : ''}
                     className={classes.fieldTitleCake}
                     style={this.state.checkedB ? {display: 'block'}:{display: 'none'}}
                     id="outlined-textarea"
@@ -137,9 +152,9 @@ class DecorSelector extends React.Component<IProps, IState> {
                     multiline
                     variant="outlined"
                     rowsMax={2}
-                    // onInput = {this.onInput}
-                    onKeyPress={this.onKeyPress}
-                    value={this.state.titleCake}
+                    onInput = {this.onInputTitle}
+                    // onKeyPress={this.onKeyPress}
+                    // value={this.state.titleCake}
                 />
                 <TextField
                     className={classes.field}
@@ -150,6 +165,7 @@ class DecorSelector extends React.Component<IProps, IState> {
                     rowsMax={8}
                     variant="outlined"
                     aria-valuemax={400}
+                    onInput = {this.onInputDescription}
                 />
             </div>
         )

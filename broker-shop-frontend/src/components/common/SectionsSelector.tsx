@@ -17,6 +17,7 @@ import {CommonStore} from "../../stores/CommonStore";
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils';
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
+import {CartStore} from "../../stores/CartStore";
 
 interface IProps {
 
@@ -24,20 +25,15 @@ interface IProps {
 
 interface IInjectedProps extends IProps , WithStyles<typeof styles> {
     commonStore: CommonStore,
+    cartStore: CartStore,
+
 }
 
 interface IState {
     activeStep: number
 }
 
-
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-
-
-
-
+// const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -62,7 +58,7 @@ const styles = (theme: Theme) => createStyles({
 
 })
 
-@inject('commonStore')
+@inject('commonStore', 'cartStore')
 @observer
 class SectionsSelector extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -93,7 +89,19 @@ class SectionsSelector extends React.Component<IProps, IState> {
     };
 
     componentDidMount () {
-
+        this.injected.cartStore.setFilling(this.injected.commonStore.images[0].label)
+        const elem = document.getElementsByClassName('KeyboardArrowRightJs')[0]
+        const config = {
+            attributes: true,
+            childList: true,
+            characterDataOldValue: true,
+            subtree: true,
+        }
+        const observer = new MutationObserver((e) => {
+            const elem = document.getElementsByClassName('KeyboardArrowRightJs')[0]
+            this.injected.cartStore.setFilling(elem.innerHTML)
+        })
+        observer.observe(elem, config);
     }
 
     render () {
@@ -107,7 +115,7 @@ class SectionsSelector extends React.Component<IProps, IState> {
         return (
             <div className={classes.root}>
                 <Paper square elevation={0} className={classes.header}>
-                    <Typography>{images[this.state.activeStep].label}</Typography>
+                    <Typography><div className={'KeyboardArrowRightJs'}>{images[this.state.activeStep].label}</div></Typography>
                 </Paper>
                 {/*<AutoPlaySwipeableViews*/}
                 <SwipeableViews

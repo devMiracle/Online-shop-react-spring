@@ -99,20 +99,20 @@ public class BrokerShopApplication {
 							.role(userRole)
 							.build()
 			);
-			userDao.save(
-					User.builder()
-							.name("two")
-							.password(passwordEncoder.encode("Passwo0rd2"))
-							.role(userRole)
-							.build()
-			);
-			userDao.save(
-					User.builder()
-							.name("three")
-							.password(passwordEncoder.encode("Passwo0rd3"))
-							.role(userRole)
-							.build()
-			);
+//			userDao.save(
+//					User.builder()
+//							.name("two")
+//							.password(passwordEncoder.encode("Passwo0rd2"))
+//							.role(userRole)
+//							.build()
+//			);
+//			userDao.save(
+//					User.builder()
+//							.name("three")
+//							.password(passwordEncoder.encode("Passwo0rd3"))
+//							.role(userRole)
+//							.build()
+//			);
 			Category category1 = Category.builder()
 					.name("детские")
 					//.image(cake1CategoryImageString)
