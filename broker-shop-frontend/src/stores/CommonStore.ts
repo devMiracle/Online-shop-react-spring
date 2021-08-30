@@ -23,34 +23,41 @@ class CommonStore {
         {
             value: 0,
             label: '2 кг',
-            text: '3-5 человек'
+            text: '3-5 человек',
+            multiplier: 2, // Множитель. Для правильного отображения суммы в реальном времени.
         },
         {
             value: 20,
             label: '2.5 кг',
-            text: '5-7 человек'
+            text: '5-7 человек',
+            multiplier: 2.5,
         },
         {
             value: 40,
             label: '3 кг',
-            text: '7-9 человек'
+            text: '7-9 человек',
+            multiplier: 3,
         },
         {
             value: 60,
             label: '4 кг',
-            text: '9-11 человек'
+            text: '9-11 человек',
+            multiplier: 4,
         },
         {
             value: 80,
             label: '5 кг',
-            text: '11-13 человек'
+            text: '11-13 человек',
+            multiplier: 5,
         },
         {
             value: 100,
             label: '6 кг',
-            text: '13-15 человек'
+            text: '13-15 человек',
+            multiplier: 6,
         },
     ];
+
     images = [
         {
             title: 'qwerqwer',

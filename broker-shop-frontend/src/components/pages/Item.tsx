@@ -58,8 +58,6 @@ function getStepContent(step: number) {
     }
 }
 
-
-
 const styles = (theme: Theme) => createStyles({
     root: {
         fontFamily: "'Comfortaa', cursive",
@@ -162,21 +160,22 @@ class Item extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
-        console.log('id = ' + this.injected.productStore.oneProduct?.id)
-        console.log('price = ' + this.injected.productStore.oneProduct?.price)
-        this.injected.cartStore.dataReset()
-        this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
-        this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
-
         // Анализ строки URL
         const windowUrl = window.location.search
         const params = new URLSearchParams(windowUrl)
         const id: string = params.get('id') || ''
         if (id){
             //this.injected.categoryStore.fetchCategories()
-            this.injected.productStore.fetchProductById(Number(id))
+            this.injected.productStore.fetchProductById(Number(id), this.callback)
             this.setState({itemIdIsExist: true})
         }
+    }
+
+    callback = () => {
+        this.injected.cartStore.dataReset()
+        this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
+        this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
+        this.injected.cartStore.setWeight(2)
     }
 
     handleSnackBarClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -185,7 +184,6 @@ class Item extends React.Component<IProps, IState> {
         // - не реагируем, чтобы пользователь успевал прочесть текст уведомления
         if (reason === 'clickaway') {
             return;
-
         }
         this.setState({snackBarVisibility: false})
     }
@@ -202,10 +200,20 @@ class Item extends React.Component<IProps, IState> {
     }
 
     handlerAddToCart = (e:any) => {
-        console.log('add to cart')
+        this.injected.cartStore.addToCart(Number(this.injected.cartStore.data?.productId), () => {})
     }
 
+    // callback = () => {
+    //     this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
+    //     this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
+    // }
+
     render() {
+
+
+        // this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
+        // this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
+
         const setActiveStep = (activeStep: any) => this.setState({activeStep: activeStep})
         const steps = getSteps();
 
@@ -213,14 +221,14 @@ class Item extends React.Component<IProps, IState> {
             setActiveStep(this.state.activeStep + 1)
 
             console.log(
-                this.injected.cartStore.data?.productId,
-                this.injected.cartStore.data?.price,
-                this.injected.cartStore.data?.title,
-                this.injected.cartStore.data?.filling,
-                this.injected.cartStore.data?.weight,
-                this.injected.cartStore.data?.description,
-                this.injected.cartStore.data?.sculpture,
-                this.injected.cartStore.data?.quantity,
+                '\nproductId: ' + this.injected.cartStore.data?.productId,
+                '\nprice: ' + this.injected.cartStore.data?.price,
+                '\nweight: ' + this.injected.cartStore.data?.weight,
+                '\nfilling: ' + this.injected.cartStore.data?.filling,
+                '\nsculpture: ' + this.injected.cartStore.data?.sculpture,
+                '\ntitle: ' + this.injected.cartStore.data?.title,
+                '\ndescription: ' + this.injected.cartStore.data?.description,
+                '\nquantity: ' + this.injected.cartStore.data?.quantity,
             )
         };
 
@@ -233,6 +241,7 @@ class Item extends React.Component<IProps, IState> {
             this.injected.cartStore.dataReset();
             this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
             this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
+            this.injected.cartStore.setWeight(2)
 
         };
         const { user } = this.injected.userStore
@@ -241,10 +250,6 @@ class Item extends React.Component<IProps, IState> {
         const { classes } = this.injected
 
         const { oneProduct } = this.injected.productStore
-
-
-        let weight: number | undefined = this.injected.cartStore.data?.weight
-
             if (!loading) {
                 return(
                     <div className={classes.root}>
@@ -275,7 +280,7 @@ class Item extends React.Component<IProps, IState> {
                             >
                                 <div className={classes.textContainer}>
                                     <div>
-                                        <div className={classes.textArt}><p>арт. </p><p>{article + oneProduct?.id}</p></div>
+                                        <div className={classes.textArt}><p>арт. </p><p>{/*article + */oneProduct?.id}</p></div>
                                         <p className={classes.title}>{oneProduct?.title}</p>
                                         <div className={classes.categoryContainer}>
                                             <div className={classes.categoryTitle}>категория:&nbsp;</div>
@@ -285,6 +290,7 @@ class Item extends React.Component<IProps, IState> {
                                             <p className={classes.descriptionTitle}>описание</p>
                                             <p className={classes.description}>{oneProduct?.description}</p>
                                         </div>
+                                        <div>Цена за килограмм:{this.injected.productStore.oneProduct?.price}</div>
                                         {/*<p>цена: {Store.oneProduct?.price}</p>*/}
                                     </div>
                                 </div>
@@ -335,14 +341,13 @@ class Item extends React.Component<IProps, IState> {
                                             <Paper square elevation={0} className={classes.resetContainer}>
                                                 <Typography>Заказ сформирован.</Typography>
                                                 <ul>
-                                                    <li>Вес: {this.injected.commonStore.marks.find((e) => e.value === weight)?.label}</li>
+                                                    <li>Вес: {this.injected.cartStore.data?.weight}кг</li>
                                                     <li>Наполнение: {this.injected.cartStore.data?.filling}</li>
                                                     <li>Фигурка: {this.injected.cartStore.data?.sculpture? 'Да' : 'Нет'}</li>
                                                     <li>Надпись: {this.injected.cartStore.data?.title ? this.injected.cartStore.data?.title : 'Нет'}</li>
                                                     <li>Пожелание к заказу: {this.injected.cartStore.data?.description ? this.injected.cartStore.data?.description : 'Нет'}</li>
                                                     <li>Сумма: {this.injected.cartStore.data?.price}грн.</li>
                                                 </ul>
-
                                                 <Button onClick={handleReset} className={classes.button}>
                                                     Сброс
                                                 </Button>

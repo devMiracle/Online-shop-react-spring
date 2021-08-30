@@ -107,7 +107,7 @@ class ProductStore {
     @action setProductImage(image: string) {
         this.currentProductImage = image
     }
-    @action fetchProductById(id: number | null) {
+    @action fetchProductById(id: number | null, callback?: (() => void) | undefined) {
         commonStore.clearError()
         commonStore.setLoading(true)
         fetch(commonStore.basename + `/product/${id}`)
@@ -128,6 +128,9 @@ class ProductStore {
                                 .replace(/(%2E)/ig, '%20')
                         )
                     )
+                    if (callback) {
+                        callback()
+                    }
                 } else if (responseModel.status === 'fail') {
                     commonStore.setError(responseModel.message)
                 }
@@ -137,6 +140,7 @@ class ProductStore {
             throw error
         }).finally(action(() => {
             commonStore.setLoading(false)
+
         }))
     }
     @action fetchProducts() {

@@ -78,7 +78,6 @@ class DecorSelector extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
-
         this.injected.cartStore.setTitle(null);
         this.injected.cartStore.setDescription(null);
     }
