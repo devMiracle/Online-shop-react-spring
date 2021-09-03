@@ -250,7 +250,7 @@ class Item extends React.Component<IProps, IState> {
         const { classes } = this.injected
 
         const { oneProduct } = this.injected.productStore
-            if (!loading) {
+            if (!false) {
                 return(
                     <div className={classes.root}>
                         <Grid

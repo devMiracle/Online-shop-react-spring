@@ -12,7 +12,7 @@ class CartStore {
     private HTTP_STATUS_CREATED: number = 201
 
     // список всех элементов корзины покупателя
-    @observable cartItems: CartItemModel[] = []
+    @observable cartItems: CartItemModelCustom[] = []
     // отображать ли корзину?
     @observable cartShown: boolean = false
 
@@ -30,15 +30,54 @@ class CartStore {
     @computed get cartItemsCount () {
         return this.cartItems
             .map(cartItem => cartItem.quantity)
-            .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
+            .reduce((previousValue, currentValue) => Number(previousValue) + Number(currentValue), 0)
     }
 
     // получение полной суммы за все товары в корзине
     @computed get cartItemsTotalPrice () {
         return this.cartItems
-            .map(cartItem => cartItem.price * cartItem.quantity)
+            .map(cartItem => Number(cartItem.price) * Number(cartItem.quantity))
             .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
             .toFixed(2)
+    }
+
+    @action sendMail(){
+        commonStore.clearError()
+        commonStore.setLoading(true)
+        fetch(`${commonStore.basename}/mail/`, {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                'address': 'rjcvjchzljv9@gmail.com',
+                'message': 'тело вашего заказа',
+            })
+
+        }).then((response) => {
+            return response.json()
+        }).then(responseModel => {
+            if (responseModel) {
+                if (responseModel.status === 'success') {
+                    // this.cartItems =
+                    //     JSON.parse(
+                    //         decodeURIComponent(
+                    //             JSON.stringify(responseModel.data)
+                    //                 .replace(/(%2E)/ig, '%20')
+                    //         )
+                    //     )
+                } else if (responseModel.status === 'fail') {
+                    commonStore.setError(responseModel.message)
+                }
+            }
+        }).catch((error) => {
+            commonStore.setError(error.message)
+            throw error
+        }).finally(action(() => {
+            commonStore.setLoading(false)
+        }))
     }
 
     @action dataReset(){
@@ -160,9 +199,22 @@ class CartStore {
         commonStore.clearError()
         commonStore.setLoading(true)
         fetch(`${commonStore.basename}/cart/` + productId,{
+            credentials: 'include',
             method: 'POST',
-            body: JSON.stringify(this.data),
-            credentials: 'include'
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                'productId': this.data?.productId,
+                'weight': this.data?.weight,
+                'filling': this.data?.filling,
+                'sculpture': this.data?.sculpture,
+                'title': this.data?.title,
+                'description': this.data?.description,
+                'price': this.data?.price,
+                'quantity': this.data?.quantity
+            })
         }).then((response) => {
             return response.json()
         }).then(responseModel => {
@@ -210,6 +262,34 @@ class CartStore {
             commonStore.setLoading(false)
         }))
     }
+
+    @action deleteAllFromCart(productId: number, notifySuccess: () => void) {
+        commonStore.clearError()
+        commonStore.setLoading(true)
+        fetch(`${commonStore.basename}/cart/` + productId,{
+            method: 'DELETE',
+            credentials: 'include'
+        }).then((response) => {
+            return response.json()
+        }).then(responseModel => {
+            if (responseModel) {
+                if (responseModel.status === 'success') {
+                    // запрос на получение всех элементов с сервера
+                    this.fetchCartItems()
+                    // уведомление пользователя об успехе
+                    notifySuccess()
+                } else if (responseModel.status === 'fail') {
+                    commonStore.setError(responseModel.message)
+                }
+            }
+        }).catch((error) => {
+            commonStore.setError(error.message)
+            throw error
+        }).finally(action(() => {
+            commonStore.setLoading(false)
+        }))
+    }
+
 }
 export {CartStore}
 export default new CartStore()

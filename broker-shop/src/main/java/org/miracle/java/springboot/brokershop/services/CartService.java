@@ -3,6 +3,7 @@ package org.miracle.java.springboot.brokershop.services;
 import org.miracle.java.springboot.brokershop.entities.Product;
 import org.miracle.java.springboot.brokershop.models.Cart;
 import org.miracle.java.springboot.brokershop.models.CartItem;
+import org.miracle.java.springboot.brokershop.models.CartModel;
 import org.miracle.java.springboot.brokershop.models.ResponseModel;
 import org.miracle.java.springboot.brokershop.repositories.CartMongoDao;
 import org.miracle.java.springboot.brokershop.repositories.ProductDao;
@@ -69,7 +70,7 @@ public class CartService {
             return ResponseModel.builder()
                     .status(ResponseModel.SUCCESS_STATUS)
                     .message("Cart data fetched successfully")
-                    .data(cart.getCartItems())
+                    .data(cart.getCartModels())
                     .build();
         } else {
             return ResponseModel.builder()
@@ -80,15 +81,75 @@ public class CartService {
     }
 
     // изменить число определенного товара в объекте корзины
-    public ResponseModel changeCartItemCount(Authentication authentication, Long productId, CartItem.Action action) {
+    /*Первый способ*/
+//    public ResponseModel changeCartItemCount(Authentication authentication, Long productId, CartItem.Action action) {
+//        Cart cart = this.getCart(authentication);
+//        CartItem currentCartItem = null;
+//        // в БД находим описание товара по его ИД
+//        Product product = productDao.findById(productId).get();
+//        // в объекте корзины пытаемся найти элемент списка товаров в корзине,
+//        // у которого ИД описания товара такой же, как заданный для изменения
+//        Optional<CartItem> currentCartItemOptional =
+//                cart.getCartItems()
+//                        .stream()
+//                        .filter((item) -> item.getProductId().equals(productId))
+//                        .findFirst();
+//        // если в корзине уже был хотя бы один такой товар
+//        if (currentCartItemOptional.isPresent()) {
+//            currentCartItem = currentCartItemOptional.get();
+//        } else {
+//            // если нет - добавляем товар в корзину с указанием его количества равным 0
+//            currentCartItem =
+//                    CartItem.builder()
+//                            .productId(productId)
+//                            .name(product.getName())
+//                            .price(product.getPrice())
+//                            .quantity(0)
+//                            .build();
+//            cart.getCartItems().add(currentCartItem);
+//        }
+//        if (action != null) {
+//            switch (action) {
+//                case ADD:
+//                    // увеличение числа товара в корзтине на 1
+//                    currentCartItem.setQuantity(currentCartItem.getQuantity() + 1);
+//                    break;
+//                case SUB:
+//                    // уменьшение числа товара в корзтине на 1,
+//                    // но если осталось 0 или меньше - полное удаление товара из корзины
+//                    currentCartItem.setQuantity(currentCartItem.getQuantity() - 1);
+//                    if (currentCartItem.getQuantity() <= 0) {
+//                        cart.getCartItems().remove(currentCartItem);
+//                    }
+//                    break;
+//                case REM:
+//                    // безусловное полное удаление товара из корзины
+//                    cart.getCartItems().remove(currentCartItem);
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//        // сохранение объекта корзины в MongoDB -
+//        // первичное или обновление
+//        cartMongoDao.save(cart);
+//        return ResponseModel.builder()
+//                .status(ResponseModel.SUCCESS_STATUS)
+//                .message("Cart data changed successfully")
+//                .data(cart.getCartItems())
+//                .build();
+//    }
+    /*Второй способ*/
+    public ResponseModel changeCartItemCount(CartModel cartModel, Authentication authentication, Long productId, CartItem.Action action) {
+        System.out.println(cartModel); // TODO: убрать
         Cart cart = this.getCart(authentication);
-        CartItem currentCartItem = null;
+        CartModel currentCartItem = null;
         // в БД находим описание товара по его ИД
         Product product = productDao.findById(productId).get();
         // в объекте корзины пытаемся найти элемент списка товаров в корзине,
         // у которого ИД описания товара такой же, как заданный для изменения
-        Optional<CartItem> currentCartItemOptional =
-                cart.getCartItems()
+        Optional<CartModel> currentCartItemOptional =
+                cart.getCartModels()
                         .stream()
                         .filter((item) -> item.getProductId().equals(productId))
                         .findFirst();
@@ -98,13 +159,17 @@ public class CartService {
         } else {
             // если нет - добавляем товар в корзину с указанием его количества равным 0
             currentCartItem =
-                    CartItem.builder()
-                            .productId(productId)
-                            .name(product.getName())
-                            .price(product.getPrice())
+                    CartModel.builder()
+                            .productId(cartModel.getProductId())
+                            .weight(cartModel.getWeight())
+                            .filling(cartModel.getFilling())
+                            .sculpture(cartModel.getSculpture())
+                            .title(cartModel.getTitle())
+                            .description(cartModel.getDescription())
+                            .price(cartModel.getPrice())
                             .quantity(0)
                             .build();
-            cart.getCartItems().add(currentCartItem);
+            cart.getCartModels().add(currentCartItem);
         }
         if (action != null) {
             switch (action) {
@@ -117,12 +182,12 @@ public class CartService {
                     // но если осталось 0 или меньше - полное удаление товара из корзины
                     currentCartItem.setQuantity(currentCartItem.getQuantity() - 1);
                     if (currentCartItem.getQuantity() <= 0) {
-                        cart.getCartItems().remove(currentCartItem);
+                        cart.getCartModels().remove(currentCartItem);
                     }
                     break;
                 case REM:
                     // безусловное полное удаление товара из корзины
-                    cart.getCartItems().remove(currentCartItem);
+                    cart.getCartModels().remove(currentCartItem);
                     break;
                 default:
                     break;
@@ -134,14 +199,73 @@ public class CartService {
         return ResponseModel.builder()
                 .status(ResponseModel.SUCCESS_STATUS)
                 .message("Cart data changed successfully")
-                .data(cart.getCartItems())
+                .data(cart.getCartModels())
                 .build();
     }
+
+    public ResponseModel changeCartItemCount(Authentication authentication, Long productId, CartItem.Action action) {
+        Cart cart = this.getCart(authentication);
+        CartModel currentCartItem = null;
+        // в БД находим описание товара по его ИД
+        Product product = productDao.findById(productId).get();
+        // в объекте корзины пытаемся найти элемент списка товаров в корзине,
+        // у которого ИД описания товара такой же, как заданный для изменения
+        Optional<CartModel> currentCartItemOptional =
+                cart.getCartModels()
+                        .stream()
+                        .filter((item) -> item.getProductId().equals(productId))
+                        .findFirst();
+        // если в корзине уже был хотя бы один такой товар
+        if (currentCartItemOptional.isPresent()) {
+            currentCartItem = currentCartItemOptional.get();
+        } else {
+            // если нет - добавляем товар в корзину с указанием его количества равным 0
+//            currentCartItem =
+//                    CartModel.builder()
+//                            .productId(productId)
+//                            .name(product.getName())
+//                            .price(product.getPrice())
+//                            .quantity(0)
+//                            .build();
+//            cart.getCartModels().add(currentCartItem);
+        }
+        if (action != null) {
+            switch (action) {
+                case ADD:
+                    // увеличение числа товара в корзтине на 1
+                    currentCartItem.setQuantity(currentCartItem.getQuantity() + 1);
+                    break;
+                case SUB:
+                    // уменьшение числа товара в корзтине на 1,
+                    // но если осталось 0 или меньше - полное удаление товара из корзины
+                    currentCartItem.setQuantity(currentCartItem.getQuantity() - 1);
+                    if (currentCartItem.getQuantity() <= 0) {
+                        cart.getCartModels().remove(currentCartItem);
+                    }
+                    break;
+                case REM:
+                    // безусловное полное удаление товара из корзины
+                    cart.getCartModels().remove(currentCartItem);
+                    break;
+                default:
+                    break;
+            }
+        }
+        // сохранение объекта корзины в MongoDB -
+        // первичное или обновление
+        cartMongoDao.save(cart);
+        return ResponseModel.builder()
+                .status(ResponseModel.SUCCESS_STATUS)
+                .message("Cart data changed successfully")
+                .data(cart.getCartModels())
+                .build();
+    }
+
     // удалить из корзины все элементы
     public void clearCartItems (Authentication authentication) {
         Cart cart = getCart(authentication);
         if (cart != null) {
-            cart.getCartItems().clear();
+            cart.getCartModels().clear();
             cartMongoDao.save(cart);
         }
     }

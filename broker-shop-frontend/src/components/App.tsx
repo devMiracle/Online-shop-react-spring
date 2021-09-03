@@ -201,6 +201,7 @@ const styles = (theme: Theme) => createStyles({
         paddingLeft: theme.spacing(4),
     },
     mainTitle: {
+        alignItems: 'center',
         // fontFamily: "'Source Sans Pro', sans-serif",
         fontFamily: "'Montserrat', sans-serif",
         flexGrow: 1,
@@ -258,7 +259,7 @@ class App extends React.Component<IProps, IState> {
 
     handleCartItemPlus = (e: React.MouseEvent, productId: number) => {
         this.injected.cartStore.addToCart(productId, () => {
-            this.setState({snackBarText: 'One product added to the cart'})
+            this.setState({snackBarText: '+ один продукт'})
             this.setState({snackBarSeverity: 'success'})
             this.setState({snackBarVisibility: true})
         })
@@ -266,7 +267,15 @@ class App extends React.Component<IProps, IState> {
 
     handleCartItemNeg = (e: React.MouseEvent, productId: number) => {
         this.injected.cartStore.subtractFromCart(productId, () => {
-            this.setState({snackBarText: 'One product was subtracted from the cart'})
+            this.setState({snackBarText: '- один продукт'})
+            this.setState({snackBarSeverity: 'success'})
+            this.setState({snackBarVisibility: true})
+        })
+    }
+
+    handleCartItemRemove = (e: React.MouseEvent, productId: number) => {
+        this.injected.cartStore.deleteAllFromCart(productId, () => {
+            this.setState({snackBarText: 'Товар удален'})
             this.setState({snackBarSeverity: 'success'})
             this.setState({snackBarVisibility: true})
         })
@@ -284,8 +293,13 @@ class App extends React.Component<IProps, IState> {
         this.setState({snackBarSeverity: 'success'})
     }
 
+
     componentDidMount() {
         this.injected.userStore.check()
+    }
+
+    handlerClickPurchase = (event?: React.MouseEvent) => {
+        this.injected.cartStore.sendMail()
     }
 
     render() {
@@ -304,13 +318,10 @@ class App extends React.Component<IProps, IState> {
                             <NavLink to="/"
                                      exact
                             >
-
                                     <img className={classes.cakeIcon} src="/images/icon.png" alt="cake logo"/>
-
                                 <div className={classes.mainTitle}>Тортодел</div>
                             </NavLink>
                         </div>
-
                         {/* панель навигации */}
                         <AppBarCollapse routes={routerStore.routes} />
                     </Toolbar>
@@ -362,12 +373,7 @@ class App extends React.Component<IProps, IState> {
                 <ModalDialog/>
 
 
-
-
-
-
-
-
+                {/*КОРЗИНА*/}
                 <Modal
                     open={ this.injected.cartStore.cartShown }
                     aria-labelledby="simple-modal-title"
@@ -384,65 +390,80 @@ class App extends React.Component<IProps, IState> {
                             </IconButton>
                         </div>
                         <div id="simple-modal-description">
-                            {this.injected.cartStore.cartItemsCount > 0 ? (
+                            {/*{this.injected.cartStore.cartItemsCount > 0 ? (*/}
                                 <table className="table">
                                     <thead>
                                     <tr>
-                                        <th>Название</th>
-                                        <th>Цена</th>
-                                        <th>Кол-во</th>
-                                        <th>Итого</th>
+                                        <th>вес:</th>
+                                        <th>фигурка:</th>
+                                        <th>надпись:</th>
+                                        <th>описание:</th>
+                                        <th>цена:</th>
+                                        <th>количество:</th>
+
+                                        {/*public Long id;*/}
+                                        {/*public Long productId;*/}
+                                        {/*public Double weight;*/}
+                                        {/*public String filling;*/}
+                                        {/*public Boolean sculpture;*/}
+                                        {/*public String title;*/}
+                                        {/*public String description;*/}
+                                        {/*public BigDecimal price;*/}
+                                        {/*public Integer quantity;*/}
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {this.injected.cartStore.cartItems.map(item => {
                                         return (
                                             <tr key={item.productId}>
-                                                <th scope="row">{item.name}</th>
+                                                <th scope="row">{item.productId}</th>
+                                                <td>{item.sculpture}</td>
+                                                <td>{item.title}</td>
+                                                <td>{item.description}</td>
                                                 <td>{item.price}</td>
                                                 <td>{item.quantity}</td>
-                                                <td>{(item.price * item.quantity).toFixed(2)}</td>
-                                                <td>
-                                                    <Grid container spacing={1}>
-                                                        <Grid item xs={3} >
-                                                            <Button
-                                                                onClick={(e) => {
-                                                                    this.handleCartItemPlus(e, item.productId)
-                                                                }}>
-                                                                <ExposurePlus1Icon/>
-                                                            </Button>
-                                                        </Grid>
-                                                        <Grid item xs={3} >
-                                                            <Button
-                                                                onClick={(e) => {
-                                                                    this.handleCartItemNeg(e, item.productId)
-                                                                }}>
-                                                                <ExposureNeg1Icon/>
-                                                            </Button>
-                                                        </Grid>
-                                                        <Grid item xs={3} >
-                                                            <Button
-                                                                onClick={(e) => {
-                                                                    // this.handleCartItemRemove(e, item.productId)
-                                                                }}>
-                                                                <ClearIcon/>
-                                                            </Button>
-                                                        </Grid>
-                                                    </Grid>
-                                                </td>
+                                                <td>{(Number(item.price) * Number(item.quantity)).toFixed(2)}</td>
+                                                {/*<td>*/}
+                                                {/*    <Grid container spacing={1}>*/}
+                                                {/*        <Grid item xs={3} >*/}
+                                                {/*            <Button*/}
+                                                {/*                onClick={(e) => {*/}
+                                                {/*                    this.handleCartItemPlus(e, Number(item.productId))*/}
+                                                {/*                }}>*/}
+                                                {/*                <ExposurePlus1Icon/>*/}
+                                                {/*            </Button>*/}
+                                                {/*        </Grid>*/}
+                                                {/*        <Grid item xs={3} >*/}
+                                                {/*            <Button*/}
+                                                {/*                onClick={(e) => {*/}
+                                                {/*                    this.handleCartItemNeg(e, Number(item.productId))*/}
+                                                {/*                }}>*/}
+                                                {/*                <ExposureNeg1Icon/>*/}
+                                                {/*            </Button>*/}
+                                                {/*        </Grid>*/}
+                                                {/*        <Grid item xs={3} >*/}
+                                                {/*            <Button*/}
+                                                {/*                onClick={(e) => {*/}
+                                                {/*                    this.handleCartItemRemove(e, Number(item.productId))*/}
+                                                {/*                }}>*/}
+                                                {/*                <ClearIcon/>*/}
+                                                {/*            </Button>*/}
+                                                {/*        </Grid>*/}
+                                                {/*    </Grid>*/}
+                                                {/*</td>*/}
                                             </tr>
                                         )
                                     })}
                                     </tbody>
                                 </table>
-                            ) : (
-                                <span>Ваша корзина пуста</span>
-                            )}
+                            {/*) : (*/}
+                            {/*    <span>Ваша корзина пуста</span>*/}
+                            {/*)}*/}
                             {/* Обычная html-гиперссылка для того, чтобы запрос на сервер
                              был выполнен синхронно, и ответ (перенаправление) ожидал не
                               код фронтенда (функция fetch), а сам браузер */}
                             {/*<a href={`${this.injected.commonStore.basename}/cart/pay`}>Purchase</a>*/}
-                            <br/>КУПИТЬ
+                            <br/><Button onClick={this.handlerClickPurchase}>КУПИТЬ</Button>
                         </div>
                     </div>
                 </Modal>

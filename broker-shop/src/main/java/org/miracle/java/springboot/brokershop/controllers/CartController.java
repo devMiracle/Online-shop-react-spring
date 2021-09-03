@@ -4,6 +4,7 @@ package org.miracle.java.springboot.brokershop.controllers;
 //import com.paypal.api.payments.Payment;
 //import com.paypal.base.rest.PayPalRESTException;
 import org.miracle.java.springboot.brokershop.models.CartItem;
+import org.miracle.java.springboot.brokershop.models.CartModel;
 import org.miracle.java.springboot.brokershop.models.ResponseModel;
 import org.miracle.java.springboot.brokershop.services.CartService;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/api/cart")
 public class CartController {
 
@@ -36,11 +37,22 @@ public class CartController {
     @ResponseBody
     public ResponseEntity<ResponseModel> addCartItemCount(
             @PathVariable("id") Long id,
+            @RequestBody CartModel cartModel,
             Authentication authentication
     ) {
+        System.out.println("data Id: " + cartModel.getId());
+        System.out.println("data ProductId: " + cartModel.getProductId());
+        System.out.println("data Weight: " + cartModel.getWeight());
+        System.out.println("data Filling: " + cartModel.getFilling());
+        System.out.println("data Sculpture: " + cartModel.getSculpture());
+        System.out.println("data Title: " + cartModel.getTitle());
+        System.out.println("data Description: " + cartModel.getDescription());
+        System.out.println("data Price: " + cartModel.getPrice());
+        System.out.println("data Quantity: " + cartModel.getQuantity());
         // вызов метода службы - увеличить число товара в корзине на 1
         ResponseModel response =
                 cartService.changeCartItemCount(
+                        cartModel,
                         authentication
                         , id
                         , CartItem.Action.ADD
@@ -68,7 +80,7 @@ public class CartController {
     public ResponseEntity<ResponseModel> deleteCartItem(
             @PathVariable("id") Long id,
             Authentication authentication
-    ) {
+                ) {
         ResponseModel response =
                 cartService.changeCartItemCount(
                         authentication
@@ -77,6 +89,8 @@ public class CartController {
                 );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
 
     // этот метод нужно вызвать с фронтенда синхронно
 //    @GetMapping("/pay")

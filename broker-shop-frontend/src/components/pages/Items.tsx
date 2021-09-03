@@ -239,7 +239,7 @@ class Items extends React.Component<IProps, IState> {
 
         // <div className={classes.displayNone}>{categories}</div>
 
-
+        {/*loading*/}
                if (loading) {
                    return(
                        <div className={classes.progressBar}>

@@ -24,8 +24,8 @@ public class Cart {
     @Id
     private String id;
     private Long userId;
-    private List<CartItem> cartItems;
+    private List<CartModel> cartModels;
     public Cart() {
-        cartItems = new ArrayList<>();
+        cartModels = new ArrayList<>();
     }
 }
