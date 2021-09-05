@@ -88,11 +88,16 @@ const styles = ((theme: Theme) => createStyles({
         lineHeight: '23px',
     },
     mobileButtonBarItem: {
+        color: '#a6a6a6',
         textDecoration: 'none',
+        textTransform: 'uppercase',
+        fontFamily: "'Comfortaa', cursive",
 
     },
     mobileButtonBarItemActive: {
-        // backgroundColor: '#00b58c',
+        color: '#a6a6a6',
+        textTransform: 'uppercase',
+        fontFamily: "'Comfortaa', cursive",
     },
     shoppingCart: {
         // marginRight: '10px',
@@ -128,6 +133,8 @@ const styles = ((theme: Theme) => createStyles({
         color: '#424242',
     },
     nestedMobile: {
+        textTransform: 'uppercase',
+        fontFamily: "'Comfortaa', cursive",
         '& > * > *': {
             fontFamily: "'Comfortaa', cursive",
         },
@@ -141,6 +148,8 @@ const styles = ((theme: Theme) => createStyles({
         color: '#a6a6a6',
     },
     nestedActiveMobile: {
+        textTransform: 'uppercase',
+        fontFamily: "'Comfortaa', cursive",
         '& > * > *': {
             fontFamily: "'Comfortaa', cursive",
         },
@@ -198,6 +207,7 @@ const styles = ((theme: Theme) => createStyles({
         color: '#424242',
     },
     heading: {
+        fontFamily: "'Comfortaa', cursive",
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },
@@ -302,7 +312,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                                             aria-controls="panel1a-content"
                                             id="panel1a-header"
                                         >
-                                            <Typography className={classes.heading}>{route.name.toUpperCase()}</Typography>
+                                            <div className={classes.heading}>{route.name.toUpperCase()}</div>
                                         </AccordionSummary>
                                         <AccordionDetails>
                                             <div className={classes.AccordionDetailsContainer}>

@@ -65,7 +65,6 @@ function getStepContent(step: number) {
 
 const styles = (theme: Theme) => createStyles({
     root: {
-        width: '100%',
         fontFamily: "'Comfortaa', cursive",
         // background: '#f2f2f2',
         color: '#414141',
