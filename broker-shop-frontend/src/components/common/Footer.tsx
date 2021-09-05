@@ -22,6 +22,7 @@ interface IState {
 
 const styles = (theme: Theme) => createStyles({
     root: {
+        zIndex: 0,
         position: 'relative',
     },
     footerImageStyle: {

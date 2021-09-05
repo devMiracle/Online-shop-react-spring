@@ -107,6 +107,9 @@ const styles = (theme: Theme) => createStyles({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    priceText: {
+      color: '#a7a7a7',
+    },
 })
 
 
@@ -286,7 +289,8 @@ class Items extends React.Component<IProps, IState> {
                                                    />
                                                    <CardContent>
                                                        <div className={classes.titleText}>
-                                                           {product.title}
+                                                           <div>{product.title}</div>
+                                                           <div className={classes.priceText}>Цена за 1 кг:&nbsp;{product.price}грн</div>
                                                        </div>
                                                        {/*<strong>{product.price} грн.</strong>*/}
 

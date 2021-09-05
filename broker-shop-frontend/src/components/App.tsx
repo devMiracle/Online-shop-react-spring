@@ -40,6 +40,10 @@ import {faPhone, faMapMarkerAlt, faEnvelope,} from '@fortawesome/free-solid-svg-
 import Header from "./common/Header";
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import ModalDialog from "./common/ModalDialog";
+import {ProductStore} from "../stores/ProductStore";
+import backImg from '../images/back2.png';
+import {url} from "inspector";
+import imageFooter from "../images/footer.jpg";
 
 library.add(faInstagram, faPhone, faMapMarkerAlt, faEnvelope)
 
@@ -53,7 +57,8 @@ interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     commonStore: CommonStore,
     routerStore: RouterStore,
     userStore: UserStore,
-    cartStore: CartStore
+    cartStore: CartStore,
+    productStore: ProductStore,
 }
 interface IState {
     snackBarVisibility: boolean,
@@ -125,6 +130,7 @@ const styles = (theme: Theme) => createStyles({
     // объявление пользовательского класса стиля
     // (для корневого компонента разметки текущего компонента)
     root: {
+        background: `url(${backImg}) no-repeat center 50px;`,
         // атрибут класса стиля
         // flexGrow: 1,
         display: 'flex',
@@ -172,7 +178,8 @@ const styles = (theme: Theme) => createStyles({
         padding: theme.spacing(2, 4, 3),
     },
     cartModalContent: {
-
+        maxHeight: '100vh',
+        overflowY: 'scroll',
         minWidth: '300px',
         backgroundColor: theme.palette.background.paper,
         // borderHistory: '1px solid #000',
@@ -207,7 +214,7 @@ const styles = (theme: Theme) => createStyles({
     mainTitle: {
         alignItems: 'center',
         // fontFamily: "'Source Sans Pro', sans-serif",
-        fontFamily: "'Montserrat', sans-serif",
+        // fontFamily: "'Montserrat', sans-serif",
         flexGrow: 1,
         marginLeft: '5px',
         fontWeight: 700,
@@ -230,6 +237,7 @@ const styles = (theme: Theme) => createStyles({
         color: "white",
         backgroundColor: '#009900',
         marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(2),
         marginRight: theme.spacing(1),
     },
     noNumber: {
@@ -249,9 +257,15 @@ const styles = (theme: Theme) => createStyles({
         marginTop: '36px',
         position: 'relative',
     },
+    imageProduct: {
+      width: '80px',
+    },
+    titleCart: {
+      margin: '10px 0',
+    },
 })
 
-@inject('commonStore', 'routerStore', 'userStore', 'cartStore')
+@inject('commonStore', 'routerStore', 'userStore', 'cartStore', 'productStore')
 @observer
 class App extends React.Component<IProps, IState> {
     // Геттер свойства, который подводит фактически полученные props
@@ -327,6 +341,7 @@ class App extends React.Component<IProps, IState> {
 
     componentDidMount() {
         this.injected.userStore.check()
+        this.injected.productStore.fetchProducts()
     }
 
     handlerClickPurchase = (event?: React.MouseEvent) => {
@@ -443,7 +458,14 @@ class App extends React.Component<IProps, IState> {
                                                 }}>
                                                 <ClearIcon/>
                                             </Button>
+                                            <img
+                                                className={classes.imageProduct}
+                                                src={this.injected.productStore?.products.find((product) => product.id === item.productId)?.image}
+                                                alt={'image product'}
+                                            />
+                                            <h4 className={classes.titleCart}>{this.injected.productStore?.products.find((product) => product.id === item.productId)?.title}</h4>
                                             <ul className={classes.ul}>
+
                                                 <li>Вес: {item?.weight}кг</li>
                                                 <li>Наполнение: {item?.filling}</li>
                                                 <li>Фигурка: {item?.sculpture? 'Да' : 'Нет'}</li>

@@ -133,6 +133,10 @@ const styles = (theme: Theme) => createStyles({
     categoryContainer: {
       display: 'flex',
     },
+    descriptionContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
 
     button: {
         '&:hover':{
@@ -181,7 +185,7 @@ const styles = (theme: Theme) => createStyles({
             cursor:  'pointer',
         },
         color: '#a6a6a6',
-        marginTop: '25px',
+        marginTop: '10px',
         textAlign: 'center',
         textDecoration: 'underline',
     },
@@ -189,6 +193,15 @@ const styles = (theme: Theme) => createStyles({
         textAlign: 'center',
         display: 'flex',
         flexDirection: 'column',
+    },
+    warn: {
+        backgroundColor: '#fcf7f1',
+    },
+    textGray: {
+        color: '#a6a6a6',
+    },
+    textContainer2: {
+      display: 'flex',
     },
 })
 
@@ -341,11 +354,15 @@ class Item extends React.Component<IProps, IState> {
                                             <div className={classes.categoryTitle}>категория:&nbsp;</div>
                                             <div className={classes.categoryText}>{oneProduct?.category.name}</div>
                                         </div>
-                                        <div>
-                                            <p className={classes.descriptionTitle}>описание</p>
+                                        <div className={classes.descriptionContainer}>
+                                            <p className={classes.descriptionTitle}>описание:</p>
                                             <p className={classes.description}>{oneProduct?.description}</p>
                                         </div>
-                                        <div>Цена за килограмм:{this.injected.productStore.oneProduct?.price}</div>
+                                        <p className={classes.warn}>Внимание! Цена указана за 1 кг. изделия!</p>
+                                        <div className={classes.textContainer2}>
+                                            <div className={classes.textGray}>Цена за 1 килограмм:&nbsp;</div>
+                                            <div>{this.injected.productStore.oneProduct?.price}грн</div>
+                                        </div>
                                         {/*<p>цена: {Store.oneProduct?.price}</p>*/}
                                     </div>
                                 </div>
