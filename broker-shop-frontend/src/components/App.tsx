@@ -130,6 +130,7 @@ const styles = (theme: Theme) => createStyles({
     // объявление пользовательского класса стиля
     // (для корневого компонента разметки текущего компонента)
     root: {
+        zIndex: 10,
         background: `url(${backImg}) no-repeat center 50px;`,
         // атрибут класса стиля
         // flexGrow: 1,
@@ -178,6 +179,7 @@ const styles = (theme: Theme) => createStyles({
         padding: theme.spacing(2, 4, 3),
     },
     cartModalContent: {
+        width: '600px',
         maxHeight: '100vh',
         overflowY: 'scroll',
         minWidth: '300px',
@@ -258,7 +260,7 @@ const styles = (theme: Theme) => createStyles({
         position: 'relative',
     },
     imageProduct: {
-      width: '80px',
+      width: '300px',
     },
     titleCart: {
       margin: '10px 0',

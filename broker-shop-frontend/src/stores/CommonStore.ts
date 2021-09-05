@@ -88,7 +88,7 @@ class CommonStore {
         },
         {
             title: 'rqewrqwer',
-            label: 'взбитые сливки + кини + шоколадный бисквит',
+            label: 'взбитые сливки + киви + шоколадный бисквит',
             imgPath: img6
         },
     ];

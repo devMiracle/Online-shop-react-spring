@@ -1,12 +1,11 @@
 import React from 'react'
-import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
+import {createStyles, Grid, Paper, Theme, WithStyles, withStyles} from '@material-ui/core'
 import {inject, observer} from "mobx-react";
 import {CommonStore} from "../../stores/CommonStore";
+import {ProductStore} from "../../stores/ProductStore";
+import History from "../../history";
 
-// import ImageList from '@material-ui/core/ImageList';
-// import ImageListItem from '@material-ui/core/ImageListItem';
-// import itemData from './itemData';
-// import image from 'path/to/image.jpg';
+
 
 interface IProps {
 
@@ -14,6 +13,8 @@ interface IProps {
 
 interface IInjectedProps extends IProps , WithStyles<typeof styles> {
     commonStore: CommonStore,
+    productStore: ProductStore,
+
 }
 
 interface IState {
@@ -32,20 +33,37 @@ const styles = (theme: Theme) => createStyles({
         width: 500,
         height: 450,
     },
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+    imageContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
 
+    img: {
+        '&:hover': {
+          opacity: '.8',
+        },
+        height: '480px',
+        maxWidth: '480px',
+        width: '100%',
+    },
+    item: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        // justifyContent: 'center',
+        margin: '2px 0',
+    },
 })
 
 
-    // const itemData = [
-    //   {
-    //     img: image,
-    //     title: 'Image',
-    //     author: 'author',
-    //     cols: 2,
-    //  },
-    // ];
 
-@inject('commonStore')
+
+@inject('commonStore', 'productStore')
 @observer
 class ImageListNew10Items extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -63,20 +81,51 @@ class ImageListNew10Items extends React.Component<IProps, IState> {
 
     }
 
+    handlerClickOnImage = (event: React.MouseEvent, id: number) => {
+        // this.injected.productStore.fetchProductById(id)
+        History.push(`item?id=${id}`)
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
     render () {
+        const items = this.injected.productStore.products.slice(0, 6)
         const { loading } = this.injected.commonStore
         const { classes } = this.injected
         return (
-            <div className={classes.root}>
-                ImageListNew10Items
-                {/*<ImageList rowHeight={160} className={classes.imageList} cols={3}>*/}
-                {/*    {itemData.map((item) => (*/}
-                {/*        <ImageListItem key={item.img} cols={item.cols || 1}>*/}
-                {/*            <img src={item.img} alt={item.title} />*/}
-                {/*        </ImageListItem>*/}
-                {/*    ))}*/}
-                {/*</ImageList>*/}
-            </div>
+
+
+            <Grid
+                container
+            >
+                {this.injected.productStore.products.slice(0, 6).map((item) => (
+                    <Grid
+                        key={item.id}
+                        id={'item'}
+                        className={classes.item}
+                        item
+                        xs={12}
+                        sm={6}
+                        md={6}
+                        lg={6}
+                        xl={6}
+                    >
+                        <div className={classes.imageContainer}>
+                            <img
+                                onClick={(e) => this.handlerClickOnImage(e, item.id)}
+
+                                id={'imgId'} className={classes.img}
+                                src={item.image} alt="image item"/>
+                        </div>
+
+                    </Grid>
+                ))}
+
+            </Grid>
+
+
         )
     }
 }

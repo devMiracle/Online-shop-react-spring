@@ -22,7 +22,6 @@ interface IState {
 
 const styles = (theme: Theme) => createStyles({
     root: {
-        zIndex: 0,
         position: 'relative',
     },
     footerImageStyle: {
@@ -32,7 +31,7 @@ const styles = (theme: Theme) => createStyles({
         left: 0,
         width: '100%',
         height: '526px',
-        zIndex: -1,
+        zIndex: -10,
     },
     contentContainer: {
         zIndex: 1,
