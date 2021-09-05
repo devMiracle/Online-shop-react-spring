@@ -141,7 +141,7 @@ public class CartService {
 //    }
     /*Второй способ*/
     public ResponseModel changeCartItemCount(CartModel cartModel, Authentication authentication, Long productId, CartItem.Action action) {
-        System.out.println(cartModel); // TODO: убрать
+
         Cart cart = this.getCart(authentication);
         CartModel currentCartItem = null;
         // в БД находим описание товара по его ИД
@@ -168,6 +168,7 @@ public class CartService {
                             .description(cartModel.getDescription())
                             .price(cartModel.getPrice())
                             .quantity(0)
+                            .phoneNumber(cartModel.getPhoneNumber())
                             .build();
             cart.getCartModels().add(currentCartItem);
         }
@@ -262,11 +263,15 @@ public class CartService {
     }
 
     // удалить из корзины все элементы
-    public void clearCartItems (Authentication authentication) {
+    public ResponseModel clearCartItems (Authentication authentication) {
         Cart cart = getCart(authentication);
         if (cart != null) {
             cart.getCartModels().clear();
             cartMongoDao.save(cart);
         }
+        return ResponseModel.builder()
+                .status(ResponseModel.SUCCESS_STATUS)
+                .message("Cart data changed successfully")
+                .build();
     }
 }

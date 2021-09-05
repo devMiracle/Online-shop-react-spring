@@ -40,7 +40,7 @@ public class CartController {
             @RequestBody CartModel cartModel,
             Authentication authentication
     ) {
-        System.out.println("data Id: " + cartModel.getId());
+//        System.out.println("data Id: " + cartModel.getId());
         System.out.println("data ProductId: " + cartModel.getProductId());
         System.out.println("data Weight: " + cartModel.getWeight());
         System.out.println("data Filling: " + cartModel.getFilling());
@@ -48,7 +48,8 @@ public class CartController {
         System.out.println("data Title: " + cartModel.getTitle());
         System.out.println("data Description: " + cartModel.getDescription());
         System.out.println("data Price: " + cartModel.getPrice());
-        System.out.println("data Quantity: " + cartModel.getQuantity());
+//        System.out.println("data Quantity: " + cartModel.getQuantity());
+        System.out.println("data phoneNumber: " + cartModel.getPhoneNumber());
         // вызов метода службы - увеличить число товара в корзине на 1
         ResponseModel response =
                 cartService.changeCartItemCount(
@@ -87,6 +88,16 @@ public class CartController {
                         , id
                         , CartItem.Action.REM
                 );
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/")
+    @ResponseBody
+    public ResponseEntity<ResponseModel> deleteCartItem(
+            Authentication authentication
+    ) {
+        ResponseModel response =
+                cartService.clearCartItems(authentication);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

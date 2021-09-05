@@ -10,8 +10,8 @@ import {
     WithStyles,
     withStyles
 } from "@material-ui/core"
-import categoryTreeImage from '../../../images/category-tree.jpg'
-import goodsImage from '../../../images/goods.jpg'
+import category from '../../../images/categories.png'
+import product from '../../../images/product.png'
 
 interface IProps {
 }
@@ -26,6 +26,7 @@ interface IState {
 const styles = (theme: Theme) =>
     createStyles({
         card: {
+            margin: '20px',
             display: 'flex',
         },
         details: {
@@ -56,13 +57,13 @@ class Dashboard extends Component<IProps, IState> {
                 <Card className={classes.card}>
                     <CardMedia
                         className={classes.cover}
-                        image={categoryTreeImage}
+                        image={category}
                         title="Categories"
                     />
                     <div className={classes.details}>
                         <CardContent className={classes.content}>
                             <Typography component="h5" variant="h5">
-                                Categories
+                                Категории
                             </Typography>
                         </CardContent>
                         <CardActions>
@@ -70,7 +71,7 @@ class Dashboard extends Component<IProps, IState> {
                                 key={'/admin/categories'}
                                 to={'/admin/categories'}
                             >
-                                Go
+                                Войти
                             </NavLink>
                         </CardActions>
                     </div>
@@ -85,13 +86,13 @@ class Dashboard extends Component<IProps, IState> {
                 <Card className={classes.card}>
                     <CardMedia
                         className={classes.cover}
-                        image={goodsImage}
+                        image={product}
                         title="Products"
                     />
                     <div className={classes.details}>
                         <CardContent className={classes.content}>
                             <Typography component="h5" variant="h5">
-                                Products
+                                Продукты
                             </Typography>
                         </CardContent>
                         <CardActions>
@@ -99,7 +100,7 @@ class Dashboard extends Component<IProps, IState> {
                                 key={'/admin/products'}
                                 to={'/admin/products'}
                             >
-                                Go
+                                Войти
                             </NavLink>
                         </CardActions>
                     </div>

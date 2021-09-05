@@ -29,18 +29,32 @@ public class MailController {
         this.mailService = mailService;
     }
 
+//    @PostMapping("")
+//    @ResponseBody
+//    public ResponseEntity<ResponseModel> sendMailtoAdminAddress(
+//            @RequestBody MailModel mailModel
+//    ) throws MessagingException, IOException {
+//
+//        // вызов метода службы - увеличить число товара в корзине на 1
+//        ResponseModel response =
+//                mailService.sendMail(mailModel.getAddress(), mailModel.getMessage());
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
+
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<ResponseModel> sendMailtoAdminAddress(
+            Authentication authentication,
             @RequestBody MailModel mailModel
     ) throws MessagingException, IOException {
 
+
+
         // вызов метода службы - увеличить число товара в корзине на 1
         ResponseModel response =
-                mailService.sendMail(mailModel.getAddress(), mailModel.getMessage());
+                mailService.sendMail(authentication);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 
     // внедрение объекта Authentication через аргумент метода
 //    @GetMapping("")

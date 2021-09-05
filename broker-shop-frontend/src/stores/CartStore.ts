@@ -53,7 +53,7 @@ class CartStore {
             },
             body: JSON.stringify({
                 'address': 'rjcvjchzljv9@gmail.com',
-                'message': 'тело вашего заказа',
+                'message': this.cartItems,
             })
 
         }).then((response) => {
@@ -99,7 +99,8 @@ class CartStore {
             null,
             null,
             0,
-            1
+            1,
+            ''
         )
         // console.log(
         //     this.data?.productId,
@@ -111,6 +112,12 @@ class CartStore {
         //     this.data?.sculpture,
         //     this.data?.quantity,
         // )
+    }
+
+    @action setPhoneNumber(phoneNumber: string) {
+        if (this.data) {
+            this.data.phoneNumber = phoneNumber
+        }
     }
 
     @action setProductId(id: number | undefined) {
@@ -213,7 +220,8 @@ class CartStore {
                 'title': this.data?.title,
                 'description': this.data?.description,
                 'price': this.data?.price,
-                'quantity': this.data?.quantity
+                'quantity': this.data?.quantity,
+                'phoneNumber': this.data?.phoneNumber,
             })
         }).then((response) => {
             return response.json()
@@ -289,6 +297,34 @@ class CartStore {
             commonStore.setLoading(false)
         }))
     }
+
+    @action deleteFullFromCart(notifySuccess: () => void) {
+        commonStore.clearError()
+        commonStore.setLoading(true)
+        fetch(`${commonStore.basename}/cart/`,{
+            method: 'DELETE',
+            credentials: 'include'
+        }).then((response) => {
+            return response.json()
+        }).then(responseModel => {
+            if (responseModel) {
+                if (responseModel.status === 'success') {
+                    // запрос на получение всех элементов с сервера
+                    this.fetchCartItems()
+                    // уведомление пользователя об успехе
+                    notifySuccess()
+                } else if (responseModel.status === 'fail') {
+                    commonStore.setError(responseModel.message)
+                }
+            }
+        }).catch((error) => {
+            commonStore.setError(error.message)
+            throw error
+        }).finally(action(() => {
+            commonStore.setLoading(false)
+        }))
+    }
+
 
 }
 export {CartStore}

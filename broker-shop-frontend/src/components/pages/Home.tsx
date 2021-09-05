@@ -1,6 +1,6 @@
 import React from 'react'
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
-
+import ImageListNew10Items from '../common/ImageListNew10Items'
 
 
 interface IProps {
@@ -42,7 +42,7 @@ class Home extends React.Component<IProps, IState> {
         const { classes } = this.injected
         return (
             <div className={classes.home}>
-                <h1>Home Page</h1>
+                <ImageListNew10Items/>
             </div>
         )
     }

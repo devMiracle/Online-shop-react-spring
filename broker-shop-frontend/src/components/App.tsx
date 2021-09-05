@@ -162,17 +162,21 @@ const styles = (theme: Theme) => createStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+
     },
     modalContent: {
+
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
     },
     cartModalContent: {
+
+        minWidth: '300px',
         backgroundColor: theme.palette.background.paper,
-        borderHistory: '2px solid #000',
-        boxShadow: theme.shadows[5],
+        // borderHistory: '1px solid #000',
+        boxShadow: theme.shadows[1],
         padding: theme.spacing(2, 4, 3),
     },
     closeButton: {
@@ -217,6 +221,33 @@ const styles = (theme: Theme) => createStyles({
             // flexGrow: 1,
         },
         flexGrow: 1,
+    },
+    buttonBuy: {
+        '&:hover':{
+            backgroundColor: '#009900',
+            opacity: '.8',
+        },
+        color: "white",
+        backgroundColor: '#009900',
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(1),
+    },
+    noNumber: {
+        display: 'inline',
+        color: "red",
+    },
+    buttonRemove: {
+        backgroundColor: 'red',
+        position: 'absolute',
+        right: '15px',
+        top: '-36px',
+    },
+    ul : {
+
+    },
+    item: {
+        marginTop: '36px',
+        position: 'relative',
     },
 })
 
@@ -300,13 +331,17 @@ class App extends React.Component<IProps, IState> {
 
     handlerClickPurchase = (event?: React.MouseEvent) => {
         this.injected.cartStore.sendMail()
+        // this.injected.cartStore. // TODO: очистить корзину полностью
     }
 
     render() {
     const {classes, routerStore} = this.injected
     const progress = (this.injected.commonStore.loading ? <CircularProgress/> : '')
 
-    return (
+    // @ts-ignore
+        // @ts-ignore
+        // @ts-ignore
+        return (
         <Router history={history}>
             <div className={classes.root}>
                 <div id="back-to-top-anchor"/>
@@ -390,72 +425,99 @@ class App extends React.Component<IProps, IState> {
                             </IconButton>
                         </div>
                         <div id="simple-modal-description">
-                            {/*{this.injected.cartStore.cartItemsCount > 0 ? (*/}
-                                <table className="table">
-                                    <thead>
-                                    <tr>
-                                        <th>вес:</th>
-                                        <th>фигурка:</th>
-                                        <th>надпись:</th>
-                                        <th>описание:</th>
-                                        <th>цена:</th>
-                                        <th>количество:</th>
+                            {this.injected.cartStore?.cartItemsCount as number > 0 ?
+                                (<div>
+                                {this.injected.cartStore.cartItems.map((item) => {
+                                    return(
+                                        <div className={classes.item}>
+                                            <Button
+                                                className={classes.buttonRemove}
+                                                onClick={(e) => {
+                                                    this.handleCartItemRemove(e, Number(item.productId))
+                                                }}>
+                                                <ClearIcon/>
+                                            </Button>
+                                            <ul className={classes.ul}>
+                                                <li>Вес: {item?.weight}кг</li>
+                                                <li>Наполнение: {item?.filling}</li>
+                                                <li>Фигурка: {item?.sculpture? 'Да' : 'Нет'}</li>
+                                                <li>Надпись: {item?.title ? this.injected.cartStore.data?.title : 'Нет'}</li>
+                                                <li>Пожелание к заказу: {item?.description ? item?.description : 'Нет'}</li>
+                                                <li>Телефон: {item?.phoneNumber ? item?.phoneNumber : <div className={classes.noNumber}>не указан</div>}</li>
+                                                <li>Сумма: {item?.price}грн.</li>
+                                            </ul>
+                                            <div>-----------</div>
+                                        </div>
+                                    )
+                                })}
+                            </div>) : 'Корзина пуста'}
 
-                                        {/*public Long id;*/}
-                                        {/*public Long productId;*/}
-                                        {/*public Double weight;*/}
-                                        {/*public String filling;*/}
-                                        {/*public Boolean sculpture;*/}
-                                        {/*public String title;*/}
-                                        {/*public String description;*/}
-                                        {/*public BigDecimal price;*/}
-                                        {/*public Integer quantity;*/}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {this.injected.cartStore.cartItems.map(item => {
-                                        return (
-                                            <tr key={item.productId}>
-                                                <th scope="row">{item.productId}</th>
-                                                <td>{item.sculpture}</td>
-                                                <td>{item.title}</td>
-                                                <td>{item.description}</td>
-                                                <td>{item.price}</td>
-                                                <td>{item.quantity}</td>
-                                                <td>{(Number(item.price) * Number(item.quantity)).toFixed(2)}</td>
-                                                {/*<td>*/}
-                                                {/*    <Grid container spacing={1}>*/}
-                                                {/*        <Grid item xs={3} >*/}
-                                                {/*            <Button*/}
-                                                {/*                onClick={(e) => {*/}
-                                                {/*                    this.handleCartItemPlus(e, Number(item.productId))*/}
-                                                {/*                }}>*/}
-                                                {/*                <ExposurePlus1Icon/>*/}
-                                                {/*            </Button>*/}
-                                                {/*        </Grid>*/}
-                                                {/*        <Grid item xs={3} >*/}
-                                                {/*            <Button*/}
-                                                {/*                onClick={(e) => {*/}
-                                                {/*                    this.handleCartItemNeg(e, Number(item.productId))*/}
-                                                {/*                }}>*/}
-                                                {/*                <ExposureNeg1Icon/>*/}
-                                                {/*            </Button>*/}
-                                                {/*        </Grid>*/}
-                                                {/*        <Grid item xs={3} >*/}
-                                                {/*            <Button*/}
-                                                {/*                onClick={(e) => {*/}
-                                                {/*                    this.handleCartItemRemove(e, Number(item.productId))*/}
-                                                {/*                }}>*/}
-                                                {/*                <ClearIcon/>*/}
-                                                {/*            </Button>*/}
-                                                {/*        </Grid>*/}
-                                                {/*    </Grid>*/}
-                                                {/*</td>*/}
-                                            </tr>
-                                        )
-                                    })}
-                                    </tbody>
-                                </table>
+                            {/*{this.injected.cartStore.cartItemsCount > 0 ? (*/}
+                            {/*    <table className="table">*/}
+                            {/*        <thead>*/}
+                            {/*        <tr>*/}
+                            {/*            <th>вес</th>*/}
+                            {/*            <th>фигурка</th>*/}
+                            {/*            <th>надпись</th>*/}
+                            {/*            <th>описание</th>*/}
+                            {/*            <th>цена</th>*/}
+                            {/*            <th>количество</th>*/}
+
+                            {/*            /!*public Long id;*!/*/}
+                            {/*            /!*public Long productId;*!/*/}
+                            {/*            /!*public Double weight;*!/*/}
+                            {/*            /!*public String filling;*!/*/}
+                            {/*            /!*public Boolean sculpture;*!/*/}
+                            {/*            /!*public String title;*!/*/}
+                            {/*            /!*public String description;*!/*/}
+                            {/*            /!*public BigDecimal price;*!/*/}
+                            {/*            /!*public Integer quantity;*!/*/}
+                            {/*        </tr>*/}
+                            {/*        </thead>*/}
+                            {/*        <tbody>*/}
+                            {/*        {this.injected.cartStore.cartItems.map(item => {*/}
+                            {/*            return (*/}
+                            {/*                <tr key={item.productId}>*/}
+                            {/*                    <th scope="row">{item.productId}</th>*/}
+                            {/*                    <td>{item.sculpture}</td>*/}
+                            {/*                    <td>{item.title}</td>*/}
+                            {/*                    <td>{item.description}</td>*/}
+                            {/*                    <td>{item.price}</td>*/}
+                            {/*                    <td>{item.quantity}</td>*/}
+                            {/*                    <td>{(Number(item.price) * Number(item.quantity)).toFixed(2)}</td>*/}
+                            {/*                    /!*<td>*!/*/}
+                            {/*                    /!*    <Grid container spacing={1}>*!/*/}
+                            {/*                    /!*        <Grid item xs={3} >*!/*/}
+                            {/*                    /!*            <Button*!/*/}
+                            {/*                    /!*                onClick={(e) => {*!/*/}
+                            {/*                    /!*                    this.handleCartItemPlus(e, Number(item.productId))*!/*/}
+                            {/*                    /!*                }}>*!/*/}
+                            {/*                    /!*                <ExposurePlus1Icon/>*!/*/}
+                            {/*                    /!*            </Button>*!/*/}
+                            {/*                    /!*        </Grid>*!/*/}
+                            {/*                    /!*        <Grid item xs={3} >*!/*/}
+                            {/*                    /!*            <Button*!/*/}
+                            {/*                    /!*                onClick={(e) => {*!/*/}
+                            {/*                    /!*                    this.handleCartItemNeg(e, Number(item.productId))*!/*/}
+                            {/*                    /!*                }}>*!/*/}
+                            {/*                    /!*                <ExposureNeg1Icon/>*!/*/}
+                            {/*                    /!*            </Button>*!/*/}
+                            {/*                    /!*        </Grid>*!/*/}
+                            {/*                    /!*        <Grid item xs={3} >*!/*/}
+                            {/*                    /!*            <Button*!/*/}
+                            {/*                    /!*                onClick={(e) => {*!/*/}
+                            {/*                    /!*                    this.handleCartItemRemove(e, Number(item.productId))*!/*/}
+                            {/*                    /!*                }}>*!/*/}
+                            {/*                    /!*                <ClearIcon/>*!/*/}
+                            {/*                    /!*            </Button>*!/*/}
+                            {/*                    /!*        </Grid>*!/*/}
+                            {/*                    /!*    </Grid>*!/*/}
+                            {/*                    /!*</td>*!/*/}
+                            {/*                </tr>*/}
+                            {/*            )*/}
+                            {/*        })}*/}
+                            {/*        </tbody>*/}
+                            {/*    </table>*/}
                             {/*) : (*/}
                             {/*    <span>Ваша корзина пуста</span>*/}
                             {/*)}*/}
@@ -463,7 +525,9 @@ class App extends React.Component<IProps, IState> {
                              был выполнен синхронно, и ответ (перенаправление) ожидал не
                               код фронтенда (функция fetch), а сам браузер */}
                             {/*<a href={`${this.injected.commonStore.basename}/cart/pay`}>Purchase</a>*/}
-                            <br/><Button onClick={this.handlerClickPurchase}>КУПИТЬ</Button>
+                            <br/><Button
+                            disabled={!(this.injected.cartStore?.cartItemsCount as number > 0)}
+                            className={classes.buttonBuy} onClick={this.handlerClickPurchase}>КУПИТЬ</Button>
                         </div>
                     </div>
                 </Modal>

@@ -43,6 +43,23 @@ public class BrokerShopApplication {
 	private String cakeImageString2;
 	@Value("${cake.image.3}")
 	private String cakeImageString3;
+	@Value("${cake.image.4}")
+	private String cakeImageString4;
+	@Value("${cake.image.5}")
+	private String cakeImageString5;
+	@Value("${cake.image.6}")
+	private String cakeImageString6;
+	@Value("${cake.image.7}")
+	private String cakeImageString7;
+	@Value("${cake.image.8}")
+	private String cakeImageString8;
+	@Value("${cake.image.9}")
+	private String cakeImageString9;
+	@Value("${cake.image.10}")
+	private String cakeImageString10;
+
+
+
 
 //	@Value("${cake.category.image.1}")
 //	private String cake1CategoryImageString;
@@ -147,104 +164,97 @@ public class BrokerShopApplication {
 
 			Product Product1 =
 					Product.builder()
-							.name("Торт бочка с икрой")
-							.description("Торт выполнен в виде бочки")
-							.price(new BigDecimal(203.92))
+							.name("Торт бочка с черной икрой")
+							.description("Торт выполнен в виде бочки является полностью съедобным. При покраске используются пищевые красители. Такой подарок задаст праздничное настроение и кучу положительных эмоций!")
+							.price(new BigDecimal(223.92))
 							.quantity(1)
 							.category(category1)
 							.image(cakeImageString1)
 							.build();
 			Product Product2 =
 					Product.builder()
-							.name("Торт бочка с икрой")
-							.description("Описание")
-							.price(new BigDecimal(55.82))
+							.name("Торт мешок с деньгами")
+							.description("Торт выполнен в виде мешка с деньгами является полностью съедобным. При покраске используются пищевые красители. Такой подарок задаст праздничное настроение и кучу положительных эмоций!")
+							.price(new BigDecimal(250.50))
 							.quantity(1)
 							.category(category2)
 							.image(cakeImageString2)
 							.build();
 			Product Product3 =
 					Product.builder()
-							.name("Торт книга с деньгами")
-							.description("Торт выполнен в виде мешка с деньгами является полностью съедобным. При покраске используются пищевые красители. Такой подарок задаст праздничное настроение и кучу положительных эмоций!")
-							.price(new BigDecimal(56.12))
+							.name("Торт бочка с красной икрой")
+							.description("Торт выполнен в виде бочки с красной икрой  является полностью съедобным. При покраске используются пищевые красители. Такой подарок задаст праздничное настроение и кучу положительных эмоций!")
+							.price(new BigDecimal(280.12))
 							.quantity(1)
 							.category(category3)
 							.image(cakeImageString3)
 							.build();
-
 			Product Product4 =
 					Product.builder()
-							.name("Торт книга с деньгами")
-							.description("Описание")
-							.price(new BigDecimal(56.12))
+							.name("Торт с пряниками Леди Баг")
+							.description("Двухъярусный торт украшенный кремом, нижний ярус красного цвета, верхний белого. На верхушке торта имбирный пряник с рисунком героини мультфильма «Леди Баг». При желании Вы можете внести любые изменения в вид торта, добавить цифру, надпись, пожелания и так далее, а также выбрать одну из 12 начинок.")
+							.price(new BigDecimal(280.50))
 							.quantity(1)
-							.category(category3)
-							.image(cakeImageString1)
+							.category(category4)
+							.image(cakeImageString4)
 							.build();
 			Product Product5 =
 					Product.builder()
-							.name("Торт книга с деньгами")
-							.description("Описание")
-							.price(new BigDecimal(56.12))
+							.name("Двухъярусный торт")
+							.description("Двухъярусный торт выполненный в бежево-золотых тонах, украшенный макарунами, короной и цифрой 2. В зависимости от возраста девочки можно изменить цифру на нужную, а также внести любые изменения в вид тортика. Выберите одну из доступных начинок, а если у вас есть пожелания по поводу ингредиентов, то обговорите это с менеджером по телефону. Если вам не подошел вариант на нашем сайте, прикрепите к форме заказа собственное фото.")
+							.price(new BigDecimal(310.50))
 							.quantity(1)
-							.category(category3)
-							.image(cakeImageString2)
+							.category(category5)
+							.image(cakeImageString5)
 							.build();
 			Product Product6 =
 					Product.builder()
-							.name("Торт книга с деньгами")
-							.description("Описание")
-							.price(new BigDecimal(56.12))
+							.name("Торт на 18 лет парню")
+							.description("Вашему сыну или другу вот-вот исполниться 18 лет? Хотите по особенному отметить совершеннолетие? Тогда у нас для Вас замечательное предложение, в виде торта на заказ парню на 18 лет.")
+							.price(new BigDecimal(240.50))
 							.quantity(1)
-							.category(category3)
-							.image(cakeImageString1)
+							.category(category6)
+							.image(cakeImageString6)
 							.build();
 			Product Product7 =
 					Product.builder()
-							.name("Торт книга с деньгами")
-							.description("Описание")
-							.price(new BigDecimal(56.12))
+							.name("Торт на 20 лет парню")
+							.description("Юбилей, всегда особенный день. И в этот день хочется порадовать именинника по особенному. Есть много способов сделать это, но обойтись без сладкого невозможно. Поэтому отличной идеей будет заказать торт на 20 лет парню в нашей кондитерской")
+							.price(new BigDecimal(285.50))
 							.quantity(1)
-							.category(category3)
-							.image(cakeImageString2)
+							.category(category1)
+							.image(cakeImageString7)
 							.build();
 			Product Product8 =
 					Product.builder()
-							.name("Торт книга с деньгами")
-							.description("Описание")
-							.price(new BigDecimal(56.12))
+							.name("Торт космос")
+							.description("Кремовый торт с изображением космоса украшенный фигурками планет. Такой десерт будет оригинальным подарком для любого профессионального астронавта или маленького любителя космоса.")
+							.price(new BigDecimal(220.50))
 							.quantity(1)
 							.category(category3)
-							.image(cakeImageString1)
+							.image(cakeImageString8)
 							.build();
 			Product Product9 =
 					Product.builder()
-							.name("Торт книга с деньгами")
-							.description("fdgsdrgsdfgdfggfdgd")
-							.price(new BigDecimal(56.12))
+							.name("Торт Бочка Виски")
+							.description("Оригинального вида торт будет самым приятным сюрпризом на Вашем празднике. Торт Бочка Виски не сможет оставить равнодушным никого. Он прекрасно подойдет в качестве подарка Вашему любимому мужчине или начальнику от коллектива, если он является ценителем крепких напитков. Торт сформирован из мастики с логотипом Jack Daniel’s – все его элементы съедобны, несмотря на внешнюю реалистичность.")
+							.price(new BigDecimal(290.50))
 							.quantity(1)
-							.category(category2)
-							.image(cakeImageString1)
+							.category(category4)
+							.image(cakeImageString9)
 							.build();
 			Product Product10 =
 					Product.builder()
-							.name("Торт книга с деньгами")
-							.description("Описание")
-							.price(new BigDecimal(56.12))
+							.name("Торт из книг-законов")
+							.description("Оригинальный и необычный торт для корпоративной вечеринки или как подарок Вашему начальнику, юристу, адвокату. Прекрасно подойдет для академической сферы, образовательной, юридической. Состоит из нескольких ярусов-книг. Сформирован из сахарной мастики и крема, и настолько реалистичен, что книги действительно можно спутать с настоящими.")
+							.price(new BigDecimal(310.50))
 							.quantity(1)
-							.category(category3)
-							.image(cakeImageString2)
+							.category(category5)
+							.image(cakeImageString10)
 							.build();
-//			Product cryptoEthereumProduct =
-//					Product.builder()
-//							.name("ETH")
-//							.description("Ethereum Cryptocurrency")
-//							.price(new BigDecimal(232.48))
-//							.quantity(500)
-//							.category(cryptoCategory)
-//							.image(ethImageString)
-//							.build();
+
+
+
 			productDao.save(Product1);
 			productDao.save(Product2);
 			productDao.save(Product3);

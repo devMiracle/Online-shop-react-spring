@@ -48,6 +48,7 @@ interface IState {
 
 const styles = (theme: Theme) => createStyles({
     root: {
+        color: 'red',
         marginTop: '75px',
         marginLeft: '50px',
         maxWidth: '300px',
@@ -62,10 +63,13 @@ const styles = (theme: Theme) => createStyles({
         //minHeight: '60px',
         position: 'absolute',
         top: '-80px',
-        backgroundColor: 'lightGray',
+        backgroundColor: 'white',
         borderRadius: '15px 15px 15px 15px',
+        border: '1px dashed #039be6',
+        color: 'grey',
+        display: 'flex',
+        alignItems: 'center',
         textAlign: 'center',
-
 
     },
 })
@@ -100,7 +104,6 @@ class WeightSelector extends React.Component<IProps, IState> {
         // const sum = this.injected.productStore.oneProduct?.price as number * multiplier
         // console.log(sum)
         // elementTitle.innerHTML = `Выбор веса (цена: ${sum}грн. за ${kg})`
-
 
         const elem = document.getElementsByClassName('MuiSlider-thumb')[0]
         const tooltipNewElement = document.createElement('div')
@@ -146,12 +149,15 @@ class WeightSelector extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
-
+        const elemThumb = document.getElementsByClassName('MuiSlider-thumb')[0]
+        const itemValue = Number(elemThumb.attributes.getNamedItem('aria-valuenow')?.value)
+        const multiplier = this.injected.commonStore.marks.find((e) => e.value === itemValue)?.multiplier as number
+        const price1kg = this.injected.productStore.oneProduct?.price
+        const sum = Math.ceil((Number(price1kg)) * (Number(multiplier)))
+        this.injected.cartStore.setPrice(sum)
     }
 
     render () {
-
-
 
 
         const { loading } = this.injected.commonStore

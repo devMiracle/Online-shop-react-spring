@@ -107,7 +107,7 @@ class DashboardCategories extends Component<IProps, IState> {
         const { categories } = this.injected.categoryStore
         const { classes } = this.injected
         return <div>
-            <h2 className={classes.title}>Categories</h2>
+            <h2 className={classes.title}>Категории</h2>
             <Button
                 variant='outlined'
                 disabled={loading}
@@ -132,7 +132,7 @@ class DashboardCategories extends Component<IProps, IState> {
                             disabled={loading}
                             onClick={this.handleSubmitForm}
                         >
-                            Submit
+                            Принять
                             <SendIcon/>
                         </Button>
                     </div>

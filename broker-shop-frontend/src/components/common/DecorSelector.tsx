@@ -83,8 +83,8 @@ class DecorSelector extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
-        this.injected.cartStore.setTitle(null);
-        this.injected.cartStore.setDescription(null);
+        // this.injected.cartStore.setTitle(null);
+        // this.injected.cartStore.setDescription(null);
     }
 
     handleChangeA = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +109,6 @@ class DecorSelector extends React.Component<IProps, IState> {
     }
 
     onKeyPress = (event: any) => {
-        console.log(event)
         if (this.state.titleCake.length >= 10) {
             return
         } else {
@@ -133,11 +132,11 @@ class DecorSelector extends React.Component<IProps, IState> {
             <div className={classes.root}>
                 <FormGroup>
                     <FormControlLabel
-                        control={<Checkbox checked={this.state.checkedA} onChange={this.handleChangeA} name="checkedA" />}
+                        control={<Checkbox color="primary" checked={this.state.checkedA} onChange={this.handleChangeA} name="checkedA" />}
                         label="Фигурка как на фото (если есть)"
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={this.state.checkedB} onChange={this.handleChangeB} name="checkedB" />}
+                        control={<Checkbox color="primary" checked={this.state.checkedB} onChange={this.handleChangeB} name="checkedB" />}
                         label="Надпись на торте"
                     />
                 </FormGroup>

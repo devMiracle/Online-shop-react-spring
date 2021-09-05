@@ -17,6 +17,7 @@ import {ProductStore} from "../../stores/ProductStore";
 import {CategoryStore} from "../../stores/CategoryStore";
 import WeightSelector from '../../components/common/WeightSelector'
 import SectionsSelector from '../../components/common/SectionsSelector'
+import Communication from '../common/Сommunication'
 import {UserStore} from "../../stores/UserStore";
 import DecorSelector from "../common/DecorSelector";
 import {CartStore} from "../../stores/CartStore";
@@ -39,10 +40,11 @@ interface IState {
     activeStep: number,
     snackBarVisibility: boolean,
     snackBarText: string,
+    buttonIsDisabled: boolean,
 }
 
 function getSteps() {
-    return ['Выбор веса', 'Выбор начинки', 'Выбор оформления'];
+    return ['Выбор веса', 'Выбор начинки', 'Выбор оформления', 'Связь'];
 }
 
 function getStepContent(step: number) {
@@ -53,6 +55,8 @@ function getStepContent(step: number) {
             return <SectionsSelector/>;
         case 2:
             return <DecorSelector/>;
+        case 3:
+            return <Communication/>;
         default:
             return 'Unknown step';
     }
@@ -60,17 +64,21 @@ function getStepContent(step: number) {
 
 const styles = (theme: Theme) => createStyles({
     root: {
+        width: '100%',
         fontFamily: "'Comfortaa', cursive",
-        background: '#f2f2f2',
+        // background: '#f2f2f2',
         color: '#414141',
         //color: '#424242',
         // maxWidth: '970px',
         minWidth: '300px',
         margin: '0 auto',
+        marginTop: '10px',
         padding: '10px',
+        border: '1px dashed rgba(66,66,66,0.2)',
+        boxShadow: '0 0 8px 1px rgba(66,66,66,0.2)',
     },
     imageContainer: {
-
+        width: '100%',
     },
 
     img: {
@@ -125,6 +133,12 @@ const styles = (theme: Theme) => createStyles({
     },
 
     button: {
+        '&:hover':{
+            backgroundColor: '#039be6',
+            opacity: '.8',
+        },
+        color: 'white',
+        backgroundColor: '#039be6',
         marginTop: theme.spacing(1),
         marginRight: theme.spacing(1),
     },
@@ -140,6 +154,22 @@ const styles = (theme: Theme) => createStyles({
     ItemContainer: {
       width: '100%',
     },
+    noNumber: {
+        display: 'inline',
+        color: "red",
+    },
+    buttonInCart: {
+        '&:hover':{
+            backgroundColor: '#009900',
+            opacity: '.8',
+        },
+        color: "white",
+        backgroundColor: '#009900',
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(1),
+
+    },
+
 })
 
 @inject('commonStore', 'productStore', 'categoryStore', 'userStore', 'cartStore')
@@ -152,6 +182,7 @@ class Item extends React.Component<IProps, IState> {
             activeStep: 0,
             snackBarVisibility: false,
             snackBarText: '',
+            buttonIsDisabled: false,
         }
     }
 
@@ -201,6 +232,17 @@ class Item extends React.Component<IProps, IState> {
 
     handlerAddToCart = (e:any) => {
         this.injected.cartStore.addToCart(Number(this.injected.cartStore.data?.productId), () => {})
+        this.setState({
+            snackBarText: 'Заказ отправлен в корзину',
+            snackBarVisibility : true,
+        })
+        const setActiveStep = (activeStep: any) => this.setState({activeStep: activeStep})
+        const steps = getSteps();
+        setActiveStep(this.state.activeStep - steps.length);
+        this.injected.cartStore.dataReset();
+        this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
+        this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
+        this.injected.cartStore.setWeight(2)
     }
 
     // callback = () => {
@@ -209,27 +251,10 @@ class Item extends React.Component<IProps, IState> {
     // }
 
     render() {
-
-
-        // this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
-        // this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
-
         const setActiveStep = (activeStep: any) => this.setState({activeStep: activeStep})
         const steps = getSteps();
-
         const handleNext = () => {
             setActiveStep(this.state.activeStep + 1)
-
-            console.log(
-                '\nproductId: ' + this.injected.cartStore.data?.productId,
-                '\nprice: ' + this.injected.cartStore.data?.price,
-                '\nweight: ' + this.injected.cartStore.data?.weight,
-                '\nfilling: ' + this.injected.cartStore.data?.filling,
-                '\nsculpture: ' + this.injected.cartStore.data?.sculpture,
-                '\ntitle: ' + this.injected.cartStore.data?.title,
-                '\ndescription: ' + this.injected.cartStore.data?.description,
-                '\nquantity: ' + this.injected.cartStore.data?.quantity,
-            )
         };
 
         const handleBack = () => {
@@ -317,7 +342,7 @@ class Item extends React.Component<IProps, IState> {
                                                         <div className={classes.actionsContainer}>
                                                             <div>
                                                                 <Button
-                                                                    disabled={this.state.activeStep === 0}
+                                                                    disabled={this.state.activeStep === 0 || this.injected.commonStore.buttonIsDisabled}
                                                                     onClick={handleBack}
                                                                     className={classes.button}
                                                                 >
@@ -328,6 +353,7 @@ class Item extends React.Component<IProps, IState> {
                                                                     color="primary"
                                                                     onClick={handleNext}
                                                                     className={classes.button}
+                                                                    disabled={this.injected.commonStore.buttonIsDisabled}
                                                                 >
                                                                     {this.state.activeStep === steps.length - 1 ? 'Готово' : 'Далее'}
                                                                 </Button>
@@ -346,12 +372,13 @@ class Item extends React.Component<IProps, IState> {
                                                     <li>Фигурка: {this.injected.cartStore.data?.sculpture? 'Да' : 'Нет'}</li>
                                                     <li>Надпись: {this.injected.cartStore.data?.title ? this.injected.cartStore.data?.title : 'Нет'}</li>
                                                     <li>Пожелание к заказу: {this.injected.cartStore.data?.description ? this.injected.cartStore.data?.description : 'Нет'}</li>
+                                                    <li>Телефон: {this.injected.cartStore.data?.phoneNumber ? this.injected.cartStore.data?.phoneNumber : <div className={classes.noNumber}>не указан</div>}</li>
                                                     <li>Сумма: {this.injected.cartStore.data?.price}грн.</li>
                                                 </ul>
                                                 <Button onClick={handleReset} className={classes.button}>
                                                     Сброс
                                                 </Button>
-                                                <Button onClick={this.handlerAddToCart}>{'в корзину'.toUpperCase()}</Button>
+                                                <Button className={classes.buttonInCart} onClick={this.handlerAddToCart}>{'в корзину'.toUpperCase()}</Button>
                                             </Paper>
                                         )}
                                     </div>

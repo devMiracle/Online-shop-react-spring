@@ -17,6 +17,8 @@ import Return from "../components/pages/Return"
 import Items from "../components/pages/Items";
 import Item from "../components/pages/Item";
 import categoryStore from './CartStore'
+import DashboardCategories from "../components/pages/admin/DashboardCategories";
+import DashboardProducts from "../components/pages/admin/DashboardProducts";
 class RouterStore {
 
     // список моделей роутов для гостя
@@ -26,9 +28,9 @@ class RouterStore {
         { path: '/confidentiality', name: 'конфиденциальность', visible: false, Component: Confidentiality },
         { path: '/return', name: 'возврат', visible: false, Component: Return },
         { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
-        { path: '/order', name: 'заказать', visible: true, Component: Order },
+        { path: '/order', name: 'как заказать', visible: true, Component: Order },
         { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
-        { path: '/about', name: 'о нас', visible: true, Component: About },
+        { path: '/about', name: 'о нас', visible: false, Component: About },
         { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/signin', name: 'вход', visible: false, Component: SignIn },
         { path: '/signup', name: 'регистрация', visible: false, Component: SignUp },
@@ -42,9 +44,9 @@ class RouterStore {
         { path: '/confidentiality', name: 'конфиденциальность', visible: false, Component: Confidentiality },
         { path: '/return', name: 'возврат', visible: false, Component: Return },
         { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
-        { path: '/order', name: 'заказать', visible: true, Component: Order },
+        { path: '/order', name: 'как заказать', visible: true, Component: Order },
         { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
-        { path: '/about', name: 'о нас', visible: true, Component: About },
+        { path: '/about', name: 'о нас', visible: false, Component: About },
         { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/auth:out', name: 'выйти', visible: true, Component: Categories },
         { path: '/item', name: 'товар', visible: false, Component: Item },
@@ -57,13 +59,15 @@ class RouterStore {
         { path: '/confidentiality', name: 'конфиденциальность', visible: false, Component: Confidentiality },
         { path: '/return', name: 'возврат', visible: false, Component: Return },
         { path: '/sections', name: 'разрезы', visible: true, Component: Sections },
-        { path: '/order', name: 'заказать', visible: true, Component: Order },
+        { path: '/order', name: 'как заказать', visible: true, Component: Order },
         { path: '/shopping', name: 'покупки', visible: false, Component: Shopping },
-        { path: '/about', name: 'о нас', visible: true, Component: About },
+        { path: '/about', name: 'о нас', visible: false, Component: About },
         { path: '/cart', name: 'корзина', visible: true, Component: Cart },
         { path: '/admin', name: 'Dashboard' , visible: true, Component: Dashboard },
         { path: '/auth:out', name: 'выйти', visible: true, Component: Categories },
         { path: '/item', name: 'товар', visible: false, Component: Item },
+        { path: '/admin/categories', name: 'DashboardCategories' , visible: false, Component: DashboardCategories },
+        { path: '/admin/products', name: 'DashboardProducts' , visible: false, Component: DashboardProducts },
     ]
 
 

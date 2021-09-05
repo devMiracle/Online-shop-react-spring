@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -15,5 +17,5 @@ import lombok.*;
 public class MailModel {
     public Long id;
     public String address;
-    public String message;
+    public Object message;
 }

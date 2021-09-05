@@ -319,8 +319,8 @@ class Footer extends React.Component<IProps, IState> {
                                         <FontAwesomeIcon icon="envelope"/>
                                     </div>
                                     <div className={classes.aStyle}>
-                                        <a href="mailto:tortodelna@gmail.com">
-                                            tortodelna@gmail.com
+                                        <a href="mailto:tortodel.store@gmail.com">
+                                            tortodel.store@gmail.com
                                         </a>
                                     </div>
                                 </div>

@@ -21,11 +21,11 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false, unique = true, length = 50)
+    @Column(name = "name", nullable = false, unique = true, length = 300)
     private String name;
-    @Lob
-    @Column(name = "image")
-    private String image;
+//    @Lob
+//    @Column(name = "image")
+//    private String image;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Product> products;
 }

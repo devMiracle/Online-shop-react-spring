@@ -21,6 +21,7 @@ public class CartModel {
     public Boolean sculpture;
     public String title;
     public String description;
-    public BigDecimal price;
+    public Integer price;
     public Integer quantity;
+    public String phoneNumber;
 }

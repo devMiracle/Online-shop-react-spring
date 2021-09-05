@@ -18,6 +18,8 @@ class CommonStore {
     //  URL REST API основной адрес
     authBasename: string = 'http://46.160.84.84:8080/shop'
 
+    @observable buttonIsDisabled: boolean = false
+
     article: string = '02200'
     marks = [
         {
@@ -92,6 +94,9 @@ class CommonStore {
     ];
     @observable activeMark: string | null = null
 
+    @action turnButtonIsDisabled(flag: boolean) {
+        this.buttonIsDisabled = flag
+    }
 
     constructor () {
         makeObservable(this)

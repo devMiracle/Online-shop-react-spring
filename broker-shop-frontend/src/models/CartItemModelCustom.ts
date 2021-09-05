@@ -1,4 +1,5 @@
 export default class CartItemModelCustom {
+
     private _productId: number | undefined
     private _weight: number
     private _filling: string
@@ -7,8 +8,18 @@ export default class CartItemModelCustom {
     private _description: string | null
     private _price: number | undefined
     private _quantity: number | undefined
+    private _phoneNumber: string | null
 
-    constructor(productId: number | undefined, weight: number, filling: string, sculpture: boolean, title: string | null | undefined, description: string | null, price: number | undefined, quantity: number | undefined) {
+    constructor(productId: number | undefined,
+                weight: number,
+                filling: string,
+                sculpture: boolean,
+                title: string | null | undefined,
+                description: string | null,
+                price: number | undefined,
+                quantity: number | undefined,
+                phoneNumber: string | null
+    ) {
         this._productId = productId;
         this._weight = weight;
         this._filling = filling;
@@ -17,6 +28,7 @@ export default class CartItemModelCustom {
         this._description = description;
         this._price = price;
         this._quantity = quantity;
+        this._phoneNumber = phoneNumber;
     }
 
     get productId(): number | undefined {
@@ -81,6 +93,14 @@ export default class CartItemModelCustom {
 
     set quantity(value: number | undefined) {
         this._quantity = value;
+    }
+
+    get phoneNumber(): string | null {
+        return this._phoneNumber;
+    }
+
+    set phoneNumber(value: string | null) {
+        this._phoneNumber = value;
     }
 }
 
