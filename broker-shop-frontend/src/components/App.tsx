@@ -331,7 +331,13 @@ class App extends React.Component<IProps, IState> {
 
     handlerClickPurchase = (event?: React.MouseEvent) => {
         this.injected.cartStore.sendMail()
-        // this.injected.cartStore. // TODO: очистить корзину полностью
+        this.injected.cartStore.deleteFullFromCart(this.callbackDeleteFullFromCart) // TODO: очистить корзину полностью
+    }
+
+    callbackDeleteFullFromCart = () => {
+        this.setState({snackBarText: 'Заказ отправлен. С вами свяжуться.'})
+        this.setState({snackBarSeverity: 'success'})
+        this.setState({snackBarVisibility: true})
     }
 
     render() {
@@ -441,7 +447,7 @@ class App extends React.Component<IProps, IState> {
                                                 <li>Вес: {item?.weight}кг</li>
                                                 <li>Наполнение: {item?.filling}</li>
                                                 <li>Фигурка: {item?.sculpture? 'Да' : 'Нет'}</li>
-                                                <li>Надпись: {item?.title ? this.injected.cartStore.data?.title : 'Нет'}</li>
+                                                <li>Надпись: {item?.title ? item?.title : 'Нет'}</li>
                                                 <li>Пожелание к заказу: {item?.description ? item?.description : 'Нет'}</li>
                                                 <li>Телефон: {item?.phoneNumber ? item?.phoneNumber : <div className={classes.noNumber}>не указан</div>}</li>
                                                 <li>Сумма: {item?.price}грн.</li>
@@ -527,7 +533,7 @@ class App extends React.Component<IProps, IState> {
                             {/*<a href={`${this.injected.commonStore.basename}/cart/pay`}>Purchase</a>*/}
                             <br/><Button
                             disabled={!(this.injected.cartStore?.cartItemsCount as number > 0)}
-                            className={classes.buttonBuy} onClick={this.handlerClickPurchase}>КУПИТЬ</Button>
+                            className={classes.buttonBuy} onClick={this.handlerClickPurchase}>ЗАКАЗАТЬ</Button>
                         </div>
                     </div>
                 </Modal>

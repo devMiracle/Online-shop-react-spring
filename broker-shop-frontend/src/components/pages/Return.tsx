@@ -39,8 +39,8 @@ class Return extends React.Component<IProps, IState> {
         // const { classes } = this.injected
         return (
             <div>
-                <div>ВОЗВРАТ</div>
-
+                <h2>Возврат</h2>
+                <p>Мы не несем ответственности за продукцию, с момента передачи её в руки заказчику.</p>
             </div>
         )
     }

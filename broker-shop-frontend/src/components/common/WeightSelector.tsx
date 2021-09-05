@@ -89,8 +89,7 @@ class WeightSelector extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
-
-
+        this.injected.commonStore.turnButtonIsDisabled(false)
         // const elementTitle = document.getElementsByClassName('MuiStepLabel-active')[0]
         // elementTitle.innerHTML = `Выбор веса`;
 

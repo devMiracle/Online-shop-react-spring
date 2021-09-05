@@ -39,8 +39,8 @@ class Confidentiality extends React.Component<IProps, IState> {
         // const { classes } = this.injected
         return (
             <div>
-                <div>КОНФИДЕНЦИАЛЬНОСТЬ</div>
-
+                <h2>Конфиденциальность</h2>
+                <div>Любая иннофрмация о клиенте третим лицам не передается.</div>
             </div>
         )
     }

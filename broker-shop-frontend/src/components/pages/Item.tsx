@@ -23,6 +23,7 @@ import DecorSelector from "../common/DecorSelector";
 import {CartStore} from "../../stores/CartStore";
 import {Alert} from "@material-ui/lab";
 import CartItemModelCustom from "../../models/CartItemModelCustom";
+import history from "../../history";
 interface IProps {
 
 }
@@ -87,6 +88,7 @@ const styles = (theme: Theme) => createStyles({
     item: {
         width: '100%',
         display: 'flex',
+        justifyContent: 'center',
     },
     textContainer: {
 
@@ -169,7 +171,25 @@ const styles = (theme: Theme) => createStyles({
         marginRight: theme.spacing(1),
 
     },
-
+    ErrorAuth: {
+        textAlign: 'center',
+      color: 'red',
+    },
+    text: {
+        '&:hover': {
+            color: '#424242',
+            cursor:  'pointer',
+        },
+        color: '#a6a6a6',
+        marginTop: '25px',
+        textAlign: 'center',
+        textDecoration: 'underline',
+    },
+    messagePlsAuth: {
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+    },
 })
 
 @inject('commonStore', 'productStore', 'categoryStore', 'userStore', 'cartStore')
@@ -191,6 +211,8 @@ class Item extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
+        // На всякий включаем кнопки
+        this.injected.commonStore.turnButtonIsDisabled(false)
         // Анализ строки URL
         const windowUrl = window.location.search
         const params = new URLSearchParams(windowUrl)
@@ -228,6 +250,14 @@ class Item extends React.Component<IProps, IState> {
 
     handleAddData = (e: any) => {
         // this.injected.cartStore.addData(new CartItemModelCustom(1, 'qwerty', 444, 1))
+    }
+
+    handleClickAuthorization = () => {
+        history.push('/signin')
+    }
+
+    handleClickRegistration = () => {
+        history.push('/signup')
     }
 
     handlerAddToCart = (e:any) => {
@@ -382,7 +412,16 @@ class Item extends React.Component<IProps, IState> {
                                             </Paper>
                                         )}
                                     </div>
-                                </div> : <div>нужно авторизоваться</div>}
+                                </div> :
+                                    <div className={classes.messagePlsAuth}>
+                                        <div className={classes.ErrorAuth}>Для заказа сначала нужно авторизоваться</div>
+                                        <div className={classes.text}>
+                                            <div onClick={this.handleClickAuthorization}>Уже есть акаунт? Вход</div>
+                                        </div>
+                                        <div className={classes.text}>
+                                            <div onClick={this.handleClickRegistration}>Зарегистрироваться</div>
+                                        </div>
+                                    </div>}
 
 
                             </Grid>

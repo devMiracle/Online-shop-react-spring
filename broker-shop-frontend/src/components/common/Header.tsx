@@ -162,7 +162,8 @@ class Template extends React.Component<IProps, IState> {
                         className={classes.gridItem1}
                     >
                         <div className={classes.text + ' ' + !user ? classes.center : ''}>
-                            Проект находится в разработке, могут прослеживаться некоторые 'глюки'.
+                            {/*Проект находится в разработке, могут прослеживаться некоторые 'глюки'.*/}
+
                         </div>
                     </Grid>
                     {!user ? <Grid
