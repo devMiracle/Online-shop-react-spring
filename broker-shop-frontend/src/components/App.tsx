@@ -352,7 +352,7 @@ class App extends React.Component<IProps, IState> {
     }
 
     callbackDeleteFullFromCart = () => {
-        this.setState({snackBarText: 'Заказ отправлен. С вами свяжуться.'})
+        this.setState({snackBarText: 'Заказ отправлен. С вами свяжутся.'})
         this.setState({snackBarSeverity: 'success'})
         this.setState({snackBarVisibility: true})
     }

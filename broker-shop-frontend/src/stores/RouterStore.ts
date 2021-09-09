@@ -1,5 +1,4 @@
 import {action, makeObservable, observable, reaction} from 'mobx'
-import history from "../history"
 import RouteModel from "../models/RouteModel"
 import userStore from "./UserStore"
 import Home from "../components/pages/Home"
@@ -148,7 +147,7 @@ class RouterStore {
 
                 // выполняем переход на раздел 'Главная'
                 categoryStore.fetchCartItems()
-                //history.replace('/')
+                // history.replace('/')
             } else {
                 // если пользователь не установлен -
                 // меняем текущий список моделей роутов
@@ -156,7 +155,7 @@ class RouterStore {
                 this.setAnonymousRoutes()
                 // выполняем переход на раздел 'Вход'
                 categoryStore.fetchCartItems()
-                history.replace('/')
+                // history.replace('/')
             }
         }
     )

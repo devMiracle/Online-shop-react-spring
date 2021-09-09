@@ -63,7 +63,7 @@ const styles = (theme: Theme) => createStyles({
         display: 'none',
     },
     buttonAddToCart: {
-        fontFamily: "'Comfortaa', cursive",
+        // fontFamily: "'Comfortaa', cursive",
         '&:hover': {
             backgroundColor: 'white',
             color: '#039be6',
@@ -79,7 +79,7 @@ const styles = (theme: Theme) => createStyles({
     },
     buttonUnauthorized: {
         display: 'inline-flex',
-        fontFamily: "'Comfortaa', cursive",
+        // fontFamily: "'Comfortaa', cursive",
         '&:hover': {
             // backgroundColor: 'white',
             color: '#039be6',
@@ -91,7 +91,7 @@ const styles = (theme: Theme) => createStyles({
         color: '#a6a6a6',
     },
     titleText: {
-        fontFamily: "'Comfortaa', cursive",
+        // fontFamily: "'Comfortaa', cursive",
         fontSize: 'large',
     },
     cardAct: {

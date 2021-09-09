@@ -105,14 +105,14 @@ public class BrokerShopApplication {
 			userDao.save(
 					User.builder()
 							.name("admin")
-							.password(passwordEncoder.encode("Passwo0rd0"))
+							.password(passwordEncoder.encode("admin"))
 							.role(adminRole)
 							.build()
 			);
 			userDao.save(
 					User.builder()
-							.name("one")
-							.password(passwordEncoder.encode("Passwo0rd1"))
+							.name("one123")
+							.password(passwordEncoder.encode("one123"))
 							.role(userRole)
 							.build()
 			);

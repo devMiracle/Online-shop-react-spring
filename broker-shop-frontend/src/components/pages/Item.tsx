@@ -65,7 +65,7 @@ function getStepContent(step: number) {
 
 const styles = (theme: Theme) => createStyles({
     root: {
-        fontFamily: "'Comfortaa', cursive",
+        // fontFamily: "'Comfortaa', cursive",
         // background: '#f2f2f2',
         color: '#414141',
         //color: '#424242',
@@ -74,7 +74,7 @@ const styles = (theme: Theme) => createStyles({
         margin: '0 auto',
         marginTop: '10px',
         padding: '10px',
-        border: '1px dashed rgba(66,66,66,0.2)',
+        // border: '1px dashed rgba(66,66,66,0.2)',
         boxShadow: '0 0 8px 1px rgba(66,66,66,0.2)',
     },
     imageContainer: {
@@ -108,7 +108,7 @@ const styles = (theme: Theme) => createStyles({
 
         fontSize: 'x-large',
         fontWeight: 400,
-        margin: 0,
+        margin: '10px 0',
     },
     descriptionTitle: {
         color: '#a7a7a7',
@@ -130,6 +130,7 @@ const styles = (theme: Theme) => createStyles({
 
     },
     categoryContainer: {
+        margin: '10px 0',
       display: 'flex',
     },
     descriptionContainer: {

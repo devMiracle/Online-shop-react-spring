@@ -3,7 +3,7 @@ import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
 import ImageListNew10Items from '../common/ImageListNew10Items'
 
 import logo1 from './../../images/art3.png'
-import logo2 from './../../images/art1.jpg'
+import logo2 from './../../images/art11.jpg'
 import logo3 from './../../images/art3.png'
 
 
@@ -35,6 +35,20 @@ const styles = (theme: Theme) => createStyles({
     },
     textContainer: {
         padding: '15px',
+    },
+    dotContainer: {
+        display: "flex",
+        width: '100%',
+        margin: '0 auto',
+        justifyContent: 'center',
+    },
+    dotItem: {
+        width: '10px',
+        height: '10px',
+        borderRadius: '50%',
+        background: '#A6A6A6',
+        color: 'gray',
+        margin: '20px 10px',
     },
 })
 
@@ -70,6 +84,11 @@ class Home extends React.Component<IProps, IState> {
                     <p>
                         Мы принимаем заказы любой сложности, а также всегда готовы учесть любые пожелания касательно ингредиентов, если у вас, например, непереносимость некоторых продуктов.
                     </p>
+                </div>
+                <div className={classes.dotContainer}>
+                    <div className={classes.dotItem}/>
+                    <div className={classes.dotItem}/>
+                    <div className={classes.dotItem}/>
                 </div>
                 <img className={classes.img1} src={logo2} alt={"image2"}/>
                 <ImageListNew10Items/>

@@ -1,9 +1,5 @@
-
-
-
 import {action, computed, makeObservable, observable} from 'mobx'
 import commonStore from './CommonStore'
-import CartItemModel from "../models/CartItemModel"
 import CartItemModelCustom from "../models/CartItemModelCustom";
 
 class CartStore {

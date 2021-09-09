@@ -91,13 +91,13 @@ const styles = ((theme: Theme) => createStyles({
         color: '#a6a6a6',
         textDecoration: 'none',
         textTransform: 'uppercase',
-        fontFamily: "'Comfortaa', cursive",
+        // fontFamily: "'Comfortaa', cursive",
 
     },
     mobileButtonBarItemActive: {
         color: '#a6a6a6',
         textTransform: 'uppercase',
-        fontFamily: "'Comfortaa', cursive",
+        // fontFamily: "'Comfortaa', cursive",
     },
     shoppingCart: {
         // marginRight: '10px',
@@ -108,7 +108,7 @@ const styles = ((theme: Theme) => createStyles({
     },
     nested: {
         '& > * > *': {
-            fontFamily: "'Comfortaa', cursive",
+            // fontFamily: "'Comfortaa', cursive",
         },
         '&:hover': {
             color: '#039be6',
@@ -121,7 +121,7 @@ const styles = ((theme: Theme) => createStyles({
     },
     nestedActive: {
         '& > * > *': {
-            fontFamily: "'Comfortaa', cursive",
+            // fontFamily: "'Comfortaa', cursive",
         },
         '&:hover': {
             color: '#039be6',
@@ -134,9 +134,9 @@ const styles = ((theme: Theme) => createStyles({
     },
     nestedMobile: {
         textTransform: 'uppercase',
-        fontFamily: "'Comfortaa', cursive",
+        // fontFamily: "'Comfortaa', cursive",
         '& > * > *': {
-            fontFamily: "'Comfortaa', cursive",
+            // fontFamily: "'Comfortaa', cursive",
         },
         '&:hover': {
             color: '#039be6',
@@ -149,9 +149,9 @@ const styles = ((theme: Theme) => createStyles({
     },
     nestedActiveMobile: {
         textTransform: 'uppercase',
-        fontFamily: "'Comfortaa', cursive",
+        // fontFamily: "'Comfortaa', cursive",
         '& > * > *': {
-            fontFamily: "'Comfortaa', cursive",
+            // fontFamily: "'Comfortaa', cursive",
         },
         '&:hover': {
             color: '#039be6',
@@ -207,7 +207,7 @@ const styles = ((theme: Theme) => createStyles({
         color: '#424242',
     },
     heading: {
-        fontFamily: "'Comfortaa', cursive",
+        // fontFamily: "'Comfortaa', cursive",
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },

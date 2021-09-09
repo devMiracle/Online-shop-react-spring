@@ -78,7 +78,7 @@ class ImageListNew10Items extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
-
+        this.injected.productStore.fetchProducts()
     }
 
     handlerClickOnImage = (event: React.MouseEvent, id: number) => {
