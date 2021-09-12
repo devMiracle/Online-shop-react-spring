@@ -338,6 +338,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                                                     </div>
                                                 })}
                                                 <div
+                                                    id='allCakes'
                                                     className={classes.nestedMobile + ' ' + classes.nestedAllItemsMobile + ((catId.length === 0 && window.location.pathname.includes('/items')) ? ' ' + classes.nestedAllActiveMobile : '')}
                                                     onClick={(e) => {
                                                         this.handleClickAllItemList(e)
@@ -414,6 +415,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                                                       onClick={(e) => {
                                                           this.handleClickAllItemList(e)
                                                       }}
+                                                      id='allCakes'
                                             >
                                                 <ListItemText primary={
                                                     'Все торты'.toUpperCase()

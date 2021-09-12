@@ -480,7 +480,7 @@ class App extends React.Component<IProps, IState> {
                                         </div>
                                     )
                                 })}
-                            </div>) : 'Корзина пуста'}
+                            </div>) : <div id='CartEmptyText'>Корзина пуста</div>}
 
                             {/*{this.injected.cartStore.cartItemsCount > 0 ? (*/}
                             {/*    <table className="table">*/}
@@ -555,7 +555,7 @@ class App extends React.Component<IProps, IState> {
                              был выполнен синхронно, и ответ (перенаправление) ожидал не
                               код фронтенда (функция fetch), а сам браузер */}
                             {/*<a href={`${this.injected.commonStore.basename}/cart/pay`}>Purchase</a>*/}
-                            <br/><Button
+                            <Button
                             disabled={!(this.injected.cartStore?.cartItemsCount as number > 0)}
                             className={classes.buttonBuy} onClick={this.handlerClickPurchase}>ЗАКАЗАТЬ</Button>
                         </div>

@@ -396,6 +396,7 @@ class Item extends React.Component<IProps, IState> {
                                                                     Назад
                                                                 </Button>
                                                                 <Button
+                                                                    id='buttonNext'
                                                                     variant="contained"
                                                                     color="primary"
                                                                     onClick={handleNext}
@@ -425,7 +426,9 @@ class Item extends React.Component<IProps, IState> {
                                                 <Button onClick={handleReset} className={classes.button}>
                                                     Сброс
                                                 </Button>
-                                                <Button className={classes.buttonInCart} onClick={this.handlerAddToCart}>{'в корзину'.toUpperCase()}</Button>
+                                                <Button
+                                                    id="buttonInCart"
+                                                    className={classes.buttonInCart} onClick={this.handlerAddToCart}>{'в корзину'.toUpperCase()}</Button>
                                             </Paper>
                                         )}
                                     </div>
