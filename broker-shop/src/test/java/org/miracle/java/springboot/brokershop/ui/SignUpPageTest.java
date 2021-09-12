@@ -34,16 +34,16 @@ public class SignUpPageTest extends AbstractPageTest {
     public void givenCorrectUserNameAndPasswordWhenSubmitButtonClickThenRegisterAndLogin() throws InterruptedException {
         signUpPage.signUpWithValidCredentials("four", "UserPassword4");
         Thread.sleep(3000);
-        assertEquals("http://localhost:3000/shop/", driver.getCurrentUrl());
+        assertEquals("http://46.160.84.84:3000/shop/", driver.getCurrentUrl());
         String logOutButtonText = indexPage.getLogOutButtonText();
         assertNotNull(logOutButtonText);
-        assertEquals("Log Out (four)", logOutButtonText);
+        assertEquals("ВЫЙТИ (FOUR)", logOutButtonText);
     }
 
     @Test
     @Order(2)
     public void givenUsedUserNameAndPasswordWhenSubmitButtonClickThenUniqueNameConstraintViolationShown() {
-        signUpPage.signUpWithUniqueNameConstraintViolation("one", "Passwo0rd1");
+        signUpPage.signUpWithUniqueNameConstraintViolation("one123", "one123");
         String logOutButtonText = indexPage.getLogOutButtonText();
         // пункт меню для выхода из учетной записи не должен был появиться
         assertNull(logOutButtonText);
