@@ -65,13 +65,19 @@ class ModalDialog extends React.Component<IProps, IState> {
         const { classes } = this.injected
         return (
             <div className={classes.root}>
-                <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={ !!this.injected.commonStore.error }>
+                <Dialog
+                    onClose={handleClose}
+                    aria-labelledby="customized-dialog-title"
+                    open={ !!this.injected.commonStore.error }
+                >
                     <DialogTitle id="customized-dialog-title">
                         Упс. Что-то пошло не так
                     </DialogTitle>
                     <DialogContent dividers>
                         <Typography gutterBottom>
-                            {this.injected.commonStore.error}
+                            <div id='errorBlock'>
+                                {this.injected.commonStore.error}
+                            </div>
                         </Typography>
                     </DialogContent>
                     <DialogActions>

@@ -18,6 +18,7 @@ import Item from "../components/pages/Item";
 import categoryStore from './CartStore'
 import DashboardCategories from "../components/pages/admin/DashboardCategories";
 import DashboardProducts from "../components/pages/admin/DashboardProducts";
+import history from "../history";
 class RouterStore {
 
     // список моделей роутов для гостя
@@ -147,7 +148,7 @@ class RouterStore {
 
                 // выполняем переход на раздел 'Главная'
                 categoryStore.fetchCartItems()
-                // history.replace('/')
+                history.replace('/')
             } else {
                 // если пользователь не установлен -
                 // меняем текущий список моделей роутов

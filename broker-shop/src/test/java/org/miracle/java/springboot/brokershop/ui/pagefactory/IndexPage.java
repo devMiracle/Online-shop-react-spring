@@ -13,9 +13,9 @@ public class IndexPage extends AbstractPage {
 
     // пункт меню "Вход" находим на этапе выполнения конструктора
     // родительского класса
-    @FindBy(css = ".MuiAppBar-root a[href*='signin']")
+    @FindBy(css = "#root a[href*='signin']")
     private WebElement signInButton;
-    @FindBy(css = ".MuiAppBar-root a[href*='signup']")
+    @FindBy(css = "#root a[href*='signup']")
     private WebElement signUpButton;
     // для пункта "Выход" подготавливаем только селектор,
     // потому что он будет отображаться только после входа

@@ -32,12 +32,12 @@ public class SignInPageTest extends AbstractPageTest {
     @Test
     @Order(1)
     public void performSignInWithCorrectAdminUserNameAndPassword() throws InterruptedException {
-        signInPage.loginWithValidCredentials("admin", "Passwo0rd0");
+        signInPage.loginWithValidCredentials("admin", "admin");
         Thread.sleep(3000);
-        assertEquals("http://localhost:3000/shop/", driver.getCurrentUrl());
+        assertEquals("http://46.160.84.84:3000/shop/", driver.getCurrentUrl());
         String logOutButtonText = indexPage.getLogOutButtonText();
         assertNotNull(logOutButtonText);
-        assertEquals("Log Out (admin)", logOutButtonText);
+        assertEquals("ВЫЙТИ (ADMIN)", logOutButtonText);
     }
 
     @Test

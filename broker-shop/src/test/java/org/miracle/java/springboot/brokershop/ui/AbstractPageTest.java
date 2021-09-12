@@ -20,7 +20,11 @@ public abstract class AbstractPageTest {
     private static void setupAll() {
         // обращение к JVM: установить значение свойства webdriver.gecko.driver
         // в driver/geckodriver
-        System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+        System.setProperty(
+                "webdriver.chrome.driver",
+                "driver/chromedriver.exe"
+        );
+        System.setProperty("webdriver.chrome.whitelistedIps", "46.160.84.84");
     }
 
     @BeforeEach
@@ -34,7 +38,7 @@ public abstract class AbstractPageTest {
         // развернуть окно браузера на весь экран
         driver.manage().window().maximize();
         // выполнить http-get запрос в браузере по указанному адресу
-        driver.get("http://localhost:3000/shop/");
+        driver.get("http://46.160.84.84:3000/shop/");
         indexPage = new IndexPage(driver);
     }
 

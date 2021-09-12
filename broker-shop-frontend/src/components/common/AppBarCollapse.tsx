@@ -46,6 +46,7 @@ interface IState {
 
 const styles = ((theme: Theme) => createStyles({
     root: {
+
         display: 'flex',
         flexDirection: 'column',
         // position: "absolute",
@@ -82,12 +83,14 @@ const styles = ((theme: Theme) => createStyles({
         lineHeight: '23px',
     },
     buttonBarItemActive: {
+
         backgroundColor: '#fff',
         color: '#424242',
         alignSelf: 'center',
         lineHeight: '23px',
     },
     mobileButtonBarItem: {
+        cursor: 'pointer',
         color: '#a6a6a6',
         textDecoration: 'none',
         textTransform: 'uppercase',
@@ -95,6 +98,7 @@ const styles = ((theme: Theme) => createStyles({
 
     },
     mobileButtonBarItemActive: {
+        cursor: 'pointer',
         color: '#a6a6a6',
         textTransform: 'uppercase',
         // fontFamily: "'Comfortaa', cursive",
@@ -107,6 +111,7 @@ const styles = ((theme: Theme) => createStyles({
         textAlign: 'center',
     },
     nested: {
+        cursor: 'pointer',
         '& > * > *': {
             // fontFamily: "'Comfortaa', cursive",
         },
@@ -120,6 +125,7 @@ const styles = ((theme: Theme) => createStyles({
         color: '#a6a6a6',
     },
     nestedActive: {
+        cursor: 'pointer',
         '& > * > *': {
             // fontFamily: "'Comfortaa', cursive",
         },
@@ -133,6 +139,7 @@ const styles = ((theme: Theme) => createStyles({
         color: '#424242',
     },
     nestedMobile: {
+        cursor: 'pointer',
         textTransform: 'uppercase',
         // fontFamily: "'Comfortaa', cursive",
         '& > * > *': {
@@ -148,6 +155,7 @@ const styles = ((theme: Theme) => createStyles({
         color: '#a6a6a6',
     },
     nestedActiveMobile: {
+        cursor: 'pointer',
         textTransform: 'uppercase',
         // fontFamily: "'Comfortaa', cursive",
         '& > * > *': {
@@ -163,11 +171,13 @@ const styles = ((theme: Theme) => createStyles({
         color: '#424242',
     },
     nestedAllItems: {
+        cursor: 'pointer',
         '& > div': {
             borderBottom: '1px dashed #00a2d0',
         },
     },
     nestedAllItemsMobile: {
+        cursor: 'pointer',
         '& > div': {
             borderBottom: '1px dashed #00a2d0',
         },
