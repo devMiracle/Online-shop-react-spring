@@ -1,0 +1,11 @@
+org.miracle.java.springboot.brokershop
+org.miracle.java.springboot.brokershop.controllers
+org.miracle.java.springboot.brokershop.entities
+org.miracle.java.springboot.brokershop.models
+org.miracle.java.springboot.brokershop.repositories
+org.miracle.java.springboot.brokershop.repositories.criteria
+org.miracle.java.springboot.brokershop.repositories.predicate
+org.miracle.java.springboot.brokershop.security
+org.miracle.java.springboot.brokershop.services
+org.miracle.java.springboot.brokershop.services.interfaces
+org.miracle.java.springboot.brokershop.utils
