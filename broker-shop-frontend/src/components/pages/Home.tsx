@@ -1,11 +1,9 @@
 import React from 'react'
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
-import ImageListNew10Items from '../common/ImageListNew10Items'
-
+import ImageListNew6Items from '../common/ImageListNew6Items'
 import logo1 from './../../images/art3.png'
 import logo2 from './../../images/art11.jpg'
 import logo3 from './../../images/art3.png'
-
 
 interface IProps {
 
@@ -15,8 +13,6 @@ interface IInjectedProps extends IProps, WithStyles<typeof styles>{
 
 }
 
-
-
 interface IState {
 
 }
@@ -24,7 +20,6 @@ interface IState {
 const styles = (theme: Theme) => createStyles({
     root: {
         // width: '100vh',
-
     },
     img1: {
         // position: 'relative',
@@ -52,7 +47,6 @@ const styles = (theme: Theme) => createStyles({
     },
 })
 
-
 class Home extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
@@ -61,14 +55,11 @@ class Home extends React.Component<IProps, IState> {
         }
     }
 
-
-
     get injected () {
         return this.props as IInjectedProps
     }
 
     render () {
-
         const { classes } = this.injected
         return (
             <div className={classes.root}>
@@ -91,8 +82,13 @@ class Home extends React.Component<IProps, IState> {
                     <div className={classes.dotItem}/>
                 </div>
                 <img className={classes.img1} src={logo2} alt={"image2"}/>
-                <ImageListNew10Items/>
-                <div>
+                <ImageListNew6Items/>
+                <div className={classes.dotContainer}>
+                    <div className={classes.dotItem}/>
+                    <div className={classes.dotItem}/>
+                    <div className={classes.dotItem}/>
+                </div>
+                <div className={classes.textContainer}>
                     <p>
                         Чтобы купить торт на заказ, можно не тратить время на поиски по сайту, если вы уже знаете, что хотите. Просто воспользуйтесь номером телефона, который указан на сайте, и оформляйте торт по индивидуальному заказу прямо по телефону.
                     </p>
@@ -103,6 +99,7 @@ class Home extends React.Component<IProps, IState> {
                         Именно поэтому люди возвращаются к нам снова и снова.
                     </p>
                 </div>
+
             </div>
         )
     }

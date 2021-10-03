@@ -148,7 +148,7 @@ class Items extends React.Component<IProps, IState> {
                 const categoryId = searchString.substr(searchString.indexOf(';category:[') + 11,1)
                  this.injected.productStore.setCategoryId(parseInt(categoryId))
             } else {
-                this.injected.productStore.fetchFilteredProducts()
+                //this.injected.productStore.fetchFilteredProducts()
             }
         }
     }
@@ -194,7 +194,7 @@ class Items extends React.Component<IProps, IState> {
                 }
                 // после заполнения данных поиска/сортировки в хранилище MobX
                 // запускаем процесс запроса фильтрованных/сортированных данных о товарах
-                this.injected.productStore.fetchFilteredProducts()
+                //this.injected.productStore.fetchFilteredProducts()
                 // разрешаем отправку следующих запросов
                 this.injected.productStore.setAllowFetchFilteredProducts(false)
             }
@@ -225,7 +225,7 @@ class Items extends React.Component<IProps, IState> {
     }
 
     handlerClickOnCardActionArea = (event: React.MouseEvent, id: number) => {
-        this.injected.productStore.fetchProductById(id)
+        //this.injected.productStore.fetchProductById(id)
         History.push(`item?id=${id}`)
     }
 

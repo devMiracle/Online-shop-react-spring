@@ -152,7 +152,7 @@ class Shopping extends Component<IProps, IState> {
                 }
                 // после заполнения данных поиска/сортировки в хранилище MobX
                 // запускаем процесс запроса фильтрованных/сортированных данных о товарах
-                this.injected.productStore.fetchFilteredProducts()
+                // this.injected.productStore.fetchFilteredProducts()
                 // разрешаем отправку следующих запросов
                 this.injected.productStore.setAllowFetchFilteredProducts(false)
             }

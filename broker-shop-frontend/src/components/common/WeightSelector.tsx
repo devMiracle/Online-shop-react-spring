@@ -130,7 +130,7 @@ class WeightSelector extends React.Component<IProps, IState> {
             // elementTitle.innerHTML = `Выбор веса (цена: ${sum}грн. за ${kg})`
 
             const multiplier = this.injected.commonStore.marks.find((e) => e.value === itemValue)?.multiplier as number
-            const price1kg = this.injected.productStore.oneProduct?.price
+            const price1kg = this.injected.productStore.currentProduct?.price
             const sum = Math.ceil((Number(price1kg)) * (Number(multiplier)))
             this.injected.cartStore.setPrice(sum)
         })
@@ -151,7 +151,7 @@ class WeightSelector extends React.Component<IProps, IState> {
         const elemThumb = document.getElementsByClassName('MuiSlider-thumb')[0]
         const itemValue = Number(elemThumb.attributes.getNamedItem('aria-valuenow')?.value)
         const multiplier = this.injected.commonStore.marks.find((e) => e.value === itemValue)?.multiplier as number
-        const price1kg = this.injected.productStore.oneProduct?.price
+        const price1kg = this.injected.productStore.currentProduct?.price
         const sum = Math.ceil((Number(price1kg)) * (Number(multiplier)))
         this.injected.cartStore.setPrice(sum)
     }

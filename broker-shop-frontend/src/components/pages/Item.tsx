@@ -232,15 +232,15 @@ class Item extends React.Component<IProps, IState> {
         const id: string = params.get('id') || ''
         if (id){
             //this.injected.categoryStore.fetchCategories()
-            this.injected.productStore.fetchProductById(Number(id), this.callback)
+            //this.injected.productStore.fetchProductById(Number(id), this.callback)
             this.setState({itemIdIsExist: true})
         }
     }
 
     callback = () => {
         this.injected.cartStore.dataReset()
-        this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
-        this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
+        this.injected.cartStore.setProductId(this.injected.productStore.currentProduct?.id)
+        this.injected.cartStore.setPrice(this.injected.productStore.currentProduct?.price)
         this.injected.cartStore.setWeight(2)
     }
 
@@ -283,8 +283,8 @@ class Item extends React.Component<IProps, IState> {
         const steps = getSteps();
         setActiveStep(this.state.activeStep - steps.length);
         this.injected.cartStore.dataReset();
-        this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
-        this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
+        this.injected.cartStore.setProductId(this.injected.productStore.currentProduct?.id)
+        this.injected.cartStore.setPrice(this.injected.productStore.currentProduct?.price)
         this.injected.cartStore.setWeight(2)
     }
 
@@ -307,8 +307,8 @@ class Item extends React.Component<IProps, IState> {
         const handleReset = () => {
             setActiveStep(this.state.activeStep - steps.length);
             this.injected.cartStore.dataReset();
-            this.injected.cartStore.setProductId(this.injected.productStore.oneProduct?.id)
-            this.injected.cartStore.setPrice(this.injected.productStore.oneProduct?.price)
+            this.injected.cartStore.setProductId(this.injected.productStore.currentProduct?.id)
+            this.injected.cartStore.setPrice(this.injected.productStore.currentProduct?.price)
             this.injected.cartStore.setWeight(2)
 
         };
@@ -316,8 +316,8 @@ class Item extends React.Component<IProps, IState> {
         const { loading } = this.injected.commonStore
         const { article } = this.injected.commonStore
         const { classes } = this.injected
-
-        const { oneProduct } = this.injected.productStore
+        const { currentCategoryName } = this.injected.categoryStore
+        const { currentProduct } = this.injected.productStore
             if (!false) {
                 return(
                     <div className={classes.root}>
@@ -334,7 +334,7 @@ class Item extends React.Component<IProps, IState> {
                                 lg={6}
                                 xl={6}
                             >
-                               <div className={classes.imageContainer}><img id={'imgId'} className={classes.img} src={oneProduct?.image} alt="image item"/></div>
+                               <div className={classes.imageContainer}><img id={'imgId'} className={classes.img} src={currentProduct?.image} alt="image item"/></div>
                             </Grid>
                             <Grid
                                 id={'item'}
@@ -348,20 +348,20 @@ class Item extends React.Component<IProps, IState> {
                             >
                                 <div className={classes.textContainer}>
                                     <div>
-                                        <div className={classes.textArt}><p>арт. </p><p>{/*article + */oneProduct?.id}</p></div>
-                                        <p className={classes.title}>{oneProduct?.title}</p>
+                                        <div className={classes.textArt}><p>арт. </p><p>{/*article + */currentProduct?.id}</p></div>
+                                        <p className={classes.title}>{currentProduct?.title}</p>
                                         <div className={classes.categoryContainer}>
                                             <div className={classes.categoryTitle}>категория:&nbsp;</div>
-                                            <div className={classes.categoryText}>{oneProduct?.category.name}</div>
+                                            <div className={classes.categoryText}>{currentCategoryName}</div>
                                         </div>
                                         <div className={classes.descriptionContainer}>
                                             <p className={classes.descriptionTitle}>описание:</p>
-                                            <p className={classes.description}>{oneProduct?.description}</p>
+                                            <p className={classes.description}>{currentProduct?.description}</p>
                                         </div>
                                         <p className={classes.warn}>Внимание! Цена указана за 1 кг. изделия!</p>
                                         <div className={classes.textContainer2}>
                                             <div className={classes.textGray}>Цена за 1 килограмм:&nbsp;</div>
-                                            <div>{this.injected.productStore.oneProduct?.price}грн</div>
+                                            <div>{this.injected.productStore.currentProduct?.price}грн</div>
                                         </div>
                                         {/*<p>цена: {Store.oneProduct?.price}</p>*/}
                                     </div>

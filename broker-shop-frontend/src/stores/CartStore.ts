@@ -48,7 +48,7 @@ class CartStore {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                'address': 'rjcvjchzljv9@gmail.com',
+                'address': 'test@gmail.com',
                 'message': this.cartItems,
             })
 

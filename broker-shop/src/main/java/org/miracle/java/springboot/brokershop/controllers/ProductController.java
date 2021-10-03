@@ -28,6 +28,11 @@ public class ProductController {
         return new ResponseEntity<>(service.getOne(id), HttpStatus.OK);
     }
 
+    @GetMapping("/products/get6")
+    public ResponseEntity<ResponseModel> getLastProducts () {
+        return new ResponseEntity<ResponseModel>(service.getLast6Product(), HttpStatus.OK);
+    }
+
     @GetMapping("/products")
     public ResponseEntity<ResponseModel> getAll() {
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);

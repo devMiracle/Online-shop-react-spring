@@ -1,11 +1,10 @@
 import {action, makeObservable, observable} from 'mobx'
 import history from "../history";
 import Product from '../models/ProductModel'
-import ProductModelCustom from '../models/ProductModelCustom'
 import commonStore from './CommonStore'
+import categoryStore from './CategoryStore'
 
 class ProductStore {
-
     private HTTP_STATUS_OK: number = 200
     private HTTP_STATUS_CREATED: number = 201
     private HTTP_STATUS_NO_CONTENT: number = 204
@@ -13,15 +12,16 @@ class ProductStore {
     private allowGetPriceBounds: boolean = true
     private allowGetQuantityBounds: boolean = true
 
-    @observable oneProduct: ProductModelCustom | null = null
+    @observable currentProduct: Product | undefined
     @observable products: Array<Product> = []
-    @observable currentProductId: number | null = null
+
+    @observable productId: number | null = null
     @observable title: string = ''
     @observable description: string = ''
     @observable quantity: number = 0
     @observable price: number = 0
     @observable categoryId: number | null = null
-    @observable currentProductImage: string = ''
+    @observable image: string = ''
 
     // для фильтра и сортировки
     @observable orderBy: string = 'id'
@@ -32,7 +32,6 @@ class ProductStore {
     @observable priceTo: number | null = null
     @observable quantityFrom: number | null = null
     @observable quantityTo: number | null = null
-
     @observable priceFromBound: number = 0
     @observable priceToBound: number = 1000000
     @observable quantityFromBound: number = 0
@@ -44,9 +43,6 @@ class ProductStore {
     constructor() {
         makeObservable(this)
     }
-
-
-
 
     // сборка веб-адреса для раздела покупок из значений
     // отдельных полей состояния фильтра и установка его в адресную строку браузера
@@ -69,18 +65,11 @@ class ProductStore {
         this.urlItemString = str
     }
 
-    @action setCurrentProductId(id: number | null) {
-        this.currentProductId = id
-        const currentProduct =
+    @action setCurrentProduct(id: number | null) {
+        this.currentProduct =
             this.products.find(p => p.id === id)
-        if (currentProduct) {
-            this.setProductTitle(currentProduct.title)
-            this.setProductDescription(currentProduct.description)
-            console.log('currentProduct = ' + currentProduct.categoryId)
-            this.setProductCategory(currentProduct.categoryId)
-            this.setProductPrice(currentProduct.price)
-            this.setProductQuantity(currentProduct.quantity)
-            this.setProductImage(currentProduct.image)
+        if (this.currentProduct) {
+            categoryStore.setCurrentCategoryId(this.currentProduct.category.id)
         }
     }
 
@@ -105,8 +94,10 @@ class ProductStore {
     }
 
     @action setProductImage(image: string) {
-        this.currentProductImage = image
+        this.image = image
     }
+
+    // Загрузить товар по ID
     @action fetchProductById(id: number | null, callback?: (() => void) | undefined) {
         commonStore.clearError()
         commonStore.setLoading(true)
@@ -122,7 +113,7 @@ class ProductStore {
                     // ts-object конвертируем в json-string (stringify),
                     // декодируем (decodeURIComponent)
                     // json-string конвертируем в  ts-object (parse)
-                    this.oneProduct = JSON.parse(
+                    this.currentProduct = JSON.parse(
                         decodeURIComponent(
                             JSON.stringify(responseModel.data)
                                 .replace(/(%2E)/ig, '%20')
@@ -143,6 +134,7 @@ class ProductStore {
 
         }))
     }
+    // Загрузить все продукты с сервера
     @action fetchProducts() {
         commonStore.clearError()
         commonStore.setLoading(true)
@@ -177,7 +169,42 @@ class ProductStore {
             //this.changeShoppingUrlParams()
         }))
     }
-
+    // Загрузить 6 последних продуктов с сервера
+    @action fetch6LastProducts() {
+        commonStore.clearError()
+        commonStore.setLoading(true)
+        fetch(commonStore.basename + '/products/get6')
+            .then((response) => {
+                return response.json()
+            }).then(responseModel => {
+            if (responseModel) {
+                if (responseModel.status === 'success') {
+                    // полученный объект модели может содержать
+                    // свойства, значения которых закодированы из UTF-8 в ASCII,
+                    // поэтому производим полное раскодирование:
+                    // ts-object конвертируем в json-string (stringify),
+                    // декодируем (decodeURIComponent)
+                    // json-string конвертируем в  ts-object (parse)
+                    this.products =
+                        JSON.parse(
+                            decodeURIComponent(
+                                JSON.stringify(responseModel.data)
+                                    .replace(/(%2E)/ig, '%20')
+                            )
+                        )
+                } else if (responseModel.status === 'fail') {
+                    commonStore.setError(responseModel.message)
+                }
+            }
+        }).catch((error) => {
+            commonStore.setError(error.message)
+            throw error
+        }).finally(action(() => {
+            commonStore.setLoading(false)
+            //this.changeShoppingUrlParams()
+        }))
+    }
+    // Добавить продукт
     @action add() {
         commonStore.clearError()
         commonStore.setLoading(true)
@@ -192,7 +219,7 @@ class ProductStore {
                 'description': encodeURIComponent(this.description),
                 'price': this.price,
                 'quantity': this.quantity,
-                'image': this.currentProductImage,
+                'image': this.image,
                 'categoryId': this.categoryId
             })
         }).then((response) => {
@@ -200,7 +227,7 @@ class ProductStore {
         }).then(responseStatusCode => {
             if (responseStatusCode) {
                 if (responseStatusCode === this.HTTP_STATUS_CREATED) {
-                    this.fetchProducts()
+                    //this.fetchProducts()
                 }
             }
         }).catch((error) => {
@@ -210,11 +237,11 @@ class ProductStore {
             commonStore.setLoading(false)
         }))
     }
-
+    // Обновить продукт
     @action update () {
         commonStore.clearError()
         commonStore.setLoading(true)
-        fetch(`${commonStore.basename}/products/${this.currentProductId}`,{
+        fetch(`${commonStore.basename}/products/${this.productId}`,{
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -225,7 +252,7 @@ class ProductStore {
                 'description': encodeURIComponent(this.description),
                 'price': this.price,
                 'quantity': this.quantity,
-                'image': this.currentProductImage,
+                'image': this.image,
                 'categoryId': this.categoryId
             })
         }).then((response) => {
@@ -233,9 +260,9 @@ class ProductStore {
         }).then(responseStatusCode => {
             if (responseStatusCode) {
                 if (responseStatusCode === this.HTTP_STATUS_OK) {
-                    this.fetchProducts()
-                    this.setProductTitle('')
-                    this.setCurrentProductId(null)
+                    //this.fetchProducts()
+                    // this.setProductTitle('')
+                    // this.setCurrentProduct(null)
                 }
             }
         }).catch((error) => {
@@ -245,16 +272,16 @@ class ProductStore {
             commonStore.setLoading(false)
         }))
     }
-
+    // Удалить продукт
     @action deleteProduct() {
         commonStore.clearError()
         commonStore.setLoading(true)
-        fetch(commonStore.basename + '/products/' + this.currentProductId,{
+        fetch(commonStore.basename + '/products/' + this.productId,{
             method: 'DELETE'
         }).then((response) => {
             if (response.status === this.HTTP_STATUS_NO_CONTENT) {
-                this.fetchProducts()
-                this.setCurrentProductId(null)
+                //this.fetchProducts()
+                // this.setCurrentProduct(null)
             }
         }).catch((error) => {
             commonStore.setError(error.message)
@@ -264,7 +291,7 @@ class ProductStore {
         }))
     }
 
-    // получить граничные значения цен товаров
+    // Получить граничные значения цен товаров
     @action fetchProductPriceBounds() {
         commonStore.clearError()
         commonStore.setLoading(true)
@@ -304,7 +331,7 @@ class ProductStore {
             commonStore.setLoading(false)
         }))
     }
-
+    // Получить продукты с границей по количеству
     @action fetchProductQuantityBounds() {
         commonStore.clearError()
         commonStore.setLoading(true)
@@ -337,7 +364,7 @@ class ProductStore {
         }))
     }
 
-    // вызываемый явно метод, когда изменилась адресная строка -
+    // Вызываемый явно метод, когда изменилась адресная строка -
     // получение с сервера списка товаров согласно состояния фильтра
     @action getFilteredProducts () {
         commonStore.clearError()
@@ -470,8 +497,6 @@ class ProductStore {
         this.categories = []
         this.changeShoppingUrlParams()
     }
-
-
 
     @action setFilterDataPriceFrom(priceFrom: number) {
         this.priceFrom = priceFrom

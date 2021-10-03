@@ -91,7 +91,7 @@ class DashboardProducts extends Component<IProps, IState> {
 
     componentDidMount() {
         this.injected.categoryStore.fetchCategories()
-        this.injected.productStore.fetchProducts()
+       // this.injected.productStore.fetchProducts()
     }
 
     // метод отображения/скрытия боковой панели
@@ -164,12 +164,12 @@ class DashboardProducts extends Component<IProps, IState> {
     }
 
     handleProductEdit = (e: React.MouseEvent, productId: number) => {
-        this.injected.productStore.setCurrentProductId(productId)
+        this.injected.productStore.setCurrentProduct(productId)
         this.setState({sidePanelVisibility: true})
     }
 
     handleProductDelete = (e: React.MouseEvent, productId: number) => {
-        this.injected.productStore.setCurrentProductId(productId)
+        this.injected.productStore.setCurrentProduct(productId)
         this.injected.productStore.deleteProduct()
     }
 
@@ -188,7 +188,7 @@ class DashboardProducts extends Component<IProps, IState> {
         // и перезагрузку страницы
         e.preventDefault()
         this.setState({sidePanelVisibility: false})
-        if (!this.injected.productStore.currentProductId) {
+        if (!this.injected.productStore.currentProduct) {
             this.injected.productStore.add()
         } else {
             this.injected.productStore.update()
@@ -207,7 +207,7 @@ class DashboardProducts extends Component<IProps, IState> {
     })
 
     imageReaction = reaction(
-        () => this.injected.productStore.currentProductImage, // следим за свойством currentProductImage
+        () => this.injected.productStore.image, // следим за свойством currentProductImage
         (image) => {
             // при изменении значения свойства image -
             // обработанное на клиенте изображение

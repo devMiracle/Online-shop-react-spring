@@ -33,6 +33,9 @@ public interface ProductDao extends JpaRepository<Product, Long>,
     @Query( "SELECT MIN(p.price) FROM Product p" )
     BigDecimal findMinimum ();
 
+//    List<Product> findFirst10ByUsernameOrderByIdDesc (String username);
+    List<Product> findTop6ByOrderByIdDesc ();
+
     Product findTop1ByOrderByPriceDesc ();
 
     Product findTop1ByOrderByQuantityDesc ();

@@ -1,7 +1,6 @@
 import {action, makeObservable, observable} from "mobx"
 import Category from '../models/CategoryModel'
 import commonStore from './CommonStore'
-import CategoryModel from "../models/CategoryModel"
 
 class CategoryStore {
 
@@ -16,14 +15,18 @@ class CategoryStore {
         makeObservable(this)
     }
 
-    @action setName(name: string) {
-        this.currentCategoryName = name
-    }
-
     @action setCurrentCategoryId(id: number | null) {
         this.currentCategoryId = id
-        const currentCategory = this.categories.find((c: CategoryModel) => c.id === id)
+        this.setCurrentCategoryNameById(id)
+    }
+
+    @action setCurrentCategoryNameById(id: number | null) {
+        const currentCategory = this.categories.find((c: Category) => c.id === id)
         this.setName(currentCategory?.name || '')
+    }
+
+    @action setName(name: string) {
+        this.currentCategoryName = name
     }
 
     @action fetchCategories() {

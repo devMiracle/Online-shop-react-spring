@@ -23,6 +23,8 @@ public class User {
     private String name;
     @Column(name = "password", nullable = false, length = 100)
     private String password;
+    @Column(name = "mail", nullable = true, length = 100)
+    private String mail;
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;

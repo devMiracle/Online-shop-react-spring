@@ -230,6 +230,7 @@ const styles = (theme: Theme) => createStyles({
             // flexGrow: 1,
         },
         flexGrow: 1,
+        display: 'flex',
     },
     buttonBuy: {
         '&:hover':{
@@ -276,7 +277,6 @@ class App extends React.Component<IProps, IState> {
         return this.props as IInjectedProps
     }
 
-
     constructor(props: IProps) {
         super(props)
         this.state = {
@@ -289,20 +289,15 @@ class App extends React.Component<IProps, IState> {
         //     console.log(action, location.pathname, location.search)
         //
         // });
-
     }
 
     handleClick = () => {
         this.setState({openMenu: !this.state.openMenu})
     };
 
-
-
     handleErrorModalClose = (e: React.KeyboardEvent | React.MouseEvent) => {
         this.injected.commonStore.setError('')
     }
-
-
 
     handleCartItemPlus = (e: React.MouseEvent, productId: number) => {
         this.injected.cartStore.addToCart(productId, () => {
@@ -343,7 +338,7 @@ class App extends React.Component<IProps, IState> {
 
     componentDidMount() {
         this.injected.userStore.check()
-        this.injected.productStore.fetchProducts()
+        //this.injected.productStore.fetchProducts()
     }
 
     handlerClickPurchase = (event?: React.MouseEvent) => {
@@ -368,7 +363,7 @@ class App extends React.Component<IProps, IState> {
         <Router history={history}>
             <div className={classes.root}>
                 <div id="back-to-top-anchor"/>
-                <Header/>
+                {/*<Header/>*/}
                 {/* панель приложения, "приклееная" к верхней части страницы */}
                 <AppBar position='sticky' className={classes.navBar}>
                     <Toolbar className={classes.toolBar}>
@@ -376,7 +371,7 @@ class App extends React.Component<IProps, IState> {
                             <NavLink to="/"
                                      exact
                             >
-                                    <img className={classes.cakeIcon} src="/images/icon.png" alt="cake logo"/>
+                                <img className={classes.cakeIcon} src="/images/icon.png" alt="cake logo"/>
                                 <div className={classes.mainTitle}>Тортодел</div>
                             </NavLink>
                         </div>

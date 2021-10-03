@@ -88,7 +88,7 @@ public class MailService implements IMailService {
 
             Session session = Session.getInstance(props, new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication("tortodel.store@gmail.com", "tort0629Qq");
+                    return new PasswordAuthentication("tortodel.store@gmail.com", "T0rt0629Qq");
                 }
             });
             Message msg = new MimeMessage(session);

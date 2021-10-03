@@ -47,10 +47,6 @@ public class MailController {
             Authentication authentication,
             @RequestBody MailModel mailModel
     ) throws MessagingException, IOException {
-
-
-
-        // вызов метода службы - увеличить число товара в корзине на 1
         ResponseModel response =
                 mailService.sendMail(authentication);
         return new ResponseEntity<>(response, HttpStatus.OK);

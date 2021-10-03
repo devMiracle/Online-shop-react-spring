@@ -13,6 +13,8 @@ import { WithStyles, withStyles, Theme } from "@material-ui/core/styles"
 import ButtonAppBarCollapse from "./ButtonAppBarCollapse"
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import Box from '@material-ui/core/Box';
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 import {
     NavLink
@@ -278,6 +280,10 @@ class AppBarCollapse extends Component<IProps, IState> {
 
     }
 
+    handleClickAway = () => {
+        this.setState({openStateMenu: false})
+    };
+
     componentDidMount() {
         this.injected.categoryStore.fetchCategories()
         // const target1 = document.getElementById('targetClick1')
@@ -382,10 +388,13 @@ class AppBarCollapse extends Component<IProps, IState> {
                     {routes.map(route => {
                         if (route.visible) {
                             if (route.name.includes('торты')) {
-                                return <List
+                                return <ClickAwayListener
+                                    mouseEvent="onMouseDown"
+                                    touchEvent="onTouchStart"
+                                    onClickAway={this.handleClickAway}>
+                                <List
                                     key={route.path}>
                                     <ListItem
-
                                         className={this.state.openStateMenu ? classes.listItemActive : classes.listItem}
                                         button onClick={this.handleClick}>
                                         <div>
@@ -394,36 +403,39 @@ class AppBarCollapse extends Component<IProps, IState> {
                                         {this.state.openStateMenu ? <ExpandLess /> : <ExpandMore />}
                                     </ListItem>
                                     <Collapse in={this.state.openStateMenu} timeout="auto" unmountOnExit>
-                                        <List component="div" disablePadding>
+
+                                            <List component="div" disablePadding>
                                                 {categories.map((category: CategoryModel) => {
                                                     return <ListItem
-                                                                    key={category.id}
-                                                                    button
-                                                                    className={classes.nested + ((catId[0] === category.id && window.location.pathname.includes('/items')) ? ' ' + classes.nestedActive : '')}
-                                                                    onClick={(e) => {
-                                                                    this.handleClickItemList(e, category.id)
-                                                                    }}
-                                                        >
-                                                            <ListItemText primary={
-                                                                category.name.toUpperCase()
-                                                            } />
-                                                        </ListItem>
+                                                        key={category.id}
+                                                        button
+                                                        className={classes.nested + ((catId[0] === category.id && window.location.pathname.includes('/items')) ? ' ' + classes.nestedActive : '')}
+                                                        onClick={(e) => {
+                                                            this.handleClickItemList(e, category.id)
+                                                        }}
+                                                    >
+                                                        <ListItemText primary={
+                                                            category.name.toUpperCase()
+                                                        } />
+                                                    </ListItem>
                                                 })}
-                                            <ListItem
-                                                      button
-                                                      className={classes.nested + ' ' + classes.nestedAllItems + ((catId.length === 0 && window.location.pathname.includes('/items')) ? ' ' + classes.nestedAllActive : '')}
-                                                      onClick={(e) => {
-                                                          this.handleClickAllItemList(e)
-                                                      }}
-                                                      id='allCakes'
-                                            >
-                                                <ListItemText primary={
-                                                    'Все торты'.toUpperCase()
-                                                } />
-                                            </ListItem>
-                                        </List>
+                                                <ListItem
+                                                    button
+                                                    className={classes.nested + ' ' + classes.nestedAllItems + ((catId.length === 0 && window.location.pathname.includes('/items')) ? ' ' + classes.nestedAllActive : '')}
+                                                    onClick={(e) => {
+                                                        this.handleClickAllItemList(e)
+                                                    }}
+                                                    id='allCakes'
+                                                >
+                                                    <ListItemText primary={
+                                                        'Все торты'.toUpperCase()
+                                                    } />
+                                                </ListItem>
+                                            </List>
                                     </Collapse>
                                 </List>
+                                        </ClickAwayListener>
+
                             } else if (route.name.includes('корзина')) {
                                 return <div
                                     key={route.path}

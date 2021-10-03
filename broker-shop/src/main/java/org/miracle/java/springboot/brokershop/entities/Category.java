@@ -23,9 +23,6 @@ public class Category {
     private Long id;
     @Column(name = "name", nullable = false, unique = true, length = 300)
     private String name;
-//    @Lob
-//    @Column(name = "image")
-//    private String image;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Product> products;
 }

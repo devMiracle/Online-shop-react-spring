@@ -102,7 +102,7 @@ class Categories extends React.Component<IProps, IState> {
                                         <div className={classes.cardDirection}>
                                             <CardMedia
                                                 className={classes.media}
-                                                image={category.image}
+                                                // image={category.image}
                                                 title="category photo"
                                             />
                                             <CardContent className={classes.cardContent}>

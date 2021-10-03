@@ -65,7 +65,7 @@ const styles = (theme: Theme) => createStyles({
 
 @inject('commonStore', 'productStore')
 @observer
-class ImageListNew10Items extends React.Component<IProps, IState> {
+class ImageListNew6Items extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
@@ -78,11 +78,11 @@ class ImageListNew10Items extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
-        this.injected.productStore.fetchProducts()
+        this.injected.productStore.fetch6LastProducts()
     }
 
     handlerClickOnImage = (event: React.MouseEvent, id: number) => {
-        // this.injected.productStore.fetchProductById(id)
+        this.injected.productStore.setCurrentProduct(id)
         History.push(`item?id=${id}`)
         window.scrollTo({
             top: 0,
@@ -130,4 +130,4 @@ class ImageListNew10Items extends React.Component<IProps, IState> {
     }
 }
 
-export default withStyles(styles)(ImageListNew10Items)
+export default withStyles(styles)(ImageListNew6Items)

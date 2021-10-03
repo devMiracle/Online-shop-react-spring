@@ -8,6 +8,7 @@ import org.miracle.java.springboot.brokershop.repositories.CategoryDao;
 import org.miracle.java.springboot.brokershop.repositories.ProductDao;
 import org.miracle.java.springboot.brokershop.repositories.predicate.ProductPredicatesBuilder;
 import org.miracle.java.springboot.brokershop.services.interfaces.IProductService;
+import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,35 @@ public class ProductService implements IProductService {
     public ProductService(ProductDao productDao, CategoryDao categoryDao) {
         this.productDao = productDao;
         this.categoryDao = categoryDao;
+    }
+
+    public ResponseModel getLast6Product() {
+        List<Product> products = productDao.findTop6ByOrderByIdDesc();
+        List<ProductModel> productModels =
+                products.stream()
+                .map(product ->
+                        ProductModel.builder()
+                                .id(product.getId())
+                                .title(product.getName())
+                                .description(product.getDescription())
+                                .quantity(product.getQuantity())
+                                .price(product.getPrice())
+                                .image(product.getImage())
+                                // categoryId в заполнении не нуждается, потому что строкой ниже происходит передача целого объекта категории.
+//                                .categoryId()
+                                .category(
+                                        CategoryModel.builder()
+                                            .id(product.getCategory().getId())
+                                            .name(product.getCategory().getName())
+                                            .build()
+                                )
+                                .build()
+                ).collect(Collectors.toList());
+        return ResponseModel.builder()
+                .status(ResponseModel.SUCCESS_STATUS)
+                .message(String.format("Products fetch"))
+                .data(productModels)
+                .build();
     }
 
     @Override
@@ -227,7 +257,6 @@ public class ProductService implements IProductService {
         }
         return getResponseModelFromEntities(products);
     }
-
 
     private ResponseModel getResponseModelFromEntities(List<Product> products) {
         List<ProductModel> productModels =
