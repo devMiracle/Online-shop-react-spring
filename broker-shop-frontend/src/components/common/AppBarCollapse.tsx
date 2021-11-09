@@ -30,6 +30,8 @@ import {CategoryStore} from '../../stores/CategoryStore'
 import RouteModel from "../../models/RouteModel"
 import CategoryModel from "../../models/CategoryModel";
 import {ProductStore} from "../../stores/ProductStore";
+import {CommonStore} from "../../stores/CommonStore";
+import history from "../../history";
 
 interface IProps {
     routes: Array<RouteModel>
@@ -39,7 +41,8 @@ interface IInjectedProps extends IProps, WithStyles<typeof styles> {
     userStore: UserStore
     cartStore: CartStore
     categoryStore: CategoryStore,
-    productStore: ProductStore
+    productStore: ProductStore,
+    commonStore: CommonStore,
 }
 
 interface IState {
@@ -229,7 +232,7 @@ const styles = ((theme: Theme) => createStyles({
     }
 }))
 
-@inject('userStore', 'cartStore', 'categoryStore', 'productStore')
+@inject('userStore', 'cartStore', 'categoryStore', 'productStore','commonStore')
 @observer
 class AppBarCollapse extends Component<IProps, IState> {
     constructor(props: IProps) {
@@ -255,10 +258,12 @@ class AppBarCollapse extends Component<IProps, IState> {
     handleClick = () => {
         this.setState({openStateMenu: !this.state.openStateMenu})
     }
-
+    // При нажатии на кнопку, снемимает все категории и выставляет новую
     handleClickItemList = (e: React.MouseEvent, categoryId: number) => {
         this.injected.productStore.clearAllCategoryId()
         this.injected.productStore.setFilterDataCategory(categoryId, true)
+        this.injected.commonStore.flagButtonOrSearchStringEventToggle(true)
+        this.injected.productStore.changeShoppingUrlParams()
         this.setState({openStateMenu: !this.state.openStateMenu})
         window.scrollTo({
             top: 0,
@@ -268,10 +273,8 @@ class AppBarCollapse extends Component<IProps, IState> {
 
     handleClickAllItemList = (e: React.MouseEvent) => {
         this.injected.productStore.clearAllCategoryId()
-        // this.injected.productStore.fetchProducts()
-        // this.injected.productStore.fetchProductPriceBounds()
-        // this.injected.productStore.fetchProductQuantityBounds()
-        // this.injected.productStore.fetchFilteredProducts()
+        this.injected.commonStore.flagButtonOrSearchStringEventToggle(true)
+        this.injected.productStore.changeShoppingUrlParams()
         this.setState({openStateMenu: !this.state.openStateMenu})
         window.scrollTo({
             top: 0,
@@ -419,6 +422,7 @@ class AppBarCollapse extends Component<IProps, IState> {
                                                         } />
                                                     </ListItem>
                                                 })}
+                                                {/*Кнопка отображания всех товаров сразу*/}
                                                 <ListItem
                                                     button
                                                     className={classes.nested + ' ' + classes.nestedAllItems + ((catId.length === 0 && window.location.pathname.includes('/items')) ? ' ' + classes.nestedAllActive : '')}

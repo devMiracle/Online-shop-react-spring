@@ -152,8 +152,8 @@ public class ProductService implements IProductService {
                                 .id(product.getId())
                                 .title(product.getName())
                                 .description(product.getDescription())
-                                .price(product.getPrice())
                                 .quantity(product.getQuantity())
+                                .price(product.getPrice())
                                 .image(product.getImage())
                                 .category(
                                         CategoryModel.builder()

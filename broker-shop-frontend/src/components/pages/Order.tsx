@@ -14,7 +14,9 @@ interface IState {
 }
 
 const styles = (theme: Theme) => createStyles({
-
+    container: {
+      margin: '0 5px',
+    },
 })
 
 
@@ -36,9 +38,9 @@ class Order extends React.Component<IProps, IState> {
     }
 
     render () {
-        // const { classes } = this.injected
+        const { classes } = this.injected
         return (
-            <div>
+            <div className={classes.container}>
                 <h2>Как заказать</h2>
                 <p>
                     <b>Шаги</b>

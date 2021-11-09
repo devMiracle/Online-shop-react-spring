@@ -134,76 +134,185 @@ class Items extends React.Component<IProps, IState> {
     }
 
     componentDidMount () {
-        const windowUrl = window.location.search
-        const params = new URLSearchParams(windowUrl)
-        const searchString: string = params.get('search') || ''
-        if (searchString) {
-            const triggerSearchString = searchString.indexOf('null')
-            if (triggerSearchString) {
-                this.injected.productStore.fetchProductPriceBounds()
-                this.injected.productStore.fetchProductQuantityBounds()
-            }
-            //this.injected.productStore.setFilterDataSearchString(searchString)
-            if (searchString.includes(';category:[')) {
-                const categoryId = searchString.substr(searchString.indexOf(';category:[') + 11,1)
-                 this.injected.productStore.setCategoryId(parseInt(categoryId))
-            } else {
-                //this.injected.productStore.fetchFilteredProducts()
-            }
-        }
-    }
-
-    componentDidUpdate(prevProps: Readonly<IProps>) {
+        // console.log("componentDidMount")
+        // Визуальные изменения. Убираем скругления карточек, box-shadow.
         let elements = document.getElementsByClassName('MuiPaper-rounded')
         Array.from(elements).forEach((el) => el.classList.remove('MuiPaper-rounded', 'MuiPaper-elevation1'));
-
-        // если работа фильтра в данный момент не выполняется - передаем
-        // параметры из адресной строки в состояние фильра в локальном хранилище
-
-        if (this.injected.productStore.allowFetchFilteredProducts) {
-            // считывание цепочки параметров из адресной строки
+        // Если нажата кнопка для перехода на данный компонент
+        if (this.injected.commonStore.flagButtonOrSearchStringEvent) {
+            // console.log('clickButton')
+            this.injected.productStore.fetchProductPriceBounds()
+            this.injected.productStore.fetchProductQuantityBounds(() => {
+                this.injected.productStore.setSearchString()
+                this.injected.productStore.changeShoppingUrlParams()
+                this.injected.productStore.fetchFilteredProducts()
+            })
+            // новое состояние фильтра (поиска) и сортировки записывается на место старого
+            this.setState({prevSearch: {
+                searchString: this.injected.productStore.searchString,
+                orderBy: this.injected.productStore.orderBy,
+                sortingDirection: this.injected.productStore.sortingDirection
+            }})
+        } else { // Иначе переход на данный компонент совершен из строки поиска
+            // console.log('searchString')
             const windowUrl = window.location.search
-            // вызов конструктора парсера параметров адресной строки
             const params = new URLSearchParams(windowUrl)
-            // для тех параметров, которые отсутствуют в адресной строке,
-            // устанавливаем значения - пустые строки
             const searchString: string = params.get('search') || ''
             const orderBy = params.get('orderBy') || ''
             const sortingDirection = params.get('sortingDirection') || ''
-            // если изменилась хотя бы одна составляющая поиска/сортироки в адресной строке
-            // (выясняем это сравнением всех трех составляющих поиска/сортировки,
-            // установленных в состояние компонента в прошлый раз
-            // с новыми значениями, только что полученными из адресной строки)
-            if (searchString !== this.state.prevSearch.searchString
-                || orderBy !== this.state.prevSearch.orderBy
-                || sortingDirection !== this.state.prevSearch.sortingDirection
-            ) {
+            // console.log(orderBy)
+            // console.log(sortingDirection)
+            // console.log(searchString)
+            if (orderBy) {
+                this.injected.productStore.setOrderBy(orderBy)
+            }
+            if (sortingDirection) {
+                this.injected.productStore.setSortingDirection(sortingDirection)
+            }
+            if (searchString) {
                 // новое состояние фильтра (поиска) и сортировки записывается на место старого
                 this.setState({prevSearch: {
-                        searchString: searchString,
-                        orderBy: orderBy,
-                        sortingDirection: sortingDirection
-                    }})
-                // передача строки поиска в хранилище для обработки
-                this.injected.productStore.setFilterDataSearchString(searchString)
-                if (orderBy) {
-                    this.injected.productStore.setOrderBy(orderBy)
+                    searchString: searchString,
+                    orderBy: orderBy,
+                    sortingDirection: sortingDirection
+                }})
+                this.injected.productStore.setFilterDataPriceFrom(searchString.match(/(?<=price>:)\d+(?=;)/g)?.[0] as unknown as number)
+                this.injected.productStore.setFilterDataPriceTo(searchString.match(/(?<=price<:)\d+(?=;)/g)?.[0] as unknown as number)
+                this.injected.productStore.setFilterDataQuantityFrom(searchString.match(/(?<=quantity>:)\d+(?=;)/g)?.[0] as unknown as number)
+                this.injected.productStore.setFilterDataQuantityTo(searchString.match(/(?<=quantity<:)\d+/g)?.[0] as unknown as number)
+                this.injected.productStore.clearAllCategoryId()
+                // console.log('--------------------')
+                // console.log(this.injected.productStore.priceFrom)
+                // console.log(this.injected.productStore.priceTo)
+                // console.log(this.injected.productStore.quantityFrom)
+                // console.log(this.injected.productStore.quantityTo)
+                // console.log(this.injected.productStore.categories)
+                // console.log('--------------------')
+
+                // this.injected.productStore.setFilterDataSearchString(searchString)
+                if (searchString.includes(';category:[')) {
+                //     // TODO: если число будет двузначное, возможна ошибка. Вставить regex
+                //     // const categoryId = searchString.substr(searchString.indexOf(';category:[') + 11,1)
+                //     // this.injected.productStore.setCategoryId(parseInt(categoryId))
+                    let categoryId = searchString.match(/(?<=category:\[)\d+(?=])/g)?.[0] as string
+                    // this.injected.productStore.setFilterDataCategory(categoryId, true)
+                    this.injected.productStore.setCategoryId(parseInt(categoryId))
+                    // console.log(this.injected.productStore.categories)
+                    this.injected.productStore.setSearchString()
+                    this.injected.productStore.fetchFilteredProducts()
+                } else {
+                    // console.log(this.injected.productStore.categories)
+                    this.injected.productStore.setSearchString()
+                    this.injected.productStore.fetchProducts()
                 }
-                if (sortingDirection) {
-                    this.injected.productStore.setSortingDirection(sortingDirection)
-                }
-                // после заполнения данных поиска/сортировки в хранилище MobX
-                // запускаем процесс запроса фильтрованных/сортированных данных о товарах
-                //this.injected.productStore.fetchFilteredProducts()
-                // разрешаем отправку следующих запросов
-                this.injected.productStore.setAllowFetchFilteredProducts(false)
             }
         }
 
+        // this.injected.productStore.fetchProductPriceBounds()
+        // this.injected.productStore.fetchProductQuantityBounds()
+        // // // Визуальные изменения. Убираем скругления карточек, box-shadow.
+        // let elements = document.getElementsByClassName('MuiPaper-rounded')
+        // Array.from(elements).forEach((el) => el.classList.remove('MuiPaper-rounded', 'MuiPaper-elevation1'));
+        // // // Сканируем поисковую строку, и выполняем сортировку согласно ей, это полезно в том случае,
+        // // // если пользователь перешел по ссылке, ведущей сразу на эту страницу
+        // const windowUrl = window.location.search
+        // const params = new URLSearchParams(windowUrl)
+        // const searchString: string = params.get('search') || ''
+        // const orderBy = params.get('orderBy') || ''
+        // const sortingDirection = params.get('sortingDirection') || ''
+        // if (orderBy) {
+        //     this.injected.productStore.setOrderBy(orderBy)
+        // }
+        // if (sortingDirection) {
+        //     this.injected.productStore.setSortingDirection(sortingDirection)
+        // }
+        // if (searchString) {
+        //     // новое состояние фильтра (поиска) и сортировки записывается на место старого
+        //     // this.setState({prevSearch: {
+        //     //     searchString: searchString,
+        //     //     orderBy: orderBy,
+        //     //     sortingDirection: sortingDirection
+        //     // }})
+        //
+        //     const triggerSearchString = searchString.indexOf('null')
+        //     console.log(triggerSearchString)
+        //     if (triggerSearchString !== -1) {
+        //         this.injected.productStore.fetchProductPriceBounds()
+        //         this.injected.productStore.fetchProductQuantityBounds()
+        //     }
+        //     this.injected.productStore.setFilterDataSearchString(searchString)
+        //
+        //     if (searchString.includes(';category:[')) {
+        //         // TODO: если число будет двузначное, возможна ошибка. Вставить regex
+        //         const categoryId = searchString.substr(searchString.indexOf(';category:[') + 11,1)
+        //         this.injected.productStore.setCategoryId(parseInt(categoryId))
+        //         this.injected.productStore.fetchFilteredProducts()
+        //     } else {
+        //         this.injected.productStore.fetchProducts()
+        //     }
+        // }
+    }
+
+    componentDidUpdate(prevProps: Readonly<IProps>) {
+        // console.log("componentDidUpdate")
+        this.injected.productStore.setSearchString()
+        if (this.injected.productStore.searchString !== this.state.prevSearch.searchString
+            || this.injected.productStore.orderBy !== this.state.prevSearch.orderBy
+            || this.injected.productStore.sortingDirection !== this.state.prevSearch.sortingDirection) {
+            // новое состояние фильтра (поиска) и сортировки записывается на место старого
+            this.setState({prevSearch: {
+                searchString: this.injected.productStore.searchString,
+                orderBy: this.injected.productStore.orderBy,
+                sortingDirection: this.injected.productStore.sortingDirection
+            }})
+            this.injected.productStore.fetchFilteredProducts()
+        }
+
+        // если работа фильтра в данный момент не выполняется - передаем
+        // параметры из адресной строки в состояние фильра в локальном хранилище
+        // if (this.injected.productStore.allowFetchFilteredProducts) {
+        //     // считывание цепочки параметров из адресной строки
+        //     const windowUrl = window.location.search
+        //     // вызов конструктора парсера параметров адресной строки
+        //     const params = new URLSearchParams(windowUrl)
+        //     // для тех параметров, которые отсутствуют в адресной строке,
+        //     // устанавливаем значения - пустые строки
+        //     const searchString: string = params.get('search') || ''
+        //     const orderBy = params.get('orderBy') || ''
+        //     const sortingDirection = params.get('sortingDirection') || ''
+        //     // если изменилась хотя бы одна составляющая поиска/сортироки в адресной строке
+        //     // (выясняем это сравнением всех трех составляющих поиска/сортировки,
+        //     // установленных в состояние компонента в прошлый раз
+        //     // с новыми значениями, только что полученными из адресной строки)
+        //     if (searchString !== this.state.prevSearch.searchString
+        //         || orderBy !== this.state.prevSearch.orderBy
+        //         || sortingDirection !== this.state.prevSearch.sortingDirection
+        //     ) {
+        //         // новое состояние фильтра (поиска) и сортировки записывается на место старого
+        //         this.setState({prevSearch: {
+        //                 searchString: searchString,
+        //                 orderBy: orderBy,
+        //                 sortingDirection: sortingDirection
+        //             }})
+        //         // передача строки поиска в хранилище для обработки
+        //         this.injected.productStore.setFilterDataSearchString(searchString)
+        //         if (orderBy) {
+        //             this.injected.productStore.setOrderBy(orderBy)
+        //         }
+        //         if (sortingDirection) {
+        //             this.injected.productStore.setSortingDirection(sortingDirection)
+        //         }
+        //         // после заполнения данных поиска/сортировки в хранилище MobX
+        //         // запускаем процесс запроса фильтрованных/сортированных данных о товарах
+        //         this.injected.productStore.fetchFilteredProducts()
+        //         // разрешаем отправку следующих запросов
+        //         this.injected.productStore.setAllowFetchFilteredProducts(false)
+        //     }
+        // }
     }
 
     componentWillUnmount() {
-        // this.injected.productStore.clearAllCategoryId()
+        this.injected.productStore.clearAllProducts()
     }
 
     handleAddToCart = (e: React.MouseEvent, productId: number) => {
@@ -252,7 +361,7 @@ class Items extends React.Component<IProps, IState> {
                } else {
                    return(<div className={classes.root}>
 
-                       {products.length > 0 ?
+                       {/*{products.length > 0 ?*/}
 
                            <Grid
                                container
@@ -347,8 +456,8 @@ class Items extends React.Component<IProps, IState> {
                                    )
                                })}
                            </Grid>
-                           : <div>пусто</div>
-                       }
+                           {/*: <div>пусто</div>*/}
+                       {/*}*/}
 
                        <Snackbar
                            open={this.state.snackBarVisibility}

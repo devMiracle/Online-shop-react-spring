@@ -14,7 +14,7 @@ class ProductStore {
 
     @observable currentProduct: Product | undefined
     @observable products: Array<Product> = []
-
+    @observable products6: Array<Product> = []
     @observable productId: number | null = null
     @observable title: string = ''
     @observable description: string = ''
@@ -24,29 +24,34 @@ class ProductStore {
     @observable image: string = ''
 
     // для фильтра и сортировки
-    @observable orderBy: string = 'id'
-    @observable sortingDirection: string = 'DESC'
+    orderBy: string = 'id'
+    sortingDirection: string = 'DESC'
     @observable categories: number[] = []
-    @observable allowFetchFilteredProducts: boolean = true
-    @observable priceFrom: number | null = null
-    @observable priceTo: number | null = null
-    @observable quantityFrom: number | null = null
-    @observable quantityTo: number | null = null
-    @observable priceFromBound: number = 0
-    @observable priceToBound: number = 1000000
-    @observable quantityFromBound: number = 0
-    @observable quantityToBound: number = 1000000
+    allowFetchFilteredProducts: boolean = true
+    priceFrom: number | null = null
+    priceTo: number | null = null
+    quantityFrom: number | null = null
+    quantityTo: number | null = null
+    priceFromBound: number = 0
+    priceToBound: number = 1000000
+    quantityFromBound: number = 0
+    quantityToBound: number = 1000000
     // цельная строка - значение url-параметра search
-    @observable searchString: string = ''
+    searchString: string = ''
     // сторка для определенного тавара
-    @observable urlItemString: string = ''
+    urlItemString: string = ''
     constructor() {
         makeObservable(this)
     }
 
+    @action clearAllProducts() {
+        this.products = []
+    }
+
     // сборка веб-адреса для раздела покупок из значений
     // отдельных полей состояния фильтра и установка его в адресную строку браузера
-    private changeShoppingUrlParams () {
+    @action changeShoppingUrlParams () {
+        // console.log('changeShoppingUrlParams')
         history.push({
             pathname: '/items',
             search: `?orderBy=${this.orderBy}
@@ -60,6 +65,16 @@ class ProductStore {
                 .replace(/\s/g, '')
         })
     }
+
+    @action setSearchString () {
+        this.searchString = `price>:${this.priceFrom};
+                            price<:${this.priceTo};
+                            quantity>:${this.quantityFrom};
+                            quantity<:${this.quantityTo}
+                            ${(this.categories && this.categories.length > 0) ? ';category:' + JSON.stringify(this.categories) : ''}`
+                .replace(/\s/g, '')
+    }
+
 
     @action setUrlItemString(str: string) {
         this.urlItemString = str
@@ -99,6 +114,7 @@ class ProductStore {
 
     // Загрузить товар по ID
     @action fetchProductById(id: number | null, callback?: (() => void) | undefined) {
+        // console.log("fetchProductById")
         commonStore.clearError()
         commonStore.setLoading(true)
         fetch(commonStore.basename + `/product/${id}`)
@@ -136,6 +152,7 @@ class ProductStore {
     }
     // Загрузить все продукты с сервера
     @action fetchProducts() {
+        // console.log("fetchProducts")
         commonStore.clearError()
         commonStore.setLoading(true)
         fetch(commonStore.basename + '/products')
@@ -171,6 +188,7 @@ class ProductStore {
     }
     // Загрузить 6 последних продуктов с сервера
     @action fetch6LastProducts() {
+        // console.log("fetch6LastProducts")
         commonStore.clearError()
         commonStore.setLoading(true)
         fetch(commonStore.basename + '/products/get6')
@@ -185,7 +203,7 @@ class ProductStore {
                     // ts-object конвертируем в json-string (stringify),
                     // декодируем (decodeURIComponent)
                     // json-string конвертируем в  ts-object (parse)
-                    this.products =
+                    this.products6 =
                         JSON.parse(
                             decodeURIComponent(
                                 JSON.stringify(responseModel.data)
@@ -293,6 +311,7 @@ class ProductStore {
 
     // Получить граничные значения цен товаров
     @action fetchProductPriceBounds() {
+        // console.log("fetchProductPriceBounds")
         commonStore.clearError()
         commonStore.setLoading(true)
         fetch(commonStore.basename + '/products/price-bounds')
@@ -318,6 +337,7 @@ class ProductStore {
                         }
                         // после изменения значений фильтра
                         // вызываем обновление адресной строки
+                        // this.setSearchString()
                         // this.changeShoppingUrlParams()
                     }
                 } else if (responseModel.status === 'fail') {
@@ -332,7 +352,8 @@ class ProductStore {
         }))
     }
     // Получить продукты с границей по количеству
-    @action fetchProductQuantityBounds() {
+    @action fetchProductQuantityBounds(testtest: () => void) {
+        // console.log("fetchProductQuantityBounds")
         commonStore.clearError()
         commonStore.setLoading(true)
         fetch(commonStore.basename + '/products/quantity-bounds')
@@ -350,7 +371,9 @@ class ProductStore {
                         if (!this.quantityTo) {
                             this.quantityTo = this.quantityToBound
                         }
-                        this.changeShoppingUrlParams()
+                        // this.setSearchString()
+                        // this.changeShoppingUrlParams()
+                        testtest()
                     }
                 } else if (responseModel.status === 'fail') {
                     commonStore.setError(responseModel.message)
@@ -422,6 +445,7 @@ class ProductStore {
     }
     // получение отфильтрованных отсортированных товаров с сервера
     @action fetchFilteredProducts () {
+        // console.log("fetchFilteredProducts")
         commonStore.clearError()
         commonStore.setLoading(true)
         // составление строки запроса к действию контроллера,
@@ -431,6 +455,7 @@ class ProductStore {
                 ::orderBy:${this.orderBy}
                 ::sortingDirection:${this.sortingDirection}
                 /?search=${this.searchString}`
+        // console.log(this.searchString)
         // перед запросом на сервер удаляем все пробельные символы из адреса,
         // потому что описанный выше блок кода добавляет их для форматирования
         fetch(filteredProductsUrl.replace(/\s/g, ''))
@@ -465,6 +490,7 @@ class ProductStore {
     @action setAllowFetchFilteredProducts(allow: boolean) {
         this.allowFetchFilteredProducts = allow
     }
+
     // установка содержимого списка идентификаторов категорий
     // для фильтра
     @action setFilterDataCategory(id: number, isChecked: boolean) {
@@ -487,35 +513,34 @@ class ProductStore {
         // запрос на бэкенд для получения списка моделей товаров
         // согласно новому состоянию фильтра (набора свойств локального хранилища
         // для фильтрации)
-
-        this.changeShoppingUrlParams()
+        // this.changeShoppingUrlParams()
     }
     @action setCategoryId(...id: number[]) {
         this.categories = id
     }
     @action clearAllCategoryId() {
         this.categories = []
-        this.changeShoppingUrlParams()
+        // this.changeShoppingUrlParams()
     }
 
     @action setFilterDataPriceFrom(priceFrom: number) {
         this.priceFrom = priceFrom
-        this.handlePriceBoundsValues()
+        // this.handlePriceBoundsValues()
     }
 
     @action setFilterDataPriceTo(priceTo: number) {
         this.priceTo = priceTo
-        this.handlePriceBoundsValues()
+        // this.handlePriceBoundsValues()
     }
 
     @action setFilterDataQuantityFrom(quantityFrom: number) {
         this.quantityFrom = quantityFrom
-        this.handleQuantityBoundsValues()
+        // this.handleQuantityBoundsValues()
     }
 
     @action setFilterDataQuantityTo(quantityTo: number) {
         this.quantityTo = quantityTo
-        this.handleQuantityBoundsValues()
+        // this.handleQuantityBoundsValues()
     }
 
     // если поля границ цены состояния фильтра пустуют -
@@ -546,7 +571,9 @@ class ProductStore {
             this.allowGetQuantityBounds = false
             setTimeout(() => {
                 if(this.allowGetQuantityBounds) {
-                    this.fetchProductQuantityBounds()
+                    this.fetchProductQuantityBounds(() => {
+                        console.log("done!")
+                    })
                 }
             }, 3500)
             this.changeShoppingUrlParams()
@@ -554,7 +581,9 @@ class ProductStore {
             this.allowGetQuantityBounds = true
             setTimeout(() => {
                 if(this.allowGetQuantityBounds) {
-                    this.fetchProductQuantityBounds()
+                    this.fetchProductQuantityBounds(() => {
+                        console.log("done!")
+                    })
                 }
             }, 3000)
         }

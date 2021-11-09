@@ -13,12 +13,19 @@ class CommonStore {
     @observable loading: boolean = false
     // Текст ошибки, усли он подключен
     @observable error: string = ''
+    @observable buttonIsDisabled: boolean = false
     //  URL REST API основной адрес
     basename: string = 'http://46.160.84.84:8080/shop/api'
     //  URL REST API основной адрес
     authBasename: string = 'http://46.160.84.84:8080/shop'
 
-    @observable buttonIsDisabled: boolean = false
+    // Флаг, указывающий на то, каким образом была загруженна страничка (через кнопку или со строки поиска)
+    flagButtonOrSearchStringEvent : boolean = false
+
+    @action flagButtonOrSearchStringEventToggle(flag: boolean) {
+        this.flagButtonOrSearchStringEvent = flag
+    }
+
 
     article: string = '02200'
     marks = [

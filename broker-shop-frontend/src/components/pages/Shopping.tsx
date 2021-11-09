@@ -111,7 +111,9 @@ class Shopping extends Component<IProps, IState> {
         // this.injected.productStore.fetchFilteredProducts()
 
         this.injected.productStore.fetchProductPriceBounds()
-        this.injected.productStore.fetchProductQuantityBounds()
+        this.injected.productStore.fetchProductQuantityBounds(() => {
+            console.log("done!")
+        })
     }
     // обработчик события жизненного цикла компонента:
     // компонент получил новые значения свойств

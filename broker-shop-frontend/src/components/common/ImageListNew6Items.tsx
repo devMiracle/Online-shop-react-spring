@@ -100,7 +100,7 @@ class ImageListNew6Items extends React.Component<IProps, IState> {
             <Grid
                 container
             >
-                {this.injected.productStore.products.slice(0, 6).map((item) => (
+                {this.injected.productStore.products6.slice(0, 6).map((item) => (
                     <Grid
                         key={item.id}
                         id={'item'}
