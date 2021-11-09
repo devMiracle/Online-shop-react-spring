@@ -334,7 +334,7 @@ class Items extends React.Component<IProps, IState> {
     }
 
     handlerClickOnCardActionArea = (event: React.MouseEvent, id: number) => {
-        //this.injected.productStore.fetchProductById(id)
+        this.injected.productStore.fetchProductById(id)
         History.push(`item?id=${id}`)
     }
 

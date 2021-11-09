@@ -231,13 +231,14 @@ class Item extends React.Component<IProps, IState> {
         const params = new URLSearchParams(windowUrl)
         const id: string = params.get('id') || ''
         if (id){
-            //this.injected.categoryStore.fetchCategories()
-            //this.injected.productStore.fetchProductById(Number(id), this.callback)
-            this.setState({itemIdIsExist: true})
+            this.injected.categoryStore.fetchCategories()
+            this.injected.productStore.fetchProductById(Number(id), this.callback)
         }
     }
 
     callback = () => {
+        this.setState({itemIdIsExist: true})
+        this.injected.categoryStore.setCurrentCategoryNameById(this.injected.productStore.currentProduct?.category?.id as number | null)
         this.injected.cartStore.dataReset()
         this.injected.cartStore.setProductId(this.injected.productStore.currentProduct?.id)
         this.injected.cartStore.setPrice(this.injected.productStore.currentProduct?.price)
@@ -348,7 +349,7 @@ class Item extends React.Component<IProps, IState> {
                             >
                                 <div className={classes.textContainer}>
                                     <div>
-                                        <div className={classes.textArt}><p>арт. </p><p>{/*article + */currentProduct?.id}</p></div>
+                                        <div className={classes.textArt}><p>арт.&nbsp;</p><p>{/*article + */currentProduct?.id}</p></div>
                                         <p className={classes.title}>{currentProduct?.title}</p>
                                         <div className={classes.categoryContainer}>
                                             <div className={classes.categoryTitle}>категория:&nbsp;</div>

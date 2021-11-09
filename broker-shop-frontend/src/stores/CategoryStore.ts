@@ -17,7 +17,6 @@ class CategoryStore {
 
     @action setCurrentCategoryId(id: number | null) {
         this.currentCategoryId = id
-        this.setCurrentCategoryNameById(id)
     }
 
     @action setCurrentCategoryNameById(id: number | null) {
