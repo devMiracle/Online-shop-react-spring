@@ -45,7 +45,7 @@ interface IState {
 }
 
 function getSteps() {
-    return ['Выбор веса', 'Выбор начинки', 'Выбор оформления', 'Связь'];
+    return ['Выбор веса', 'Выбор начинки', 'Выбор оформления'/*, 'Связь'*/];
 }
 
 function getStepContent(step: number) {
@@ -56,8 +56,8 @@ function getStepContent(step: number) {
             return <SectionsSelector/>;
         case 2:
             return <DecorSelector/>;
-        case 3:
-            return <Communication/>;
+        // case 3:
+        //     return <Communication/>;
         default:
             return 'Unknown step';
     }
@@ -379,7 +379,7 @@ class Item extends React.Component<IProps, IState> {
                                 xl={12}
                             >
                                 {/*Если пользователь авторизован, отображаем подробности к заказу*/}
-                                {user ? <div className={classes.ItemContainer}>
+                                {/*{user ? <div className={classes.ItemContainer}>*/}
                                     <div className={classes.stepper}>
                                         <Stepper activeStep={this.state.activeStep} orientation="vertical">
                                             {steps.map((label, index) => (
@@ -433,16 +433,16 @@ class Item extends React.Component<IProps, IState> {
                                             </Paper>
                                         )}
                                     </div>
-                                </div> :
-                                    <div className={classes.messagePlsAuth}>
-                                        <div className={classes.ErrorAuth}>Для заказа сначала нужно авторизоваться</div>
-                                        <div className={classes.text}>
-                                            <div onClick={this.handleClickAuthorization}>Уже есть акаунт? Вход</div>
-                                        </div>
-                                        <div className={classes.text}>
-                                            <div onClick={this.handleClickRegistration}>Зарегистрироваться</div>
-                                        </div>
-                                    </div>}
+                                {/*</div> :*/}
+                                {/*    <div className={classes.messagePlsAuth}>*/}
+                                {/*        <div className={classes.ErrorAuth}>Для заказа сначала нужно авторизоваться</div>*/}
+                                {/*        <div className={classes.text}>*/}
+                                {/*            <div onClick={this.handleClickAuthorization}>Уже есть акаунт? Вход</div>*/}
+                                {/*        </div>*/}
+                                {/*        <div className={classes.text}>*/}
+                                {/*            <div onClick={this.handleClickRegistration}>Зарегистрироваться</div>*/}
+                                {/*        </div>*/}
+                                {/*    </div>}*/}
 
 
                             </Grid>

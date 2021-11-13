@@ -74,6 +74,7 @@ const styles = ((theme: Theme) => createStyles({
         height: '60px',
     },
     buttonBarItem: {
+        display: 'flex',
         '&:hover': {
             color: '#039be6',
         },
@@ -358,7 +359,8 @@ class AppBarCollapse extends Component<IProps, IState> {
                                             </div>
                                         </AccordionDetails>
                                     </Accordion>
-                                } else if (route.name.includes('корзина')) {
+                                }
+                                if (route.name.includes('корзина')) {
                                         return <div
                                             key={route.path}
                                             onClick={this.handleCartIconClick} className={classes.buttonBarItem} style={{display: this.injected.userStore.user ? 'flex' : 'none' }}>
@@ -441,12 +443,18 @@ class AppBarCollapse extends Component<IProps, IState> {
                                         </ClickAwayListener>
 
                             } else if (route.name.includes('корзина')) {
-                                return <div
-                                    key={route.path}
-                                    onClick={this.handleCartIconClick} className={classes.buttonBarItem} style={{display: this.injected.userStore.user ? 'flex' : 'none' }}>
-                                    <ShoppingCartIcon
-                                    /> <div className={classes.shoppingCart}>{this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.</div>
-                                </div>
+                                return (
+                                    <div
+                                        key={route.path}
+                                        onClick={this.handleCartIconClick}
+                                        className={classes.buttonBarItem}
+                                        // style={{display: this.injected.userStore.user ? 'flex' : 'none' }}
+                                    >
+                                            <ShoppingCartIcon/>
+                                            <div className={classes.shoppingCart}>
+                                                {this.injected.cartStore.cartItemsCount} ({this.injected.cartStore.cartItemsTotalPrice}) грн.
+                                            </div>
+                                    </div>)
                             } else if (!/^Dashboard[A-z]+$/.test(route.name)) {
                                     return <NavLink
 
