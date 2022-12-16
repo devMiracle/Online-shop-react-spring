@@ -15,9 +15,9 @@ class CommonStore {
     @observable error: string = ''
     @observable buttonIsDisabled: boolean = false
     //  URL REST API основной адрес
-    basename: string = 'http://46.160.84.84:8080/shop/api'
+    basename: string = 'http://192.168.1.161/shop/api'
     //  URL REST API основной адрес
-    authBasename: string = 'http://46.160.84.84:8080/shop'
+    authBasename: string = 'http://192.168.1.161:8080/shop'
 
     // Флаг, указывающий на то, каким образом была загруженна страничка (через кнопку или со строки поиска)
     flagButtonOrSearchStringEvent : boolean = false
